@@ -1,33 +1,24 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Mappa Parcheggi</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map { height: 100vh; width: 100%; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parking Finder</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="map"></div>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    const map = L.map('map').setView([43.6167, 13.5167], 14); // Centra sulle Marche
+  <div class="container">
+    <h1>Parking Finder</h1>
+    <p class="subtitle">Find available parking locations across Marche.</p>
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+    <div class="buttons">
+      <a href="map.html"><button>View Map</button></a>
 
-    fetch('/api/parcheggi')
-      .then(res => res.json())
-      .then(data => {
-        L.geoJSON(data, {
-          onEachFeature: function (feature, layer) {
-            let props = feature.properties;
-            layer.bindPopup(`<strong>${props.name || "Parcheggio"}</strong><br>Accesso: ${props.access || "n.d."}`);
-          }
-        }).addTo(map);
-      });
-  </script>
+      <button onclick="mostraSezione('add')">Find a parking</button>
+      <button onclick="mostraSezione('add')">Add Parking</button>
+      <button onclick="mostraSezione('remove')">Remove Parking</button>
+      <button onclick="mostraSezione('edit')">Edit Parking</button>
+    </div>
+  </div>
 </body>
 </html>
