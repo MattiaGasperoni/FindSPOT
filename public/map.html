@@ -1,3 +1,8 @@
+<!--
+  This HTML file displays a map of parking areas in Urbino using Leaflet.js.
+  It fetches GeoJSON data from a local endpoint and displays it on the map.
+  A button is provided to navigate back to the home page.
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,58 +15,82 @@
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
   />
+
+  <!-- Custom CSS -->
   <style>
-    body, html {
+    html, body {
       margin: 0;
       padding: 0;
       height: 100%;
     }
+
     #map {
       width: 100%;
       height: 100%;
     }
+
+    #btnHome {
+      position: absolute;
+      top: 10px;
+      left: 90px;
+      z-index: 1000;
+      background-color: #3478f6;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 40px;
+      font-size: 1.2rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s;
+      width: 260px;
+    }
+
+    #btnHome:hover {
+      background-color: #255ec6;
+    }
   </style>
 </head>
+
 <body>
-  <button id="btnHome" style="position: absolute; top: 10px; left: 90px; z-index: 1000; background-color: #3478f6;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 16px 40px;
-  font-size: 1.2rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s;
-  width: 260px;">
-    Torna alla Home
-  </button>
+  <button id="btnHome">Torna alla Home</button>
   <div id="map"></div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-  <script>
-    const map = L.map('map').setView([43.727362, 12.636127], 14); // Centra su urnbino quando avvii la mappa
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  <script>
+    // Inizializza la mappa centrata su Urbino
+    const map = L.map('map').setView([43.727362, 12.636127], 14);
+
+    // Aggiunge tile layer OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+    {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
+    // Carica i dati GeoJSON dei parcheggi da un endpoint locale
     fetch('/api/parcheggi')
       .then(res => res.json())
       .then(data => {
-        L.geoJSON(data, {
-          onEachFeature: function (feature, layer) {
-            let props = feature.properties;
-            layer.bindPopup(`<strong>${props.name || "Parcheggio"}</strong><br>Accesso: ${props.access || "n.d."}`);
+        L.geoJSON(data, 
+        {
+          onEachFeature: (feature, layer) => 
+          {
+            const props = feature.properties;
+            layer.bindPopup(`
+              <strong>${props.name || "Parcheggio"}</strong><br>
+              Accesso: ${props.access || "n.d."}
+            `);
           }
         }).addTo(map);
       });
 
-    // Listener bottone
-    document.getElementById('btnHome').addEventListener('click', () => {
+    // Torna alla home quando clicchiamo il bottone
+    document.getElementById('btnHome').addEventListener('click', () => 
+    {
       window.location.href = 'index.html';
     });
   </script>
 </body>
-
 </html>
