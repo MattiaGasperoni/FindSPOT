@@ -1,8 +1,3 @@
-<!--
-  This HTML file displays a map of parking areas in Urbino using Leaflet.js.
-  It fetches GeoJSON data from a local endpoint and displays it on the map.
-  A button is provided to navigate back to the home page.
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,18 +27,17 @@
     #btnHome {
       position: absolute;
       top: 10px;
-      left: 90px;
+      left: 10px;
       z-index: 1000;
       background-color: #3478f6;
       color: white;
       border: none;
-      border-radius: 12px;
-      padding: 16px 40px;
-      font-size: 1.2rem;
-      font-weight: 500;
+      border-radius: 30px;
+      padding: 16px 10px;
+      font-size: 1rem;
       cursor: pointer;
       transition: background 0.3s;
-      width: 260px;
+      width: 120px;
     }
 
     #btnHome:hover {
@@ -53,7 +47,7 @@
 </head>
 
 <body>
-  <button id="btnHome">Torna alla Home</button>
+  <button id="btnHome">Home</button>
   <div id="map"></div>
 
   <!-- Leaflet JS -->
@@ -61,8 +55,12 @@
 
   <script>
     // Inizializza la mappa centrata su Urbino
-    const map = L.map('map').setView([43.727362, 12.636127], 14);
-
+    const map = L.map('map', {
+      center: [43.727362, 12.636127],
+      zoom: 14,
+      zoomControl: false,
+    });
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
     // Aggiunge tile layer OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
     {
@@ -91,6 +89,39 @@
     {
       window.location.href = 'index.html';
     });
+
+    // Legge il parametro 'city' dall'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    let city = urlParams.get("city");
+    if (!city) 
+    {
+      city = "Urbino"; // Imposta Urbino come città predefinita
+    }
+    console.log("Mappa inizializzata a " + city);
+
+    if (city) 
+    {
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`)
+        .then(res => res.json())
+        .then(data => 
+        {
+          if (data.length > 0) 
+          {
+            const { lat, lon } = data[0];
+            map.setView([parseFloat(lat), parseFloat(lon)], 14);
+          } 
+          else 
+          {
+            alert("City not found.");
+          }
+        })
+        .catch(err => 
+        {
+          console.error("Geocoding error:", err);
+          alert("Error during city search.");
+        });
+    }
+
   </script>
 </body>
 </html>
