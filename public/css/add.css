@@ -1,0 +1,96 @@
+.form {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 350px;
+  background-color: rgba(136, 133, 136, 0.3);
+  padding: 40px;
+  border-radius: 40px;
+  position: relative;
+}
+
+.title {
+  font-size: 28px;
+  color: royalblue;
+  font-weight: 600;
+  letter-spacing: -1px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  margin-bottom: 0;  /* per rimuovere spazio sotto titolo */  
+}
+
+.sub-title {
+  font-size: 16px;
+  color: #000;
+  text-align: center;
+  margin-top: 0;  /* poco spazio sopra sottotitolo */
+}
+
+.message,
+.signin {
+  color: rgba(88, 87, 87, 0.82);
+  font-size: 14px;
+}
+
+.signin {
+  text-align: center;
+}
+
+.signin a {
+  color: royalblue;
+}
+
+.signin a:hover {
+  text-decoration: underline royalblue;
+}
+
+.flex {
+  display: flex;
+  width: 100%;
+  gap: 40px;
+}
+
+.form label {
+  position: relative;
+}
+
+.form label .input {
+  width: 100%;
+  padding: 14px 10px;
+  outline: none;
+  border: 1px solid rgba(105, 105, 105, 0.4);
+  border-radius: 10px;
+}
+
+.form label .input + span {
+  position: relative;
+  left: 12px;
+  top: 14px;
+  color: grey;
+  font-size: 0.9em;
+  cursor: text;
+  transition: 0.3s ease;
+}
+
+.submit {
+  border: none;
+  outline: none;
+  background-color: royalblue;
+  align-self: center;
+  margin-top: 20px;
+    width: 50%;
+  padding: 10px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit:hover {
+  background-color: rgb(56, 90, 194);
+}
+

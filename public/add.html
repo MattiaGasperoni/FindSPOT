@@ -5,43 +5,87 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Add Parking</title>
 
+  <link rel="stylesheet" href="./css/add.css" />
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
   <a href="index.html" class="btnHome">Home</a>
-  <h1>Register New Parking Spot</h1>
 
-  <form id="parkingForm">
-    <label for="name">Nome Parcheggio:</label>
-    <input type="text" id="name" required />
+<!-- From Uiverse.io by Yaya12085 --> 
+<form class="form">
+    <p class="title">Add New Parking Spot</p>
+    <p class="sub-title">Make parking easier for everyone</p>
+    <label>
+        <input required="" placeholder="Parking Name" type="text" class="input" name="name">
+    </label>    
+    <label>
+        <input required="" placeholder="Select access (Yes - No - Only for Customers)" type="text" class="input" name="access">
+    </label>
+        
+    <label>
+        <input required="" placeholder="Is there a fee for parking? (Yes - No)" type="text" class="input" name="fee">
+    </label>
+    <label>
+        <input required="" placeholder="Type of Surface" type="text" class="input" name="surface">
+    </label>
+    <div class="flex">
+      <label>
+          <input required="" placeholder="Longitude" type="number" class="input" name="lon">
+      </label>
+      <label>
+          <input required="" placeholder="Latitude" type="number" class="input" name="lat">
+      </label>
+    </div>
+    <button class="submit">Add</button>
+</form>
+<!-- End form  --> 
 
-    <label for="lat">Latitudine:</label>
-    <input type="number" id="lat" step="any" required />
+<div id="message"></div>
 
-    <label for="lon">Longitudine:</label>
-    <input type="number" id="lon" step="any" required />
+<script>
+  const form = document.getElementById('addParkingForm');
+  const messageDiv = document.getElementById('message');
 
-    <label for="parkingType">Tipo di Parcheggio:</label>
-    <select id="parkingType" required>
-      <option value="surface">Superficie</option>
-      <option value="garage">Garage</option>
-      <option value="underground">Sotterraneo</option>
-    </select>
+  form.addEventListener('submit', e => {
+    e.preventDefault();
 
-    <label for="access">Accesso:</label>
-    <select id="access" required>
-      <option value="yes">Accesso libero</option>
-      <option value="customers">Solo clienti</option>
-      <option value="private">Privato</option>
-    </select>
+    const formData = new FormData(form);
+    const feature = {
+      type: "Feature",
+      properties: {
+        name: formData.get('name'),
+        access: formData.get('access'),
+        fee: formData.get('fee'),
+        surface: formData.get('surface'),
+        amenity: "parking"
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [
+          parseFloat(formData.get('lon')),
+          parseFloat(formData.get('lat'))
+        ]
+      }
+    };
 
-    <label for="fee">Pagamento:</label>
-    <select id="fee" required>
-      <option value="no">Gratuito</option>
-      <option value="yes">A pagamento</option>
-    </select>
+    fetch('/api/parcheggi', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(feature)
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Errore durante l\'aggiunta');
+      return res.text();
+    })
+    .then(text => {
+      messageDiv.textContent = text;
+      form.reset();
+    })
+    .catch(err => {
+      messageDiv.textContent = err.message;
+    });
+  });
+</script>
 
-    <button type="submit">Genera GeoJSON e Scarica</button>
-  </form>
 </body>
 </html>

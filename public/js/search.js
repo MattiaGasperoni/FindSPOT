@@ -1,9 +1,11 @@
-// search.js – gestisce la barra in index.html
-document.addEventListener("DOMContentLoaded", () => {
-  const input = document.querySelector(".search-input");
+// search.js gestisce la barra in index.html
+document.addEventListener("DOMContentLoaded", () => 
+  {
+  const input  = document.querySelector(".search-input");
   const button = document.querySelector(".search-icon");
 
-  button.addEventListener("click", () => {
+  button.addEventListener("click", () => 
+  {
     const city = input.value.trim();
     if (!city) return;
 
@@ -12,7 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Supporta anche "Invio" nella search bar
-  input.addEventListener("keypress", (e) => {
+  input.addEventListener("keypress", (e) => 
+  {
     if (e.key === "Enter") button.click();
   });
 });
