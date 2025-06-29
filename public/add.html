@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Parking</title>
+
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <a href="index.html" class="btnHome">Home</a>
+  <h1>Register New Parking Spot</h1>
+
+  <form id="parkingForm">
+    <label for="name">Nome Parcheggio:</label>
+    <input type="text" id="name" required />
+
+    <label for="lat">Latitudine:</label>
+    <input type="number" id="lat" step="any" required />
+
+    <label for="lon">Longitudine:</label>
+    <input type="number" id="lon" step="any" required />
+
+    <label for="parkingType">Tipo di Parcheggio:</label>
+    <select id="parkingType" required>
+      <option value="surface">Superficie</option>
+      <option value="garage">Garage</option>
+      <option value="underground">Sotterraneo</option>
+    </select>
+
+    <label for="access">Accesso:</label>
+    <select id="access" required>
+      <option value="yes">Accesso libero</option>
+      <option value="customers">Solo clienti</option>
+      <option value="private">Privato</option>
+    </select>
+
+    <label for="fee">Pagamento:</label>
+    <select id="fee" required>
+      <option value="no">Gratuito</option>
+      <option value="yes">A pagamento</option>
+    </select>
+
+    <button type="submit">Genera GeoJSON e Scarica</button>
+  </form>
+</body>
+</html>

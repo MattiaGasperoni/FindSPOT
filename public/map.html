@@ -9,8 +9,18 @@
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <button class="btnHome" id="btnHome">Home</button>
+  <a href="index.html" class="btnHome">Home</a>
+
   <div id="map"></div>
+
+  <div class="legend-box">
+    <h4>Legend</h4>
+    <div><span class="legend-color-icon" style="background: #2ecc71"></span> Free</div>
+    <div><span class="legend-color-icon" style="background: #f39c12"></span> Customers Only</div>
+    <div><span class="legend-color-icon" style="background: #e74c3c"></span> Paid or Unknown</div>
+  </div>
+
+
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="./js/map.js"></script>
 </body>
