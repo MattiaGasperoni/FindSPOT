@@ -1,21 +1,23 @@
-body {
+html, body {
   margin: 0;
   padding: 0;
-
-  font-family: 'Open Sans', sans-serif;
-
-  background: #ffffff;
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  padding-top: 80px; /* spazio dall'alto */
-  text-align: center;
+  height: 100%;
 }
 
-/* Stile del logo e della tagline */
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* cambia da center a stretch */
+  min-height: 100vh;
+  text-align: center;
+  align-items: center;
+}
+
+/* Logo e Tagline */
 .logo {
+  margin: 100px 0;
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 10px;
@@ -35,26 +37,19 @@ body {
 
 .tagline {
   font-size: 1.25rem;
-  color: #000000; /* nero */
+  color: #000000;
   font-weight: 400;
   max-width: 500px;
 }
 
-/* Search bar + buttons */
-.search-area {
-  margin: 80px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
+/* Barra di ricerca */
 .search-bar {
-  display: flex;
-  align-items: center;
-  width: 400px;
+  margin: 100px 0;           /* Spazio tra la tagline e la barra di ricerca */
+  display: flex; 
+  width: 400px;              /* Larghezza della barra di ricerca */
   background-color: #fff;
-  border: 1.5px solid #ccc;
-  border-radius: 30px;
+  border: 2px solid #ccc;  /* Spessore bordo - Colore del bordo */
+  border-radius: 50px;  
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
@@ -68,7 +63,7 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-.search-input::placeholder {
+.search-input::placeholder { 
   color: #777;
 }
 
@@ -90,16 +85,15 @@ body {
 .search-icon svg {
   width: 24px;
   height: 24px;
-  fill: #000000; /* icona nera classica */
+  fill: #000000;
 }
 
-
-/* Bottoni personalizzati */
+/* Bottoni con icone - Home Page*/
 .wrapper {
   display: inline-flex;
   list-style: none;
   height: 120px;
-  padding-top: 100px;                 /* Spazio tra la search bar e i bottoni */  
+  padding-top: 10px;                 /* Spazio tra la search bar e i bottoni */  
   font-family: "Poppins", sans-serif;
   justify-content: center;
   gap: 25px;                          /*Spazio tra i bottoni*/
@@ -184,7 +178,7 @@ body {
 .wrapper .add:hover,
 .wrapper .add:hover .tooltip,
 .wrapper .add:hover .tooltip::before {
-  background: #4caf50; /* verde */
+  background: #007A33; /* verde */
   color: #fff;
 }
 
@@ -200,4 +194,33 @@ body {
 .wrapper .edit:hover .tooltip::before {
   background: #2196f3; /* blu */
   color: #fff;
+}
+
+
+/* Bottone Home */
+.btnHome {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background-color: #3478f6;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 16px 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 120px;
+}
+
+.btnHome:hover {
+  background-color: #255ec6;
+}
+
+/* Mappa */
+#map {
+  flex: 1;
+  width: 100%;
+  height: 100%;
 }
