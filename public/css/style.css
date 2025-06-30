@@ -279,7 +279,7 @@ body {
   top: 10px;
   left: 10px;
   z-index: 1000;
-  background-color: #007A33;
+  background-color: #ff9800;  /* arancione */
   color: white;
   border: none;
   border-radius: 30px;
@@ -292,7 +292,7 @@ body {
 }
 
 .mapBtnHome:hover {
-  background-color: #005B27;
+  background-color: #e68900; /* arancione scuro */
 }
 
 /* Legenda Mappa*/
