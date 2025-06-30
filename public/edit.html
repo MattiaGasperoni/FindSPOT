@@ -7,19 +7,19 @@
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
   <link rel="stylesheet" href="./css/style.css" />
-  <style>
-    #map { width: 80%; height: 400px; margin: 20px auto; border: 2px solid #333; border-radius: 10px; }
-    body { font-family: sans-serif; text-align: center; }
-    form { max-width: 400px; margin: 10px auto; text-align: left; }
-    label { display: block; margin-top: 10px; }
-    input, select { width: 100%; padding: 5px; }
-    button { margin-top: 15px; padding: 8px 15px; }
-  </style>
+  <link rel="stylesheet" href="./css/edit.css" />
 </head>
 <body>
-  <a href="index.html" class="mapBtnHome">Home</a>
+  <a href="index.html" class="editBtnHome">Home</a>
   <h2>Seleziona un parcheggio per modificarlo</h2>
   <div id="map"></div>
+
+  <div class="legend-box">
+    <h4>Legenda</h4>
+    <div><span class="legend-color-icon" style="background: #2ecc71"></span> Gratuito</div>
+    <div><span class="legend-color-icon" style="background: #f39c12"></span> Solo clienti</div>
+    <div><span class="legend-color-icon" style="background: #e74c3c"></span> A pagamento / sconosciuto</div>
+  </div>
 
   <form id="editForm" style="display:none;">
     <h3>Modifica Parcheggio</h3>
