@@ -9,57 +9,63 @@
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <!-- Riquadro grafico -->
-  <div class="background-box">
-    <!-- Logo e Tagline -->
-    <div class="logo">
-      <span class="find">Find</span><span class="spot">SPOT</span>
-    </div>
-    <div class="tagline">The easiest way to find parking in Marche</div>
 
-    <!-- Barra di ricerca -->
-    <div class="search-bar">
-      <input type="text" placeholder="Where to park?" class="search-input" />
-      <button class="search-icon" aria-label="Cerca">
-        <svg fill="#5e5a5a" height="200px" width="200px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-53.72 -53.72 595.84 595.84" xml:space="preserve" stroke="#5e5a5a" stroke-width="7.325999999999999"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M0,203.25c0,112.1,91.2,203.2,203.2,203.2c51.6,0,98.8-19.4,134.7-51.2l129.5,129.5c2.4,2.4,5.5,3.6,8.7,3.6 s6.3-1.2,8.7-3.6c4.8-4.8,4.8-12.5,0-17.3l-129.6-129.5c31.8-35.9,51.2-83,51.2-134.7c0-112.1-91.2-203.2-203.2-203.2 S0,91.15,0,203.25z M381.9,203.25c0,98.5-80.2,178.7-178.7,178.7s-178.7-80.2-178.7-178.7s80.2-178.7,178.7-178.7 S381.9,104.65,381.9,203.25z"></path> </g> </g> </g></svg>
-      </button>
-    </div>
+  <!-- Immagine di sfondo -->
+  <div class="background-image">
+    
+    <!-- Riquadro grafico -->
+    <div class="background-box">
 
-    <!-- Bottoni con icone -->
-    <ul class="wrapper">
-      <!-- Bottone per visualizzare la mappa dei parcheggi -->
-      <li class="icon map">
-        <a href="map.html">
-          <span class="tooltip">View Map</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-map" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M15.817.113a.5.5 0 0 1 .183.387v14.8a.5.5 0 0 1-.683.474l-4.948-1.766-4.816 1.723a.5.5 0 0 1-.314 0L.183 13.71A.5.5 0 0 1 0 13.323V.5a.5.5 0 0 1 .683-.474L5.632 1.79 10.45.066a.5.5 0 0 1 .314 0l5.053 1.776zM1 1.105v11.99l4 1.429V2.534L1 1.105zm5 1.429v11.99l4-1.429V1.105L6 2.534zm9 11.36V2.474l-4-1.41v11.99l4 1.41z"/>
-          </svg>
-        </a>
-      </li>
-      <!-- Bottone per aggiungere un parcheggio -->
-      <li class="icon add">
-        <a href="add.html">
-          <span class="tooltip">Add a Parking</span>
-          <span class="symbol">+</span>
-        </a>
-      </li>
-      <!-- Bottone per rimuovere un parcheggio -->
-      <li class="icon remove">
-        <a href="remove.html">
-          <span class="tooltip">Remove Parking</span>
-          <span class="symbol">−</span>
-        </a>
-      </li>
-      <!-- Bottone per modificare un parcheggio -->
-      <li class="icon edit">
-        <a href="edit.html">
-          <span class="tooltip">Edit Parking</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-            <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-9.5 9.5a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l9.5-9.5zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 3 10.707V13h2.293l7.5-7.5z"/>
-          </svg>
-        </a>
-      </li>
-    </ul>
+      <!-- Logo e Tagline -->
+      <div class="logo">
+        <span class="find">Find</span><span class="spot">SPOT</span>
+      </div>
+      <div class="tagline">The easiest way to find parking in Marche</div>
+
+      <!-- Barra di ricerca -->
+      <div class="search-bar">
+        <input type="text" placeholder="Where to park?" class="search-input" />
+        <button class="search-icon" aria-label="Cerca">
+          <svg fill="#5e5a5a" height="200px" width="200px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-53.72 -53.72 595.84 595.84" xml:space="preserve" stroke="#5e5a5a" stroke-width="7.325999999999999"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M0,203.25c0,112.1,91.2,203.2,203.2,203.2c51.6,0,98.8-19.4,134.7-51.2l129.5,129.5c2.4,2.4,5.5,3.6,8.7,3.6 s6.3-1.2,8.7-3.6c4.8-4.8,4.8-12.5,0-17.3l-129.6-129.5c31.8-35.9,51.2-83,51.2-134.7c0-112.1-91.2-203.2-203.2-203.2 S0,91.15,0,203.25z M381.9,203.25c0,98.5-80.2,178.7-178.7,178.7s-178.7-80.2-178.7-178.7s80.2-178.7,178.7-178.7 S381.9,104.65,381.9,203.25z"></path> </g> </g> </g></svg>
+        </button>
+      </div>
+
+      <!-- Bottoni con icone -->
+      <ul class="wrapper">
+        <!-- Bottone per visualizzare la mappa dei parcheggi -->
+        <li class="icon map">
+          <a href="map.html">
+            <span class="tooltip">View Map</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-map" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M15.817.113a.5.5 0 0 1 .183.387v14.8a.5.5 0 0 1-.683.474l-4.948-1.766-4.816 1.723a.5.5 0 0 1-.314 0L.183 13.71A.5.5 0 0 1 0 13.323V.5a.5.5 0 0 1 .683-.474L5.632 1.79 10.45.066a.5.5 0 0 1 .314 0l5.053 1.776zM1 1.105v11.99l4 1.429V2.534L1 1.105zm5 1.429v11.99l4-1.429V1.105L6 2.534zm9 11.36V2.474l-4-1.41v11.99l4 1.41z"/>
+            </svg>
+          </a>
+        </li>
+        <!-- Bottone per aggiungere un parcheggio -->
+        <li class="icon add">
+          <a href="add.html">
+            <span class="tooltip">Add a Parking</span>
+            <span class="symbol">+</span>
+          </a>
+        </li>
+        <!-- Bottone per rimuovere un parcheggio -->
+        <li class="icon remove">
+          <a href="remove.html">
+            <span class="tooltip">Remove Parking</span>
+            <span class="symbol">−</span>
+          </a>
+        </li>
+        <!-- Bottone per modificare un parcheggio -->
+        <li class="icon edit">
+          <a href="edit.html">
+            <span class="tooltip">Edit Parking</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+              <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-9.5 9.5a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l9.5-9.5zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 3 10.707V13h2.293l7.5-7.5z"/>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
   <script src="./js/search.js"></script>
 </body>
