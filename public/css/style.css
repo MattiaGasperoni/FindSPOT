@@ -254,6 +254,28 @@ body {
   height: 100%;
 }
 
+/* Bottone Home */
+.mapBtnHome {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background-color: #007A33;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 16px 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 80px;
+  text-decoration: none; /* per rimuovere la sottolineatura se usi <a> */
+}
+
+.mapBtnHome:hover {
+  background-color: #005B27;
+}
+
 /* Legenda Mappa*/
 .legend-box {
   position: absolute;

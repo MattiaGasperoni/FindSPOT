@@ -1,107 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add Parking</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Parking</title>
 
-  <link rel="stylesheet" href="./css/add.css" />
-  <link rel="stylesheet" href="./css/style.css" />
-</head>
-<body>
-  <a href="index.html" class="btnHome">Home</a>
+    <link rel="stylesheet" href="./css/add.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <!-- Bottone per tornare alla Home -->
+    <a href="index.html" class="btnHome">Home</a>
 
+    <!-- Immagine di sfondo -->
+    <div class="background-image-add">
 
-<!-- Immagine di sfondo -->
-<div class="background-image-add">
-
-<form id="addParkingForm" class="form">
-    <p class="title">ADD NEW PARKING SPOT</p>
-    <p class="sub-title">Make parking easier for everyone</p>
-    <label>
-        <input required="" placeholder="Parking Name" type="text" class="input" name="name">
-    </label>    
-    <label>
-        <input required="" placeholder="Select access (Yes - No - Only for Customers)" type="text" class="input" name="access">
-    </label>
-        
-    <label>
-        <input required="" placeholder="Is there a fee for parking? (Yes - No)" type="text" class="input" name="fee">
-    </label>
-    <label>
-        <input required="" placeholder="Type of Surface" type="text" class="input" name="surface">
-    </label>
-    <div class="flex">
-      <label>
-          <input required="" placeholder="Longitude" type="text" pattern="^-?\d+([.,]\d+)?$" class="input" name="lon">
-      </label>
-      <label>
-          <input required="" placeholder="Latitude" type="text" pattern="^-?\d+([.,]\d+)?$" class="input" name="lat">
-      </label>
+      <!-- Form per aggiungere un parcheggio-->
+      <form id="addParkingForm" class="form">
+        <p class="title">ADD NEW PARKING SPOT</p>
+        <p class="sub-title">Make parking easier for everyone</p>
+        <label>
+            <input required="" placeholder="Parking Name" type="text" class="input" name="name">
+        </label>    
+        <label>
+            <input required="" placeholder="Select access (Yes - No - Only for Customers)" type="text" class="input" name="access">
+        </label>
+            
+        <label>
+            <input required="" placeholder="Is there a fee for parking? (Yes - No)" type="text" class="input" name="fee">
+        </label>
+        <label>
+            <input required="" placeholder="Type of Surface" type="text" class="input" name="surface">
+        </label>
+        <div class="flex">
+          <label>
+              <input required="" placeholder="Longitude" type="text" pattern="^-?\d+([.,]\d+)?$" class="input" name="lon">
+          </label>
+          <label>
+              <input required="" placeholder="Latitude" type="text" pattern="^-?\d+([.,]\d+)?$" class="input" name="lat">
+          </label>
+        </div>
+        <button class="submit">Add</button>
+      </form>
     </div>
-    <button class="submit">Add</button>
-  </div>
-</form>
-<!-- End form  --> 
 
-<div id="message"></div>
+    <!-- Messaggi di errore o di successo -->
+    <div id="message"></div>
 
-<script>
-  const form = document.getElementById('addParkingForm');
-  const messageDiv = document.getElementById('message');
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    let lat = formData.get('lat').replace(',', '.');
-    let lon = formData.get('lon').replace(',', '.');
-    lat = parseFloat(lat);
-    lon = parseFloat(lon);
-
-    if (isNaN(lat) || isNaN(lon)) {
-      messageDiv.textContent = "Inserisci coordinate valide (numeri).";
-      return;
-    }
-    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
-      messageDiv.textContent = "Coordinate fuori dai limiti (lat: -90÷90, lon: -180÷180).";
-      return;
-    }
-
-    const feature = {
-      type: "Feature",
-      properties: {
-        name: formData.get('name'),
-        access: formData.get('access'),
-        fee: formData.get('fee'),
-        surface: formData.get('surface'),
-        amenity: "parking"
-      },
-      geometry: {
-        type: "Point",
-        coordinates: [lat, lon]
-      }
-    };
-
-    fetch('/api/parcheggi', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(feature)
-    })
-    .then(res => {
-      if (!res.ok) throw new Error('Errore durante l\'aggiunta');
-      return res.text();
-    })
-    .then(text => {
-      messageDiv.textContent = text;
-      form.reset();
-    })
-    .catch(err => {
-      messageDiv.textContent = err.message;
-    });
-  });
-</script>
-
-
-</body>
+    <script src="./js/add.js"></script>
+  </body>
 </html>
