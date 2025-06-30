@@ -47,7 +47,7 @@ body {
 
 
 .title {
-  font-size: 26px;
+  font-size: 28px;
   color: #007A33;
   font-weight: 700;
   letter-spacing: -1px;
@@ -61,6 +61,7 @@ body {
 
 .sub-title {
   font-size: 16px;
+  font-weight: bold;
   color: #000;
   align-items: center;
   justify-content: center;
