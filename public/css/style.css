@@ -225,7 +225,7 @@ body {
 }
 
 
-/* Bottone Home */
+/* Bottone Home 
 .btnHome {
   position: absolute;
   top: 10px;
@@ -241,11 +241,11 @@ body {
   transition: background 0.3s;
   width: 80px;
   text-decoration: none; /* per rimuovere la sottolineatura se usi <a> */
-}
+/*}
 
 .btnHome:hover {
   background-color: #255ec6;
-}
+}*/
 
 /* Mappa */
 #map {

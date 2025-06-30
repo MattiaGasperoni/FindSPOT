@@ -1,14 +1,50 @@
-.form {
-  margin-top: 100px;
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #ffffff;
   display: flex;
   flex-direction: column;
+  align-items: stretch; /* cambia da center a stretch */
+  min-height: 100vh;
+  text-align: center;
+  align-items: center;
+}
+
+.background-image-add {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../img/background_add.jpg');
+  background-size: cover;
+  background-position: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.form {
+  /*margin-top: 200px;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 15px;
   max-width: 350px;
-  background-color: rgba(136, 133, 136, 0.3);
-  padding: 40px;
-  border-radius: 40px;
-  position: relative;
+  background-color: rgba(193, 193, 193, 0.8);
+  padding: 30px;
+  border-radius: 30px;
+  position: absolute;
+  top: 100;
+  left: 100;
+  width: 100%;
 }
+
 
 .title {
   font-size: 26px;
@@ -30,6 +66,28 @@
   justify-content: center;
   text-align: center;
   margin-top: 0;  /* poco spazio sopra sottotitolo */
+}
+
+/* Bottone Home */
+.btnHome {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background-color: #007A33;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 16px 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 80px;
+  text-decoration: none; /* per rimuovere la sottolineatura se usi <a> */
+}
+
+.btnHome:hover {
+  background-color: #005B27;
 }
 
 .message,
@@ -99,6 +157,6 @@
 }
 
 .submit:hover {
-  background-color: rgb(56, 90, 194);
+  background-color: #005B27;
 }
 
