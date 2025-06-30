@@ -3,12 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Remove Parking</title>
+  <title>Rimuovi Parcheggio</title>
 
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
   <link rel="stylesheet" href="./css/style.css" />
+
+  <style>
+    #map {
+      width: 80%;
+      height: 500px;
+      margin: 20px auto;
+      border: 2px solid #333;
+      border-radius: 10px;
+    }
+
+    body {
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 20px;
+    }
+
+    .legend-box {
+      width: fit-content;
+      margin: 20px auto;
+      padding: 10px;
+      background: #f4f4f4;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .legend-color-icon {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 5px;
+      vertical-align: middle;
+      border-radius: 50%;
+    }
+  </style>
 </head>
 <body>
+
   <a href="index.html" class="btnHome">Home</a>
-  <h1>Remove Parking</h1>
+  <h2>Seleziona un parcheggio da eliminare</h2>
+
+  <div id="map"></div>
+
+  <div class="legend-box">
+    <h4>Legenda</h4>
+    <div><span class="legend-color-icon" style="background: #2ecc71"></span> Gratuito</div>
+    <div><span class="legend-color-icon" style="background: #f39c12"></span> Solo clienti</div>
+    <div><span class="legend-color-icon" style="background: #e74c3c"></span> A pagamento / sconosciuto</div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script>
+    // Forza modalità eliminazione
+    const script = document.createElement('script');
+    script.src = './js/map.js';
+    document.body.appendChild(script);
+
+    // Appende ?mode=delete all'URL (solo per farlo leggere nel JS)
+    if (!window.location.search.includes('mode=delete')) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('mode', 'delete');
+      window.history.replaceState({}, '', url.toString());
+    }
+  </script>
 </body>
 </html>

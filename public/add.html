@@ -12,7 +12,7 @@
   <a href="index.html" class="btnHome">Home</a>
 
 <!-- From Uiverse.io by Yaya12085 --> 
-<form class="form">
+<form id="addParkingForm" class="form">
     <p class="title">Add New Parking Spot</p>
     <p class="sub-title">Make parking easier for everyone</p>
     <label>
@@ -30,10 +30,10 @@
     </label>
     <div class="flex">
       <label>
-          <input required="" placeholder="Longitude" type="number" class="input" name="lon">
+          <input required="" placeholder="Longitude" type="text" pattern="^-?\d+([.,]\d+)?$" class="input" name="lon">
       </label>
       <label>
-          <input required="" placeholder="Latitude" type="number" class="input" name="lat">
+          <input required="" placeholder="Latitude" type="text" pattern="^-?\d+([.,]\d+)?$" class="input" name="lat">
       </label>
     </div>
     <button class="submit">Add</button>
@@ -50,6 +50,20 @@
     e.preventDefault();
 
     const formData = new FormData(form);
+    let lat = formData.get('lat').replace(',', '.');
+    let lon = formData.get('lon').replace(',', '.');
+    lat = parseFloat(lat);
+    lon = parseFloat(lon);
+
+    if (isNaN(lat) || isNaN(lon)) {
+      messageDiv.textContent = "Inserisci coordinate valide (numeri).";
+      return;
+    }
+    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+      messageDiv.textContent = "Coordinate fuori dai limiti (lat: -90÷90, lon: -180÷180).";
+      return;
+    }
+
     const feature = {
       type: "Feature",
       properties: {
@@ -61,10 +75,7 @@
       },
       geometry: {
         type: "Point",
-        coordinates: [
-          parseFloat(formData.get('lon')),
-          parseFloat(formData.get('lat'))
-        ]
+        coordinates: [lat, lon]
       }
     };
 
@@ -86,6 +97,7 @@
     });
   });
 </script>
+
 
 </body>
 </html>

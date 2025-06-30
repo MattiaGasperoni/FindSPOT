@@ -17,14 +17,28 @@ app.get('/api/parcheggi', (req, res) => {
   res.sendFile(DATA_FILE);
 });
 
+
+// Endpoint per aggiungere un nuovo parcheggio
 app.post('/api/parcheggi', (req, res) => {
   const newFeature = req.body;
 
-  // Validazione base
-  if (!newFeature || !newFeature.type || !newFeature.geometry) {
-    return res.status(400).send('Feature non valida');
+  if (!newFeature.properties) newFeature.properties = {};
+
+  if (!newFeature.geometry || !newFeature.geometry.coordinates) {
+    return res.status(400).send('Feature con coordinate mancanti');
   }
 
+  // Prendi le coordinate
+  const coords = newFeature.geometry.coordinates;
+
+  // Arrotonda a 6 decimali
+  const lon = Number(coords[0]).toFixed(6);
+  const lat = Number(coords[1]).toFixed(6);
+
+  // Crea l'id concatenando lon e lat
+  newFeature.properties['@id'] = `${lon}_${lat}`;
+
+  // Leggi file geojson
   fs.readFile(DATA_FILE, 'utf8', (err, data) => {
     if (err) return res.status(500).send('Errore nel leggere il file');
 
@@ -34,16 +48,19 @@ app.post('/api/parcheggi', (req, res) => {
     } catch (e) {
       return res.status(500).send('Errore nel parsing del file GeoJSON');
     }
+    console.log('Sto aggiungendo un parcheggio con id:', newFeature.properties['@id']); 
 
     geojson.features.push(newFeature);
 
     fs.writeFile(DATA_FILE, JSON.stringify(geojson, null, 2), (err) => {
       if (err) return res.status(500).send('Errore nel salvare il file');
 
-      res.status(201).send('Parcheggio aggiunto con successo');
+      // Tutto ok: ritorna il nuovo id per conferma
+      res.status(201).json({ message: 'Parcheggio aggiunto con successo', id: newFeature.properties['@id'] });
     });
   });
 });
+
 
 
 /*Rimozione dei parcheggi*/
