@@ -11,20 +11,23 @@
 }
 
 .title {
-  font-size: 28px;
-  color: royalblue;
-  font-weight: 600;
+  font-size: 26px;
+  color: #007A33;
+  font-weight: 700;
   letter-spacing: -1px;
   position: relative;
   display: flex;
   align-items: center;
-  padding-left: 30px;
+  justify-content: center;
+  text-align: center;
   margin-bottom: 0;  /* per rimuovere spazio sotto titolo */  
 }
 
 .sub-title {
   font-size: 16px;
   color: #000;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   margin-top: 0;  /* poco spazio sopra sottotitolo */
 }
@@ -59,7 +62,12 @@
 
 .form label .input {
   width: 100%;
-  padding: 14px 10px;
+  max-width: 350px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
   outline: none;
   border: 1px solid rgba(105, 105, 105, 0.4);
   border-radius: 10px;
@@ -78,10 +86,10 @@
 .submit {
   border: none;
   outline: none;
-  background-color: royalblue;
+  background-color: #007A33;
   align-self: center;
   margin-top: 20px;
-    width: 50%;
+  width: 50%;
   padding: 10px;
   border-radius: 30px;
   color: #fff;
