@@ -119,7 +119,7 @@ body {
   display: flex;
   list-style: none;
   height: 110px;
-  padding-top: 20px;                  /* Spazio tra la search bar e i bottoni */  
+  padding-top: 10px;                  /* Spazio tra la search bar e i bottoni */  
   padding-left: 10px;                 /* Spazio tra il bordo sinistro e i bottoni */
   font-family: "Poppins", sans-serif;
   justify-content: center;            /* Allinea i bottoni al centro */
