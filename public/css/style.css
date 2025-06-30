@@ -80,6 +80,46 @@ body {
   overflow: hidden;
 }
 
+.search-filter {
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-filter:hover svg {
+  transform: scale(1.1);
+}
+
+.search-filter svg {
+  width: 24px;
+  height: 24px;
+  fill: #000000;
+}
+
+
+.filter-choices {
+  display: none;
+  position: absolute;
+  width: 350px; /* Larghezza del menu a tendina */
+  top: 300px; /* Posiziona sotto la barra di ricerca */
+  left: 0; /* Allinea a destra */
+  border-radius: 0px;
+  background: white;
+  padding: 1em;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 9999;             /* Sta sopra tutto */
+}
+
+.filter-choices.visible {
+  display: block;
+}
+
 .search-input {
   flex: 1;
   padding: 12px 30px;
@@ -225,27 +265,6 @@ body {
 }
 
 
-/* Bottone Home 
-.btnHome {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-  background-color: #3478f6;
-  color: white;
-  border: none;
-  border-radius: 30px;
-  padding: 16px 10px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
-  width: 80px;
-  text-decoration: none; /* per rimuovere la sottolineatura se usi <a> */
-/*}
-
-.btnHome:hover {
-  background-color: #255ec6;
-}*/
 
 /* Mappa */
 #map {

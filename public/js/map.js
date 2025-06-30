@@ -29,6 +29,7 @@ class ParkingMap
     this.map          = this.initializeMap();
     this.parkingLayer = null;
     this.mode         = this.getMode();
+    this.filters      = this.getFilters(); 
     this.loadParkingData();
     this.setCityView();
   }
@@ -71,6 +72,22 @@ class ParkingMap
    * @param {Object} feature - Il feature GeoJSON del parcheggio.
    * @returns {Object} Lo stile da applicare al poligono.
    */
+
+  /** Ottiene i filtri dalla query string dell'URL.
+   * @returns {Object} Un oggetto contenente i filtri applicati.
+   */
+  getFilters()
+  {
+    const urlParams = new URLSearchParams(window.location.search);
+    return {
+      access:  urlParams.get('access'),
+      surface: urlParams.get('surface'),
+      free:    urlParams.get('free') === 'yes',
+      paid:    urlParams.get('paid') === 'yes'
+    };
+  }
+
+
   styleFeature(feature) 
   {
     const props = feature.properties;
@@ -190,19 +207,36 @@ class ParkingMap
   }
 
   /** Carica i dati dei parcheggi dal server e aggiorna il layer della mappa. */
-  async loadParkingData() 
+async loadParkingData() 
+{
+  try 
   {
-    try 
-    {
-      const response = await fetch('/api/parcheggi');
-      const data = await response.json();
-      
-      this.updateParkingLayer(data);
-    } catch (error) 
-    {
-      console.error('Error loading parkings:', error);
+    const response = await fetch('/api/parcheggi');
+    const data = await response.json();
+
+    let filteredData = data;
+
+    if (this.mode === 'filter') {
+      filteredData.features = data.features.filter((f) => {
+        const p = f.properties;
+
+        if (this.filters.access && p.access !== this.filters.access) return false;
+        if (this.filters.surface && p.surface !== this.filters.surface) return false;
+        if (this.filters.free && p.fee !== 'no') return false;
+        if (this.filters.paid && p.fee !== 'yes') return false;
+
+        return true;
+      });
     }
+
+    this.updateParkingLayer(filteredData);
+  } 
+  catch (error) 
+  {
+    console.error('Error loading parkings:', error);
   }
+}
+
 
   /**
    * Aggiorna il layer dei parcheggi sulla mappa.
