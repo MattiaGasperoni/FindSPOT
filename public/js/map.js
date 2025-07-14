@@ -6,12 +6,14 @@ const CONFIG =
   DEFAULT_CITY: 'Urbino',
   COLORS: 
   {
+    // Colori per i poligoni dei parcheggi
     FREE:      '#2ecc71',  // Verde per parcheggi gratuiti
     CUSTOMERS: '#f39c12',  // Arancione per solo clienti
     PAID:      '#e74c3c'   // Rosso per parcheggi a pagamento
   },
   ICONS: 
   {
+    // Colori per le icone dei parcheggi
     GREEN:  'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
     YELLOW: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
     RED:    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
@@ -145,20 +147,108 @@ class ParkingMap
    * @param {Object} properties - Le proprietà del parcheggio.
    * @returns {string} Il contenuto HTML del popup.
    */
+  // Funzione migliorata per il popup - da sostituire nel file map.js
   createPopupContent(properties) 
   {
-    const name = properties.name || 'Name not specified';
-
-    const access  = properties.access || 'n/a';
-    const surface = properties.surface || 'n/a';
-    const isFree  = properties.fee === 'no' ? 'Yes' : 'No / Not specified';
-
-    return `
-      <strong>${name}</strong><br>
-      Access: ${access}<br>
-      Surface: ${surface}<br>
-      Free: ${isFree}
-    `;
+      const name    = properties.name || 'Nome non specificato';
+      const access  = properties.access || 'n/a';
+      const surface = properties.surface || 'n/a';
+      const isFree  = properties.fee === 'no';
+      
+      // Mappatura icone per diversi tipi di accesso
+      const accessIcons = 
+      {
+          'yes': '🚗',
+          'public': '🚗',
+          'private': '🔒',
+          'customers': '🛍️',
+          'permissive': '✅',
+          'destination': '🎯',
+          'no': '⛔'
+      };
+      
+      // Mappatura icone per diversi tipi di superficie
+      const surfaceIcons = {
+          'paved': '🏗️',
+          'asphalt': '🛣️',
+          'concrete': '🏢',
+          'gravel': '🪨',
+          'grass': '🌱',
+          'dirt': '🌍',
+          'paving_stones': '🧱'
+      };
+      
+      // Mappatura etichette italiane per accesso
+      const accessLabels = 
+      {
+          'yes': 'Pubblico',
+          'public': 'Pubblico',
+          'private': 'Privato',
+          'customers': 'Solo clienti',
+          'permissive': 'Permissivo',
+          'destination': 'Destinazione',
+          'no': 'Vietato',
+          'n/a': 'Non specificato'
+      };
+      
+      // Mappatura etichette italiane per superficie
+      const surfaceLabels = 
+      {
+          'paved': 'Pavimentata',
+          'asphalt': 'Asfaltata',
+          'concrete': 'Calcestruzzo',
+          'gravel': 'Ghiaia',
+          'grass': 'Erba',
+          'dirt': 'Terra',
+          'paving_stones': 'Lastricato',
+          'n/a': 'Non specificato'
+      };
+      
+      const accessIcon = accessIcons[access.toLowerCase()] || '🚗';
+      const surfaceIcon = surfaceIcons[surface.toLowerCase()] || '🏗️';
+      const feeIcon = isFree ? '💰' : '💳';
+      const feeClass = isFree ? 'free' : 'paid';
+      const feeText = isFree ? 'Gratuito' : 'A pagamento';
+      
+      const accessLabel = accessLabels[access.toLowerCase()] || access;
+      const surfaceLabel = surfaceLabels[surface.toLowerCase()] || surface;
+      
+      return `
+          <div class="parking-popup">
+              <div class="parking-title">
+                  <div class="parking-icon">P</div>
+                  ${name}
+              </div>
+              
+              <div class="parking-details">
+                  <div class="detail-row">
+                      <div class="detail-icon access">${accessIcon}</div>
+                      <div class="detail-content">
+                          <div class="detail-label">Accesso</div>
+                          <div class="detail-value">${accessLabel}</div>
+                      </div>
+                  </div>
+                  
+                  <div class="detail-row">
+                      <div class="detail-icon surface">${surfaceIcon}</div>
+                      <div class="detail-content">
+                          <div class="detail-label">Superficie</div>
+                          <div class="detail-value">${surfaceLabel}</div>
+                      </div>
+                  </div>
+                  
+                  <div class="detail-row">
+                      <div class="detail-icon fee ${feeClass}">${feeIcon}</div>
+                      <div class="detail-content">
+                          <div class="detail-label">Tariffa</div>
+                          <div class="detail-value">
+                              <span class="badge ${feeClass}">${feeText}</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      `;
   }
 
   /** Se ci troviamo in modalità 'delete', chiede conferma prima di eliminare il parcheggio.
