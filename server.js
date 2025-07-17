@@ -90,23 +90,48 @@ function validateParkingFeature(feature) {
   return { isValid: true };
 }
 
+/** * Crea un errore con messaggio e status
+ * @param {string} message - Messaggio di errore
+ * @param {number} [status=500] - Codice di stato HTTP
+ * @returns {Error} Errore con messaggio e status
+ */
+function creaErrore(message, status = 500) {
+  const err = new Error(message);
+  err.status = status;
+  return err;
+}
+
 // =============================================
 // ENDPOINTS API
 // =============================================
 
 /**
  * GET /api/parcheggi
- * Restituisce tutti i parcheggi dal file GeoJSON
+ * Restituisce i parcheggi dal file GeoJSON 
  */
-app.get('/api/parcheggi', (req, res) => {
-  // Invia direttamente il file GeoJSON
-  res.sendFile(DATA_FILE, (err) => {
-    if (err) {
-      console.error('Errore nell\'invio del file GeoJSON:', err);
-      res.status(500).json({ 
-        error: 'Errore nel caricamento dei parcheggi' 
+app.get('/api/parcheggi', (req, res, next) => 
+{
+  readGeoJSONFile((err, geojson) => 
+  {
+    if (err) return next(creaErrore('Errore caricamento dati', 500));
+
+    const filters = req.query;
+
+    const filtered = geojson.features.filter(feature => 
+    {
+      // Se non ci sono filtri, restituisce tutte le feature
+      return Object.entries(filters).every(([key, val]) => 
+      {
+        const props = feature.properties;
+
+        return (
+          Object.prototype.hasOwnProperty.call(props, key) &&
+          String(props[key]).toLowerCase().trim() === String(val).toLowerCase().trim()
+        );
       });
-    }
+    });
+
+    res.json({ type: geojson.type, features: filtered });
   });
 });
 
@@ -114,7 +139,8 @@ app.get('/api/parcheggi', (req, res) => {
  * POST /api/parcheggi
  * Aggiunge un nuovo parcheggio al file GeoJSON
  */
-app.post('/api/parcheggi', (req, res) => {
+app.post('/api/parcheggi', (req, res) => 
+{
   const newFeature = req.body;
 
   // Inizializza le proprietà se non esistono
@@ -124,8 +150,9 @@ app.post('/api/parcheggi', (req, res) => {
 
   // Valida la feature
   const validation = validateParkingFeature(newFeature);
-  if (!validation.isValid) {
-    return res.status(400).json({ error: validation.error });
+  if (!validation.isValid) 
+  {
+    return next(creaErrore(validation.error, 400));
   }
 
   // Genera un ID univoco basato sulle coordinate
@@ -133,12 +160,12 @@ app.post('/api/parcheggi', (req, res) => {
   newFeature.properties['@id'] = parkingId;
 
   // Legge il file GeoJSON esistente
-  readGeoJSONFile((err, geojson) => {
-    if (err) {
+  readGeoJSONFile((err, geojson) => 
+  {
+    if (err) 
+    {
       console.error('Errore nella lettura del file GeoJSON:', err);
-      return res.status(500).json({ 
-        error: 'Errore nel leggere i dati esistenti' 
-      });
+      return next(creaErrore('Errore nel leggere i dati esistenti', 500));
     }
 
     console.log('Aggiungendo parcheggio con ID:', parkingId);
@@ -147,16 +174,17 @@ app.post('/api/parcheggi', (req, res) => {
     geojson.features.push(newFeature);
 
     // Salva il file aggiornato
-    writeGeoJSONFile(geojson, (writeErr) => {
-      if (writeErr) {
+    writeGeoJSONFile(geojson, (writeErr) => 
+    {
+      if (writeErr) 
+      {
         console.error('Errore nella scrittura del file GeoJSON:', writeErr);
-        return res.status(500).json({ 
-          error: 'Errore nel salvare il nuovo parcheggio' 
-        });
+        return next(creaErrore('Errore nel salvare il nuovo parcheggio', 500));
       }
 
       // Successo: restituisce conferma con l'ID generato
-      res.status(201).json({ 
+      res.status(201).json(
+      { 
         message: 'Parcheggio aggiunto con successo', 
         id: parkingId 
       });
@@ -168,33 +196,35 @@ app.post('/api/parcheggi', (req, res) => {
  * PUT /api/parcheggi/:id
  * Aggiorna le proprietà di un parcheggio esistente
  */
-app.put('/api/parcheggi/:id', (req, res) => {
+app.put('/api/parcheggi/:id', (req, res) => 
+{
   const idToUpdate = req.params.id;
   const updatedProps = req.body;
 
   // Legge il file GeoJSON
-  readGeoJSONFile((err, geojson) => {
-    if (err) {
+  readGeoJSONFile((err, geojson) => 
+  {
+    if (err) 
+    {
       console.error('Errore nella lettura del file GeoJSON:', err);
-      return res.status(500).json({ 
-        error: 'Errore nel leggere i dati' 
-      });
+      return next(creaErrore('Errore nel leggere i dati', 500));
     }
 
     // Trova la feature da aggiornare
     const feature = geojson.features.find(f => f.properties['@id'] === idToUpdate);
     
-    if (!feature) {
-      return res.status(404).json({ 
-        error: 'Parcheggio non trovato' 
-      });
+    if (!feature) 
+    {
+      return next(creaErrore('Parcheggio non trovato', 404));
     }
 
     // Aggiorna solo le proprietà consentite (whitelist approach)
     const allowedProperties = ['name', 'access', 'fee', 'surface'];
     
-    allowedProperties.forEach(prop => {
-      if (updatedProps[prop] !== undefined) {
+    allowedProperties.forEach(prop => 
+    {
+      if (updatedProps[prop] !== undefined)
+      {
         feature.properties[prop] = updatedProps[prop];
       }
     });
@@ -202,15 +232,16 @@ app.put('/api/parcheggi/:id', (req, res) => {
     console.log('Aggiornando parcheggio con ID:', idToUpdate);
 
     // Salva le modifiche
-    writeGeoJSONFile(geojson, (writeErr) => {
-      if (writeErr) {
+    writeGeoJSONFile(geojson, (writeErr) => 
+    {
+      if (writeErr) 
+      {
         console.error('Errore nella scrittura del file GeoJSON:', writeErr);
-        return res.status(500).json({ 
-          error: 'Errore nel salvare le modifiche' 
-        });
+        return next(creaErrore('Errore nel salvare le modifiche', 500));
       }
 
-      res.json({ 
+      res.json(
+      { 
         message: 'Parcheggio aggiornato con successo',
         id: idToUpdate
       });
@@ -222,16 +253,17 @@ app.put('/api/parcheggi/:id', (req, res) => {
  * DELETE /api/parcheggi/:id
  * Rimuove un parcheggio dal file GeoJSON
  */
-app.delete('/api/parcheggi/:id', (req, res) => {
+app.delete('/api/parcheggi/:id', (req, res) => 
+{
   const idToDelete = req.params.id;
 
   // Legge il file GeoJSON
-  readGeoJSONFile((err, geojson) => {
-    if (err) {
+  readGeoJSONFile((err, geojson) => 
+  {
+    if (err) 
+    {
       console.error('Errore nella lettura del file GeoJSON:', err);
-      return res.status(500).json({ 
-        error: 'Errore nel leggere i dati' 
-      });
+      return next(creaErrore('Errore nel leggere i dati', 500));
     }
 
     // Conta le feature prima della rimozione
@@ -241,24 +273,24 @@ app.delete('/api/parcheggi/:id', (req, res) => {
     geojson.features = geojson.features.filter(f => f.properties['@id'] !== idToDelete);
 
     // Controlla se è stata effettivamente rimossa una feature
-    if (geojson.features.length === featuresBefore) {
-      return res.status(404).json({ 
-        error: 'Parcheggio non trovato' 
-      });
+    if (geojson.features.length === featuresBefore) 
+    {
+      return next(creaErrore('Parcheggio non trovato', 404));
     }
 
     console.log('Rimuovendo parcheggio con ID:', idToDelete);
 
     // Salva il file aggiornato
-    writeGeoJSONFile(geojson, (writeErr) => {
-      if (writeErr) {
+    writeGeoJSONFile(geojson, (writeErr) => 
+    {
+      if (writeErr) 
+      {
         console.error('Errore nella scrittura del file GeoJSON:', writeErr);
-        return res.status(500).json({ 
-          error: 'Errore nel salvare le modifiche' 
-        });
+        return next(creaErrore('Errore nel salvare le modifiche', 500));
       }
 
-      res.json({ 
+      res.json(
+      { 
         message: 'Parcheggio eliminato con successo',
         id: idToDelete
       });
@@ -273,10 +305,12 @@ app.delete('/api/parcheggi/:id', (req, res) => {
 /**
  * Middleware per gestire errori non catturati
  */
-app.use((err, req, res, next) => {
-  console.error('Errore non gestito:', err);
-  res.status(500).json({ 
-    error: 'Errore interno del server' 
+app.use((err, req, res, next) => 
+{
+  console.error(`[${new Date().toISOString()}] ERRORE: ${err.message}`);
+  res.status(err.status || 500).json(
+  {
+    error: err.message || 'Errore interno del server',
   });
 });
 
@@ -284,8 +318,11 @@ app.use((err, req, res, next) => {
  * Middleware per gestire rotte non trovate
  */
 app.use((req, res) => {
-  res.status(404).json({ 
-    error: 'Endpoint non trovato' 
+  res.status(404).json(
+  {
+    error: 'Endpoint non trovato',
+    path: req.originalUrl
+
   });
 });
 
@@ -297,10 +334,10 @@ app.use((req, res) => {
  * Avvia il server Express
  */
 app.listen(PORT, () => {
-  console.log(`🚗 Server parcheggi avviato su http://localhost:${PORT}`);
-  console.log(`📁 File dati: ${DATA_FILE}`);
-  console.log('📡 API disponibili:');
-  console.log('   GET    /api/parcheggi     - Lista tutti i parcheggi');
+  console.log(`\nServer parcheggi avviato su http://localhost:${PORT}\n`);
+  console.log(`\nFile dati: ${DATA_FILE}\n`);
+  console.log('\nAPI disponibili:');
+  console.log('   GET    /api/parcheggi     - Lista tutti i parcheggi o filtra con query (es. ?fee=yes&access=yes)');
   console.log('   POST   /api/parcheggi     - Aggiunge un nuovo parcheggio');
   console.log('   PUT    /api/parcheggi/:id - Aggiorna un parcheggio');
   console.log('   DELETE /api/parcheggi/:id - Elimina un parcheggio');
@@ -313,12 +350,11 @@ app.listen(PORT, () => {
 /**
  * Gestisce la chiusura pulita dell'applicazione
  */
-process.on('SIGINT', () => {
-  console.log('\n🛑 Chiusura server in corso...');
+function shutdown(signal) 
+{
+  console.log(`\n🛑 Segnale ricevuto: ${signal} - chiusura server`);
   process.exit(0);
-});
+}
 
-process.on('SIGTERM', () => {
-  console.log('\n🛑 Server terminato');
-  process.exit(0);
-});
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('SIGTERM', () => shutdown('SIGTERM'));
