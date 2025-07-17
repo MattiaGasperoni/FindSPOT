@@ -21,8 +21,11 @@
 ## 📦 Struttura del Progetto
 
 ```
+server.js
+
 /data
 └─ parcheggi.geojson
+
 /public
 ├─ index.html
 ├─ add.html
@@ -41,8 +44,14 @@
     ├─ search.js 
     ├─ add.js 
 └─ /img
+
+/node_modules
+
 package.json
-server.js
+
+package-lock.json
+
+README.md
 ```
 
 ## ⚙️ Setup Locale
@@ -68,8 +77,7 @@ npm start
 ## 🌐 API Endpoints
 
 ### **GET /api/parcheggi**
-Restituisce tutti i parcheggi in formato GeoJSON.
-
+Restituisce tutti i parcheggi in formato GeoJSON.  
 **Risposta:**
 ```json
 {
@@ -77,6 +85,21 @@ Restituisce tutti i parcheggi in formato GeoJSON.
   "features": [...]
 }
 ```
+È possibile **filtrare** i risultati tramite query string, specificando uno o più campi delle proprietà.
+
+**Esempio di richiesta:** "/api/parcheggi?fee=yes&access=public"
+
+**Filtri disponibili:**  
+Qualsiasi campo presente nei `properties`, ad esempio:
+- `fee=yes|no`
+- `access=public|private`
+- `surface=asphalt|concrete|gravel`
+- `name=NomeDelParcheggio` (match esatto, case-insensitive)
+
+> ⚠️ I filtri restituiscono solo i parcheggi che **contengono effettivamente i campi richiesti** con i valori specificati.
+
+
+
 
 ### **POST /api/parcheggi**
 Aggiunge un nuovo parcheggio al sistema con un ID univoco  (formato: `longitude_latitude`).
