@@ -25,7 +25,7 @@ body {
 .search-bar {
   position: absolute;
   z-index: 1000;
-  margin: 50px 0;           /* Spazio tra la tagline e la barra di ricerca */
+  margin: 70px 0;           /* Spazio tra la tagline e la barra di ricerca */
   display: flex; 
   width: 350px;              /* Larghezza della barra di ricerca */
   background-color: #fff;

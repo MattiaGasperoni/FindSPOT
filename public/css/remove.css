@@ -1,62 +1,264 @@
-#map {
-    width: 100%;
-    height: 100%;
-    flex: 1;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+/* Reset base */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Open Sans', sans-serif;
+  background: #3a3737;
+  color: #222;
 }
 
+/* Corpo e contenitore */
 body {
-    font-family: sans-serif;
-    text-align: center;
-    background-color: #404040;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
 
-h2 {
-    margin-top: 20px;
-    color: whitesmoke; /* colore del testo */
-    font-family: 'Open Sans', sans-serif;
-    font-size: 24px;
-}
-
-.removeBtnHome
-{
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 1000;
-    background-color: #f44336; /* rosso */
-    color: white;
-    border: none;
-    border-radius: 30px;
-    padding: 16px 10px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s;
-    width: 80px;
-    text-decoration: none; /* per rimuovere la sottolineatura se usi <a> */
+/* Bottone Home */
+.removeBtnHome {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1100;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 14px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 3px 7px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
 }
 
 .removeBtnHome:hover {
-  background-color: #d32f2f; /* rosso scuro */
+  background-color: #d32f2f;
 }
 
+/* Titolo */
+h2 {
+  margin: 65px 0 20px 0;
+  font-weight: 600;
+  font-size: 1.8rem;
+  color: #f44336;
+  text-align: center;
+  user-select: none;
+  z-index: 1000;
+}
+
+/* Barra di ricerca */
+.search-bar {
+  position: absolute;
+  top: 15px;          /* distanza dall’alto del contenitore */
+  left: 50%;          /* sposta il punto di ancoraggio a metà larghezza */
+  transform: translateX(-50%); /* centra esattamente la barra */
+  z-index: 11;
+  width: 340px;
+  height: 50px;
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 50px;
+  display: flex;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  overflow: hidden;
+}
+
+
+/* Bottone filtro (icona) */
+.search-filter {
+  background: none;
+  border: none;
+  padding: 0 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.search-filter:hover svg {
+  transform: scale(1.1);
+}
+
+.search-filter svg {
+  width: 24px;
+  height: 24px;
+  fill: #555;
+}
+
+/* Input di ricerca */
+.search-input {
+  flex: 1;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding: 10 20px;
+  font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
+  color: #333;
+  background: transparent;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+/* Bottone cerca (icona) */
+.search-icon {
+  background: none;
+  border: none;
+  padding: 12px 14px;   /* Puoi ridurre 16px a 12px o meno per lasciare più spazio */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: content-box; /* assicurati che padding non influisca sul calcolo larghezza */
+}
+.search-icon:hover svg {
+  transform: scale(1.1);
+}
+
+.search-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: #555;
+}
+
+/* Menu filtri a tendina */
+.filter-choices {
+  position: fixed;
+  top: 190px; /* sotto barra ricerca */
+  right: 40px;
+  width: 350px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 20px 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  display: none;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 1100;
+  user-select: none;
+}
+
+/* Visibile con classe .visible */
+.filter-choices.visible {
+  display: flex;
+}
+
+.filter-choices h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #444;
+}
+
+/* Label e controlli */
+.filter-choices label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.filter-choices select,
+.filter-choices input[type="checkbox"] {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* Bottoni apply/clear */
+.filter-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.filter-buttons button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px 0;
+  border-radius: 30px;
+  border: none;
+  background-color: #007A33;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 3px 7px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
+}
+
+.filter-buttons button:hover {
+  background-color: #005a22;
+}
+
+#map-container {
+  position: relative;
+  width: 70%;
+  height: 80%; /* stessa altezza mappa */
+  margin: 0 auto;
+}
+
+/* Mappa a tutta pagina dietro gli altri elementi */
+#map {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  border-radius: 20px;
+}
+
+/* Box legenda in basso a sinistra */
 .legend-box {
-    width: fit-content;
-    margin: 6px auto;
-    padding: 10px;
-    left: 40px;
-    background: #f4f4f4;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  z-index: 10;
+  background: white;
+  border-radius: 10px;
+  padding: 12px 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-size: 14px;
+  color: #333;
+  user-select: none;
 }
 
+.legend-box h4 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Colori delle icone legenda */
 .legend-color-icon {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    margin-right: 5px;
-    vertical-align: middle;
-    border-radius: 50%;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+
+/* Specifici colori legenda */
+.legend-color-icon[style*="2ecc71"] {
+  background: #2ecc71; /* verde */
+}
+
+.legend-color-icon[style*="f39c12"] {
+  background: #f39c12; /* arancio */
+}
+
+.legend-color-icon[style*="e74c3c"] {
+  background: #e74c3c; /* rosso */
 }

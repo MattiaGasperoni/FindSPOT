@@ -73,6 +73,7 @@ body {
   margin: 50px 0;           /* Spazio tra la tagline e la barra di ricerca */
   display: flex; 
   width: 350px;              /* Larghezza della barra di ricerca */
+  height: 60px; /* Altezza  */
   background-color: #fff;
   border: 2px solid #ccc;  /* Spessore bordo - Colore del bordo */
   border-radius: 50px;  
@@ -122,11 +123,13 @@ body {
 
 .search-input {
   flex: 1;
-  padding: 12px 30px;
+  padding: 0px 30px;
   font-size: 1rem;
   border: none;
   outline: none;
   font-family: 'Open Sans', sans-serif;
+  height: 100%; /* <-- Fa sì che occupi tutta l'altezza della barra */
+
 }
 
 .search-input::placeholder { 
