@@ -6,6 +6,7 @@ document.body.appendChild(script);
 // Appende ?mode=delete all'URL (solo per farlo leggere nel JS)
 if (!window.location.search.includes('mode=delete')) 
 {
+    console.log('La Mappa entra in modalità eliminazione');
     const url = new URL(window.location.href);
     url.searchParams.set('mode', 'delete');
     window.history.replaceState({}, '', url.toString());

@@ -11,12 +11,10 @@
 <body>
   <a href="index.html" class="editBtnHome">Home</a>
   
-  <h2>SELECT A PARKING TO MODIFY</h2>
+  <h2 id="main-title">SELECT A PARKING TO MODIFY</h2>
 
-    <div id="map-container">
-
+  <div id="map-container">
     <div id="map"></div>
-
 
     <!-- Barra di ricerca -->
     <div class="search-bar">
@@ -28,6 +26,7 @@
         <svg fill="#5e5a5a" height="200px" width="200px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-53.72 -53.72 595.84 595.84" xml:space="preserve" stroke="#5e5a5a" stroke-width="7.325999999999999"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M0,203.25c0,112.1,91.2,203.2,203.2,203.2c51.6,0,98.8-19.4,134.7-51.2l129.5,129.5c2.4,2.4,5.5,3.6,8.7,3.6 s6.3-1.2,8.7-3.6c4.8-4.8,4.8-12.5,0-17.3l-129.6-129.5c31.8-35.9,51.2-83,51.2-134.7c0-112.1-91.2-203.2-203.2-203.2 S0,91.15,0,203.25z M381.9,203.25c0,98.5-80.2,178.7-178.7,178.7s-178.7-80.2-178.7-178.7s80.2-178.7,178.7-178.7 S381.9,104.65,381.9,203.25z"></path> </g> </g> </g></svg>
       </button>
     </div>
+    
     <div class="filter-choices">
       <h2>Show</h2>
       <label>Only parkings with access:
@@ -70,9 +69,11 @@
   <form id="editForm" style="display:none;"> 
     <h3>Modifica Parcheggio</h3>
     <input type="hidden" id="parkingId" />
+    
     <label>Nome:
       <input type="text" id="name" required />
     </label>
+    
     <label>Accesso:
       <select id="access">
         <option value="">-- Seleziona --</option>
@@ -81,6 +82,7 @@
         <option value="customers">Only Customers</option>
       </select>
     </label>
+    
     <label>Pagamento:
       <select id="fee">
         <option value="">-- Seleziona --</option>
@@ -88,19 +90,32 @@
         <option value="no">No</option>
       </select>
     </label>
+    
     <label>Superficie:
       <input type="text" id="surface" />
     </label>
-    <button type="submit">Salva Modifiche</button>
+    
+    <div class="form-buttons">
+      <button type="button" class="btn-cancel" onclick="cancelEdit()">Annulla</button>
+      <button type="submit" class="btn-submit">Invia</button>
+    </div>
+    
+    <div id="message"></div>
   </form>
-
-  <!-- <div id="message" style="color: red; margin-top: 10px;"></div> -->
 
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="./js/filter.js"></script>
   <script src="./js/search.js"></script>
 
   <script>
+
+    // Forza modalità eliminazione
+    const script = document.createElement('script');
+    script.src = './js/map.js';
+    document.body.appendChild(script);
+
+
+    
     const map = L.map('map').setView([43.727362, 12.636127], 14);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'

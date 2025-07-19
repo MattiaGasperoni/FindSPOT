@@ -74,6 +74,7 @@ class ParkingMap
   /**
    * Ottiene il parametro 'mode' dalla query string dell'URL, fondamentale per capire cosa stiamo facendo.
    * -> 'delete' per la modalità di eliminazione parcheggio 
+   * -> 'edit' per la modalità di modifica parcheggio
    * -> 'filter' per la modalità di visualizzazione mappa con filtri.
    * Se non presente, restituisce null.
    * @returns {string|null} Il valore del parametro 'mode' o null se non presente.
@@ -253,6 +254,11 @@ class ParkingMap
             // Siamo in modalità 'delete', non mostriamo il popup ma gestiamo il click per eliminare il parcheggio
             layer.on('click', () => this.requestDeleteParking(feature));
           } 
+          else if (this.mode === 'edit') 
+          {
+            // Siamo in modalità 'edit', non mostriamo il popup ma gestiamo il click per modificare il parcheggio
+            layer.on('click', () => this.requestEditParking(feature));
+          }
           else 
           {
             let coordinates = null;
@@ -295,6 +301,7 @@ class ParkingMap
     // Se non siamo in modalità 'delete', non fa nulla
     if (this.mode !== 'delete') return;
 
+    console.log('Richiesta di eliminazione del parcheggio con id:', feature.properties['@id']);
     const name = feature.properties.name || '';
     const confirmMessage = `Do you want to delete the parking "${name}"?`;
     
@@ -320,13 +327,17 @@ class ParkingMap
         method: 'DELETE' 
       });
       
-      if (!response.ok) {
+      if (!response.ok) 
+      {
+        console.error('Error deleting parking:', response.statusText);
         throw new Error('Error deleting parking');
       }
-      
+      console.log('Richiesta di eliminazione eseguita per il parcheggio con ID:', id);
+
       alert('Parking successfully deleted');
       this.loadParkingData();
-    } catch (error) 
+    } 
+    catch (error) 
     {
       alert(error.message);
     }
