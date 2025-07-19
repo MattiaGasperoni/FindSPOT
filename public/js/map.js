@@ -21,6 +21,13 @@ const CONFIG =
   }
 };
 
+// Listener che gestisce l'evento di ricerca della città
+window.addEventListener("search-city", () => 
+{
+  // legge la città dall'URL aggiornato
+  parkingMap.setCityView(); 
+});
+
 /** 
  * Classe principale per la gestione della mappa e dei parcheggi.
  * Inizializza la mappa, carica i dati dei parcheggi e gestisce le interazioni.
@@ -124,11 +131,10 @@ class ParkingMap
     }
   }
 
-   /* Imposta la vista della mappa sulla città specificata nei parametri dell'URL o su quella predefinita. */
+  /* Imposta la vista della mappa sulla città specificata nei parametri dell'URL, su quella predefinita */
   async setCityView() 
   {
-    const urlParams = new URLSearchParams(window.location.search);
-    const city = urlParams.get('city') || CONFIG.DEFAULT_CITY;
+    const city = new URLSearchParams(window.location.search).get("city") || CONFIG.DEFAULT_CITY;
     
     try 
     {
