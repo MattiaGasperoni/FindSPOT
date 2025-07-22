@@ -302,18 +302,90 @@ class ParkingMap
     if (this.mode !== 'delete') return;
 
     console.log('Richiesta di eliminazione del parcheggio con id:', feature.properties['@id']);
-    const name = feature.properties.name || '';
-    const confirmMessage = `Do you want to delete the parking "${name}"?`;
+    const name = feature.properties.name || 'Unnamed parking';
     
-    // Mostra un messaggio di conferma prima di procedere con l'eliminazione
-    // Se l'utente non conferma, non fa nulla
-    if (!confirm(confirmMessage)) return;
-
-    // Otteniamo l'ID del parcheggio da eliminare
-    const idToDelete = feature.properties['@id'];
-    
-    this.deleteParking(idToDelete);
+    // Quando l'utente conferma, procediamo con l'eliminazione
+    this.deletePopupConfirm(`Do you really want to delete the parking <br>"${name}"?`, () => 
+    {
+      // Get the ID of the parking to delete
+      const idToDelete = feature.properties['@id'];
+      this.deleteParking(idToDelete);
+    });
   }
+
+  // Metodo per creare un popup personalizzato
+  deletePopupConfirm(message, onConfirm) 
+  {
+    // Crea il popup
+    const modal = document.createElement('div');
+    modal.className = 'custom-confirm-modal';
+    modal.innerHTML = `
+        <div class="modal-overlay">
+            <div class="modal-content">
+                <p>${message}</p>
+                <div class="modal-buttons">
+                    <button class="btn-cancel">Cancel</button>
+                    <button class="btn-confirm">Delete</button>
+                </div>
+            </div>
+        </div>`;
+
+    // Aggiungi gli event listeners
+    const cancelBtn  = modal.querySelector('.btn-cancel');
+    const confirmBtn = modal.querySelector('.btn-confirm');
+    
+    cancelBtn.onclick = () => 
+    {
+      document.body.removeChild(modal);
+    };
+    
+    confirmBtn.onclick = () => 
+    {
+      document.body.removeChild(modal);
+      onConfirm();
+    };
+    
+    // Chiudi cliccando sull'overlay
+    modal.querySelector('.modal-overlay').onclick = (e) => 
+    {
+      if (e.target === e.currentTarget) 
+      {
+        document.body.removeChild(modal);
+      }
+    };
+
+    document.body.appendChild(modal);
+  }
+
+  showSuccessPopup(message)
+  {
+    // Crea il popup di successo
+    const modal = document.createElement('div');
+    modal.className = 'custom-success-modal';
+    modal.innerHTML = `
+      <div class="modal-overlay">
+        <div class="modal-content">
+          <div class="modal-message">${message}</div>
+          <button class="btn-close">Close</button>
+        </div>
+      </div>`;
+
+    // Aggiungi al body
+    document.body.appendChild(modal);
+
+    // Aggiungi l'event listener per chiudere il popup
+    modal.querySelector('.btn-close').onclick = () => {
+      document.body.removeChild(modal);
+    };
+
+    // Chiudi cliccando sull'overlay
+    modal.querySelector('.modal-overlay').onclick = (e) => {
+      if (e.target === e.currentTarget) {
+        document.body.removeChild(modal);
+      }
+    };
+  }
+
 
   /** Effettua una richiesta DELETE al server per eliminare un parcheggio.
    * @param {string} id - L'ID del parcheggio da eliminare.
@@ -334,7 +406,7 @@ class ParkingMap
       }
       console.log('Richiesta di eliminazione eseguita per il parcheggio con ID:', id);
 
-      alert('Parking successfully deleted');
+      this.showSuccessPopup('Parking successfully deleted!');
       this.loadParkingData();
     } 
     catch (error) 
@@ -342,6 +414,8 @@ class ParkingMap
       alert(error.message);
     }
   }
+
+
 
   /*** --- GESTIONE POP-UP PARCHEGGI --- ***/
 
