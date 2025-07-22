@@ -4,7 +4,7 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: 'Open Sans', sans-serif;
-  background: #3a3737;
+  /*background: #3a3737;*/
   color: #222;
 }
 
@@ -13,9 +13,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
   position: relative;
-  overflow: hidden;
+  background-image: url('../img/background_remove.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
 }
 
 /* Bottone Home */
@@ -43,12 +46,15 @@ body {
 /* Titolo */
 h2 {
   margin: 65px 0 20px 0;
-  font-weight: 600;
-  font-size: 1.8rem;
+  font-weight: 550;
+  font-size: 3rem;
   color: #f44336;
   text-align: center;
   user-select: none;
   z-index: 1000;
+  font-family: 'Impact', Charcoal, sans-serif;        /* Robusto e compatto */
+  letter-spacing: 0.1em;               /* Spaziatura per maggiore impatto */ 
+
 }
 
 /* Barra di ricerca */
