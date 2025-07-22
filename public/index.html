@@ -32,34 +32,50 @@
           <svg fill="#5e5a5a" height="200px" width="200px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-53.72 -53.72 595.84 595.84" xml:space="preserve" stroke="#5e5a5a" stroke-width="7.325999999999999"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M0,203.25c0,112.1,91.2,203.2,203.2,203.2c51.6,0,98.8-19.4,134.7-51.2l129.5,129.5c2.4,2.4,5.5,3.6,8.7,3.6 s6.3-1.2,8.7-3.6c4.8-4.8,4.8-12.5,0-17.3l-129.6-129.5c31.8-35.9,51.2-83,51.2-134.7c0-112.1-91.2-203.2-203.2-203.2 S0,91.15,0,203.25z M381.9,203.25c0,98.5-80.2,178.7-178.7,178.7s-178.7-80.2-178.7-178.7s80.2-178.7,178.7-178.7 S381.9,104.65,381.9,203.25z"></path> </g> </g> </g></svg>
         </button>
       </div>
-      <div class="filter-choices">
-        <h2>Show</h2>
-        <label>Only parkings with access:
-          <select id="access-type">
-            <option value="">Select</option>
-            <option value="yes">Public</option>
-            <option value="no">Private</option>
-            <option value="customers">Customers Only</option>
-          </select>
+      <div class="filter-choices" id="filterPopup">
+        <h2>Filters</h2>
+        
+        <label>
+            Access type:
+            <select id="access-type">
+                <option value="">Select</option>
+                <option value="yes">Public</option>
+                <option value="no">Private</option>
+                <option value="customers">Customers only</option>
+            </select>
         </label>
-        <label>Only free parkings:
-          <input type="checkbox" id="free" />
+        
+        <label>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="free" />
+                Free parking only
+            </div>
         </label>
-        <label>Only paid parkings:
-          <input type="checkbox" id="paid" />
+        
+        <label>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="paid" />
+                Paid parking only
+            </div>
         </label>
-        <label>Only parkings with surface:
+        
+        <label>
+          Surface type:
           <select id="surface-type">
-            <option value="">Select</option>
-            <option value="grass">Grass</option>
-            <option value="paving_stones">Paving Stones</option>
-            <option value="asphalt">Asphalt</option>
-            <option value="paved">Paved</option>
+              <option value="">Select</option>
+              <option value="asphalt">Asphalt</option>
+              <option value="gravel">Gravel</option>
+              <option value="paved">Paved</option>
+              <option value="unpaved">Unpaved</option>
+              <option value="dirt">Dirt</option>
+              <option value="grass">Grass</option>
           </select>
         </label>
+
+        
         <div class="filter-buttons">
-          <button id="apply-filters">Apply Filters</button>
-          <button id="clear-filters">Clear Filters</button>
+            <button id="apply-filters">Apply Filters</button>
+            <button id="clear-filters">Clear All</button>
         </div>
       </div>
 
