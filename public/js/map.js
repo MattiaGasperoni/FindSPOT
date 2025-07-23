@@ -283,7 +283,7 @@ class ParkingMap
             if (coordinates) 
             {
               const popupContent = this.createParkingPopUp(feature.properties, coordinates);
-              layer.bindPopup(popupContent);
+              layer.bindPopup(popupContent, { closeButton: false });
             }
           }
 
@@ -298,16 +298,20 @@ class ParkingMap
    */
   requestDeleteParking(feature) 
   {
-    // Se non siamo in modalità 'delete', non fa nulla
     if (this.mode !== 'delete') return;
 
     console.log('Richiesta di eliminazione del parcheggio con id:', feature.properties['@id']);
-    const name = feature.properties.name || 'Unnamed parking';
     
-    // Quando l'utente conferma, procediamo con l'eliminazione
-    this.deletePopupConfirm(`Do you really want to delete the parking <br>"${name}"?`, () => 
+    const name = feature.properties.name;
+
+    // Costruisci il messaggio in base alla presenza del nome
+    const message = name
+      ? `Do you really want to delete the parking <br>"${name}"?`
+      : `Are you sure you want to delete this parking?`;
+
+    // Mostra il popup di conferma
+    this.deletePopupConfirm(message, () => 
     {
-      // Get the ID of the parking to delete
       const idToDelete = feature.properties['@id'];
       this.deleteParking(idToDelete);
     });
@@ -386,7 +390,6 @@ class ParkingMap
     };
   }
 
-
   /** Effettua una richiesta DELETE al server per eliminare un parcheggio.
    * @param {string} id - L'ID del parcheggio da eliminare.
    */
@@ -415,8 +418,6 @@ class ParkingMap
     }
   }
 
-
-
   /*** --- GESTIONE POP-UP PARCHEGGI --- ***/
 
   /** Crea il contenuto del popup per il parcheggio
@@ -426,62 +427,62 @@ class ParkingMap
    */
   createParkingPopUp(properties, coordinates) 
   {
-    const name = properties.name || 'Nome non specificato';
+    const name = properties.name || 'Not specified';
     const access = properties.access || 'n/a';
     const surface = properties.surface || 'n/a';
     const isFree = properties.fee === 'no';
     
-    // Mappatura icone per diversi tipi di accesso
+    // Icon mapping for different access types
     const accessIcons = {
-        'yes': '🚗',
-        'public': '🚗',
-        'private': '🔒',
-        'customers': '🛍️',
-        'permissive': '✅',
-        'destination': '🎯',
-        'no': '⛔'
+      'yes': '🚗',
+      'public': '🚗',
+      'private': '🔒',
+      'customers': '🛍️',
+      'permissive': '✅',
+      'destination': '🎯',
+      'no': '⛔'
     };
     
-    // Mappatura icone per diversi tipi di superficie
+    // Icon mapping for different surface types
     const surfaceIcons = {
-        'paved': '🏗️',
-        'asphalt': '🛣️',
-        'concrete': '🏢',
-        'gravel': '🪨',
-        'grass': '🌱',
-        'dirt': '🌍',
-        'paving_stones': '🧱'
+      'paved': '🏗️',
+      'asphalt': '🛣️',
+      'concrete': '🏢',
+      'gravel': '🪨',
+      'grass': '🌱',
+      'dirt': '🌍',
+      'paving_stones': '🧱'
     };
     
-    // Mappatura etichette italiane per accesso
+    // English labels mapping for access
     const accessLabels = {
-        'yes': 'Pubblico',
-        'public': 'Pubblico',
-        'private': 'Privato',
-        'customers': 'Solo clienti',
-        'permissive': 'Permissivo',
-        'destination': 'Destinazione',
-        'no': 'Vietato',
-        'n/a': 'Non specificato'
+      'yes': 'Public',
+      'public': 'Public',
+      'private': 'Private',
+      'customers': 'Customers only',
+      'permissive': 'Permissive',
+      'destination': 'Destination',
+      'no': 'Forbidden',
+      'n/a': 'Not specified'
     };
     
-    // Mappatura etichette italiane per superficie
+    // English labels mapping for surface
     const surfaceLabels = {
-        'paved': 'Pavimentata',
-        'asphalt': 'Asfaltata',
-        'concrete': 'Calcestruzzo',
-        'gravel': 'Ghiaia',
-        'grass': 'Erba',
-        'dirt': 'Terra',
-        'paving_stones': 'Lastricato',
-        'n/a': 'Non specificato'
+      'paved': 'Paved',
+      'asphalt': 'Asphalt',
+      'concrete': 'Concrete',
+      'gravel': 'Gravel',
+      'grass': 'Grass',
+      'dirt': 'Dirt',
+      'paving_stones': 'Paving stones',
+      'n/a': 'Not specified'
     };
     
     const accessIcon = accessIcons[access.toLowerCase()] || '🚗';
     const surfaceIcon = surfaceIcons[surface.toLowerCase()] || '🏗️';
     const feeIcon = isFree ? '💰' : '💳';
     const feeClass = isFree ? 'free' : 'paid';
-    const feeText = isFree ? 'Gratuito' : 'A pagamento';
+    const feeText = isFree ? 'free' : 'paid';
     
     const accessLabel = accessLabels[access.toLowerCase()] || access;
     const surfaceLabel = surfaceLabels[surface.toLowerCase()] || surface;
@@ -490,65 +491,77 @@ class ParkingMap
     const googleMapsUrl = this.generateGoogleMapsUrl(coordinates, name);
     
     return `
-        <div class="parking-popup">
-            <div class="parking-title">
-                <div class="parking-icon">P</div>
-                ${name}
-            </div>
-            
-            <div class="parking-details">
-                <div class="detail-row">
-                    <div class="detail-icon access">${accessIcon}</div>
-                    <div class="detail-content">
-                        <div class="detail-label">Accesso</div>
-                        <div class="detail-value">${accessLabel}</div>
-                    </div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-icon surface">${surfaceIcon}</div>
-                    <div class="detail-content">
-                        <div class="detail-label">Superficie</div>
-                        <div class="detail-value">${surfaceLabel}</div>
-                    </div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-icon fee ${feeClass}">${feeIcon}</div>
-                    <div class="detail-content">
-                        <div class="detail-label">Tariffa</div>
-                        <div class="detail-value">
-                            <span class="badge ${feeClass}">${feeText}</span>
-                        </div>
-                    </div>
+      <div class="parking-popup">
+        <div class="parking-title">
+            <div class="parking-icon">P</div>
+            ${name}
+        </div>
+        
+        <div class="parking-details">
+            <div class="detail-row">
+                <div class="detail-icon access">${accessIcon}</div>
+                <div class="detail-content">
+                    <div class="detail-label">Access</div>
+                    <div class="detail-value">${accessLabel}</div>
                 </div>
             </div>
             
-            <div class="parking-actions">
-                <a href="${googleMapsUrl}" target="_blank" class="gmaps-button">
-                    <span class="gmaps-icon">🗺️</span>
-                    Naviga con Google Maps
-                </a>
+            <div class="detail-row">
+                <div class="detail-icon surface">${surfaceIcon}</div>
+                <div class="detail-content">
+                    <div class="detail-label">Surface</div>
+                    <div class="detail-value">${surfaceLabel}</div>
+                </div>
             </div>
+            
+            <div class="detail-row">
+                <div class="detail-icon fee ${feeClass}">${feeIcon}</div>
+                <div class="detail-content">
+                    <div class="detail-label">Fee</div>
+                    <div class="detail-value">
+                        <span class="badge ${feeClass}">${feeText}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="parking-actions">
+            <a href="${googleMapsUrl}" target="_blank" class="gmaps-button">
+        <span class="gmaps-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" aria-label="Google Maps" role="img" viewBox="0 0 512 512" fill="#000000">
+                <rect width="512" height="512" rx="15%" fill="#ffffff"/>
+                <g clip-path="url(#clip)">
+                    <path fill="#35a85b" d="M0 512V0h512z"/>
+                    <path fill="#5881ca" d="M256 288L32 512h448z"/>
+                    <path fill="#c1c0be" d="M288 256L512 32v448z"/>
+                    <path stroke="#fadb2a" stroke-width="71" d="M0 512L512 0"/>
+                    <path fill="none" stroke="#f2f2f2" stroke-width="22" d="M175 173h50a50 54 0 1 1-15-41"/>
+                    <path fill="#de3738" d="M353 85a70 70 0 0 1 140 0c0 70-70 70-70 157 0-87-70-87-70-157"/>
+                    <circle cx="423" cy="89" r="25" fill="#7d2426"/>
+                </g>
+            </svg>
+        </span>
+        Navigate with Google Maps
+    </a>
+</div>
+
         </div>
     `;
   }
 
   // Genera l'URL di Google Maps
-  generateGoogleMapsUrl(coordinates, name) 
+  generateGoogleMapsUrl(coordinates) 
   {
     const lat = coordinates[1]; // Latitudine
     const lng = coordinates[0]; // Longitudine
-    
-    // URL per aprire direttamente la navigazione verso il punto
+
+    // URL diretto alla destinazione
     const baseUrl = 'https://www.google.com/maps/dir/';
     const destination = `${lat},${lng}`;
-    
-    // Aggiungi il nome del parcheggio come query se disponibile
-    const query = name !== 'Nome non specificato' ? encodeURIComponent(name) : '';
-    
-    return `${baseUrl}/${destination}${query ? '/' + query : ''}`;
+
+    return `${baseUrl}/${destination}`;
   }
+
 }
 
 /*** --- INIZIALIZZO LA MAPPA --- ***/
