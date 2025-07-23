@@ -42,6 +42,13 @@ class ParkingMap
     this.filters      = this.getFilters(); 
     this.loadParkingData();
     this.setCityView();
+
+    this.userMarker   = null; // Marker per la posizione dell'utente
+    this.accuracyCircle = null;
+
+
+        // Collega il pulsante alla funzione locateUser()
+    document.getElementById('geoBtn').addEventListener('click', () => this.locateUser());
   }
 
   /*** --- INIZIALIZZAZIONE MAPPA --- ***/
@@ -418,6 +425,46 @@ class ParkingMap
       alert(error.message);
     }
   }
+
+
+   locateUser()
+   {
+    console.log("Richiesta di geolocalizzazione dell'utente...");
+  
+    if (navigator.geolocation) 
+      {
+      navigator.geolocation.getCurrentPosition(position => 
+      {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const accuracy = position.coords.accuracy;
+
+        this.map.setView([lat, lon], 15);
+
+        if (this.userMarker) this.map.removeLayer(this.userMarker);
+        if (this.accuracyCircle) this.map.removeLayer(this.accuracyCircle);
+
+ 
+        this.userMarker = L.marker([lat, lon]).addTo(this.map)
+          .bindPopup(`<span>You are in this area!</span>` , { closeButton: false })
+          .openPopup();
+
+
+        this.accuracyCircle = L.circle([lat, lon], {
+          radius: accuracy,
+          color: 'blue',
+          fillColor: '#30f',
+          fillOpacity: 0.2
+        }).addTo(this.map);
+      }, () => {
+        alert("Unable to get your location.");
+      });
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
+  }
+
+
 
   /*** --- GESTIONE POP-UP PARCHEGGI --- ***/
 

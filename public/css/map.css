@@ -571,3 +571,48 @@ body {
                 font-size: 13px;
             }
         }
+
+
+    .geo-button {
+      position: absolute;
+      bottom: 120px;
+      right: 5px;
+      z-index: 1000;
+      background-color: white;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .geo-button:hover {
+      background-color: #f0f0f0;
+    }
+    .geo-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+
+.leaflet-popup-content-wrapper {
+    padding: 0;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    background: #fff;
+}
+
+.leaflet-popup-content {
+    width: auto;
+    min-width: 0;
+    min-height: 30px;
+    margin: 8px 0;
+    padding: 8px 18px;   /* padding orizzontale ridotto */
+    white-space: normal;
+    font-size: 17px;
+    font-weight: bold;
+    color: #222;
+    text-align: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

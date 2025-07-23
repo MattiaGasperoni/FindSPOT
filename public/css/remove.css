@@ -492,3 +492,58 @@ h2 {
   border-radius: 10px;
   cursor: pointer;
 }
+
+
+
+.leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background: #fff;
+}
+
+.leaflet-popup-content {
+  width: 200px;
+  height: 40px;
+ 
+  margin: 0px 0;
+  padding: 2px 18px;   /* padding orizzontale ridotto */
+  white-space: normal;
+  font-size: 17px;
+  font-weight: bold;
+  color: #222;
+  text-align: center;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* Bottone geolocalizzazione */
+.geo-button {
+  position: absolute;
+  bottom: 120px;
+  right: 10px;
+  z-index: 402;
+  background: #fff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 7px rgba(0,0,0,0.18);
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.2s;
+  padding: 0;
+}
+.geo-button:hover {
+  background-color: #f0f0f0;
+}
+.geo-icon {
+  width: 20px;
+  height: 20px;
+}
