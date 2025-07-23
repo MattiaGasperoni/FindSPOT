@@ -1,163 +1,492 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
+/* Incorpora gli stili del tuo CSS esistente per il corpo e lo sfondo */
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
 
-body {
-  font-family: 'Open Sans', sans-serif;
-  background: #ffffff;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch; /* cambia da center a stretch */
-  min-height: 100vh;
-  text-align: center;
-  align-items: center;
-}
+      body {
+        font-family: 'Open Sans', sans-serif;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        text-align: center;
+      }
 
-.background-image-add {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('../img/background_add.jpg');
-  background-size: cover;
-  background-position: center;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
+      .background-image-add {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('../img/background_add.jpg');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-.form {
-  /*margin-top: 200px;*/
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 15px;
-  max-width: 350px;
-  background-color: rgba(193, 193, 193, 0.8);
-  padding: 30px;
-  border-radius: 30px;
-  position: absolute;
-  top: 100;
-  left: 100;
-  width: 100%;
-}
+      /* Form design modernizzato nel tuo stile */
+      .form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+        max-width: 400px;
+        width: 90%;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 40px 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        text-align: left;
+      }
 
+      .title {
+        font-size: 28px;
+        color: #007A33;
+        font-weight: 700;
+        letter-spacing: -1px;
+        text-align: center;
+        margin-bottom: 0;
+      }
 
-.title {
-  font-size: 28px;
-  color: #007A33;
-  font-weight: 700;
-  letter-spacing: -1px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-bottom: 0;  /* per rimuovere spazio sotto titolo */  
-}
+      .sub-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000;
+        text-align: center;
+        margin-top: 0;
+      }
 
-.sub-title {
-  font-size: 16px;
-  font-weight: bold;
-  color: #000;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-top: 0;  /* poco spazio sopra sottotitolo */
-}
+      .form label {
+        display: flex;
+        flex-direction: column;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: #333;
+      }
 
-/* Bottone Home */
-.btnHome {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-  background-color: #007A33;
-  color: white;
-  border: none;
-  border-radius: 30px;
-  padding: 16px 10px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
-  width: 80px;
-  text-decoration: none; /* per rimuovere la sottolineatura se usi <a> */
-}
+      .form input[type="text"], .form select {
+        margin-top: 8px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(105, 105, 105, 0.3);
+        background: #f9f9f9;
+        font-size: 1rem;
+        outline: none;
+        transition: border 0.2s;
+      }
 
-.btnHome:hover {
-  background-color: #005B27;
-}
+      .form input[type="text"]:focus, .form select:focus {
+        border-color: #007A33;
+        background-color: #fff;
+      }
 
-.message,
-.signin {
-  color: rgba(88, 87, 87, 0.82);
-  font-size: 14px;
-}
+      /* Pulsanti submit nel tuo stile */
+      .submit {
+        width: 100%;
+        padding: 12px;
+        font-weight: 600;
+        margin-top: 10px;
+        background-color: #007A33;
+        border: none;
+        border-radius: 30px;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
 
-.signin {
-  text-align: center;
-}
+      .submit:hover {
+        background-color: #005B27;
+      }
 
-.signin a {
-  color: royalblue;
-}
+      /* Variante per "Choose the location" nel tuo stile */
+      .choose-location {
+        background-color: white;
+        border: 2px solid #cccccc;
+        color: #333;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
 
-.signin a:hover {
-  text-decoration: underline royalblue;
-}
+      .choose-location:hover {
+        background-color: #f0f0f0;
+        border-color: #007A33;
+        color: #007A33;
+      }
 
-.flex {
-  display: flex;
-  width: 100%;
-  gap: 40px;
-}
+      .add-parking {
+        margin-left: 140px;
+        width: 100px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        border-radius: 20px;
+      }
 
-.form label {
-  position: relative;
-}
+      /* Bottone Home nel tuo stile */
+      .btnHome {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1000;
+        background-color: #007A33;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 16px 10px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s;
+        width: 80px;
+        text-decoration: none;
+      }
 
-.form label .input {
-  width: 100%;
-  max-width: 350px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  align-items: center;
-  justify-content: center;
-  text-align: left;
-  outline: none;
-  border: 1px solid rgba(105, 105, 105, 0.4);
-  border-radius: 10px;
-}
+      .btnHome:hover {
+        background-color: #005B27;
+      }
 
-.form label .input + span {
-  position: relative;
-  left: 12px;
-  top: 14px;
-  color: grey;
-  font-size: 0.9em;
-  cursor: text;
-  transition: 0.3s ease;
-}
+      /* Stili per la visualizzazione della posizione nel form */
+      .location-display {
+        background: #f9f9f9;
+        border: 1px solid rgba(105, 105, 105, 0.3);
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: #666;
+        font-style: italic;
+        margin-top: 8px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+      }
 
-.submit {
-  border: none;
-  outline: none;
-  background-color: #007A33;
-  align-self: center;
-  margin-top: 20px;
-  width: 50%;
-  padding: 10px;
-  border-radius: 30px;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+      .location-selected {
+        color: #007A33 !important;
+        font-style: normal !important;
+        font-weight: 600 !important;
+        border-color: #007A33 !important;
+        background-color: #fff !important;
+      }
 
-.submit:hover {
-  background-color: #005B27;
-}
+      /* Stili per la mappa - usando i tuoi colori */
+      #map-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.8);
+        z-index: 9999;
+        padding: 20px;
+        box-sizing: border-box;
+      }
 
+      .map-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .map-header {
+        background: #007A33;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+      }
+
+      .map-header h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .close-map {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+      }
+
+      .close-map:hover {
+        background: rgba(255,255,255,0.2);
+      }
+
+      #map {
+        flex: 1;
+        background: #f0f8f5;
+        position: relative;
+        overflow: hidden;
+        min-height: 400px;
+      }
+
+      .search-bar {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        display: flex;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        z-index: 10;
+        backdrop-filter: blur(10px);
+      }
+
+      .search-filter {
+        background: none;
+        border: none;
+        padding: 12px;
+        cursor: pointer;
+        border-right: 1px solid #eee;
+        border-radius: 15px 0 0 15px;
+        transition: background-color 0.3s ease;
+      }
+
+      .search-filter:hover {
+        background: #f0f0f0;
+      }
+
+      .search-filter svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .search-input {
+        flex: 1;
+        border: none;
+        padding: 12px;
+        font-size: 16px;
+        outline: none;
+        background: transparent;
+      }
+
+      .search-icon {
+        background: none;
+        border: none;
+        padding: 12px;
+        cursor: pointer;
+        border-radius: 0 15px 15px 0;
+        transition: background-color 0.3s ease;
+      }
+
+      .search-icon:hover {
+        background: #f0f0f0;
+      }
+
+      .search-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .filter-choices {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        padding: 20px;
+        width: 300px;
+        z-index: 20;
+        backdrop-filter: blur(10px);
+      }
+
+      .filter-choices.active {
+        display: block;
+      }
+
+      .filter-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #007A33;
+      }
+
+      .filter-choices label {
+        display: block;
+        margin-bottom: 15px;
+        color: #333;
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      .filter-choices select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid rgba(105, 105, 105, 0.3);
+        border-radius: 10px;
+        margin-top: 5px;
+        background: #f9f9f9;
+        outline: none;
+        transition: border-color 0.3s ease;
+      }
+
+      .filter-choices select:focus {
+        border-color: #007A33;
+        background-color: #fff;
+      }
+
+      .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 5px;
+      }
+
+      .checkbox-wrapper input[type="checkbox"] {
+        width: auto;
+        accent-color: #007A33;
+      }
+
+      .filter-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .filter-buttons button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      #apply-filters {
+        background: #007A33;
+        color: white;
+      }
+
+      #apply-filters:hover {
+        background: #005B27;
+      }
+
+      #clear-filters {
+        background: #e74c3c;
+        color: white;
+      }
+
+      #clear-filters:hover {
+        background: #c0392b;
+      }
+
+      .legend-box {
+        position: absolute;
+        bottom: 80px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
+      }
+
+      .legend-box h4 {
+        margin: 0 0 10px 0;
+        font-size: 16px;
+        color: #007A33;
+        font-weight: 700;
+      }
+
+      .legend-box div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #333;
+        font-weight: 500;
+      }
+
+      .legend-color-icon {
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+        margin-right: 8px;
+      }
+
+      .map-actions {
+        padding: 15px 20px;
+        background: #f8f9fa;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        border-top: 1px solid #e9ecef;
+      }
+
+      .selected-location {
+        color: #666;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .confirm-location {
+        background: #007A33;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+      }
+
+      .confirm-location:hover {
+        background: #005B27;
+      }
+
+      .location-marker {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: #007A33;
+        border: 3px solid white;
+        border-radius: 50%;
+        box-shadow: 0 3px 15px rgba(0, 122, 51, 0.4);
+        z-index: 100;
+        transform: translate(-50%, -50%);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 3px 15px rgba(0, 122, 51, 0.4);
+        }
+        50% {
+          box-shadow: 0 3px 20px rgba(0, 122, 51, 0.6);
+        }
+        100% {
+          box-shadow: 0 3px 15px rgba(0, 122, 51, 0.4);
+        }
+      }
+
+      .message {
+        color: rgba(88, 87, 87, 0.82);
+        font-size: 14px;
+      }

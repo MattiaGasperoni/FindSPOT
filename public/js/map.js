@@ -76,6 +76,7 @@ class ParkingMap
    * -> 'delete' per la modalità di eliminazione parcheggio 
    * -> 'edit' per la modalità di modifica parcheggio
    * -> 'filter' per la modalità di visualizzazione mappa con filtri.
+   * -> 'select' per la modalità di selezione coordinate.
    * Se non presente, restituisce null.
    * @returns {string|null} Il valore del parametro 'mode' o null se non presente.
    */
