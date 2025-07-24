@@ -67,37 +67,37 @@
   </div>
 
   <form id="editForm" style="display:none;"> 
-    <h3>Modifica Parcheggio</h3>
+    <h3>✏️ Modifica Parcheggio</h3>
     <input type="hidden" id="parkingId" />
     
-    <label>Nome:
-      <input type="text" id="name" required />
+    <label>📍 Nome:
+      <input type="text" id="name" placeholder="Inserisci il nome del parcheggio" required />
     </label>
     
-    <label>Accesso:
+    <label>🚪 Accesso:
       <select id="access">
-        <option value="">-- Seleziona --</option>
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-        <option value="customers">Only Customers</option>
+        <option value="">-- Seleziona tipo di accesso --</option>
+        <option value="yes">Pubblico</option>
+        <option value="no">Privato</option>
+        <option value="customers">Solo clienti</option>
       </select>
     </label>
     
-    <label>Pagamento:
+    <label>💰 Pagamento:
       <select id="fee">
-        <option value="">-- Seleziona --</option>
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
+        <option value="">-- Seleziona tipo di pagamento --</option>
+        <option value="yes">A pagamento</option>
+        <option value="no">Gratuito</option>
       </select>
     </label>
     
-    <label>Superficie:
-      <input type="text" id="surface" />
+    <label>🏗️ Superficie:
+      <input type="text" id="surface" placeholder="es. asfalto, erba, pietra..." />
     </label>
     
     <div class="form-buttons">
-      <button type="button" class="btn-cancel" onclick="cancelEdit()">Annulla</button>
-      <button type="submit" class="btn-submit">Invia</button>
+      <button type="button" class="btn-cancel" onclick="cancelEdit()">❌ Annulla</button>
+      <button type="submit" class="btn-submit">✅ Salva modifiche</button>
     </div>
     
     <div id="message"></div>
@@ -108,14 +108,11 @@
   <script src="./js/search.js"></script>
 
   <script>
-
     // Forza modalità eliminazione
     const script = document.createElement('script');
     script.src = './js/map.js';
     document.body.appendChild(script);
 
-
-    
     const map = L.map('map').setView([43.727362, 12.636127], 14);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
@@ -170,6 +167,30 @@
 
     loadParkings();
 
+    // Funzione per mostrare/nascondere elementi quando appare il form
+    function toggleUIElements(showForm) {
+      const elementsToHide = [
+        document.getElementById('main-title'),
+        document.getElementById('map-container'),
+        document.querySelector('.search-bar'),
+        document.querySelector('.filter-choices'),
+        document.querySelector('.legend-box')
+      ];
+
+      elementsToHide.forEach(element => {
+        if (element) {
+          element.style.display = showForm ? 'none' : '';
+        }
+      });
+
+      // Per il map-container dobbiamo gestire il display diversamente
+      if (showForm) {
+        document.getElementById('map-container').style.display = 'none';
+      } else {
+        document.getElementById('map-container').style.display = 'block';
+      }
+    }
+
     window.editParking = function(id) {
       // Cerca la feature selezionata in parkingLayer
       let found = null;
@@ -184,8 +205,11 @@
       }
       selectedFeature = found;
 
-      // Mostra form e riempi campi
+      // Nascondi tutti gli elementi UI e mostra il form
+      toggleUIElements(true);
       document.getElementById('editForm').style.display = 'block';
+      
+      // Riempi i campi del form
       document.getElementById('parkingId').value = found.properties['@id'] || '';
       document.getElementById('name').value = found.properties.name || '';
       document.getElementById('access').value = found.properties.access || '';
@@ -194,45 +218,63 @@
       document.getElementById('message').textContent = '';
     };
 
-    document.getElementById('editForm').addEventListener('submit', e => {
-  e.preventDefault();
-  if (!selectedFeature) {
-    alert('Seleziona un parcheggio prima');
-    return;
-  }
-  const id = document.getElementById('parkingId').value;
-  const updatedData = {
-    name: document.getElementById('name').value.trim(),
-    access: document.getElementById('access').value,
-    fee: document.getElementById('fee').value,
-    surface: document.getElementById('surface').value.trim(),
-  };
-
-  fetch(`/api/parcheggi/${encodeURIComponent(id)}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(updatedData)
-  })
-  .then(res => {
-    if (!res.ok) throw new Error('Errore durante l\'aggiornamento');
-    return res.json(); // ← Cambiato da res.text() a res.json()
-  })
-  .then(data => { // ← Cambiato da 'text' a 'data'
-    document.getElementById('message').style.color = 'green';
-    document.getElementById('message').textContent = data.message; // ← Usa data.message
-    // Ricarica i parcheggi sulla mappa
-    loadParkings();
-    // Nascondi form dopo salvataggio
-    setTimeout(() => {
+    window.cancelEdit = function() {
+      // Nascondi il form e mostra di nuovo tutti gli elementi UI
       document.getElementById('editForm').style.display = 'none';
+      toggleUIElements(false);
+      
+      // Reset del form
+      document.getElementById('editForm').reset();
       document.getElementById('message').textContent = '';
-    }, 2000);
-  })
-  .catch(err => {
-    document.getElementById('message').style.color = 'red';
-    document.getElementById('message').textContent = err.message;
-  });
-});
+      selectedFeature = null;
+    };
+
+    document.getElementById('editForm').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!selectedFeature) {
+        alert('Seleziona un parcheggio prima');
+        return;
+      }
+      const id = document.getElementById('parkingId').value;
+      const updatedData = {
+        name: document.getElementById('name').value.trim(),
+        access: document.getElementById('access').value,
+        fee: document.getElementById('fee').value,
+        surface: document.getElementById('surface').value.trim(),
+      };
+
+      fetch(`/api/parcheggi/${encodeURIComponent(id)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedData)
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Errore durante l\'aggiornamento');
+        return res.json();
+      })
+      .then(data => {
+        const messageEl = document.getElementById('message');
+        messageEl.style.color = 'green';
+        messageEl.style.background = '#d4edda';
+        messageEl.style.border = '1px solid #c3e6cb';
+        messageEl.textContent = '✅ ' + (data.message || 'Parcheggio aggiornato con successo!');
+        
+        // Ricarica i parcheggi sulla mappa
+        loadParkings();
+        
+        // Nascondi form dopo salvataggio e mostra UI
+        setTimeout(() => {
+          cancelEdit();
+        }, 2000);
+      })
+      .catch(err => {
+        const messageEl = document.getElementById('message');
+        messageEl.style.color = 'red';
+        messageEl.style.background = '#f8d7da';
+        messageEl.style.border = '1px solid #f5c6cb';
+        messageEl.textContent = '❌ ' + err.message;
+      });
+    });
   </script>
 </body>
 </html>

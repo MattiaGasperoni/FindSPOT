@@ -4,7 +4,6 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: 'Open Sans', sans-serif;
-  /*background: #3a3737;*/
   color: #222;
 }
 
@@ -14,7 +13,7 @@ body {
   flex-direction: column;
   align-items: center;
   position: relative;
-  background-image: url('../img/background_remove.png');
+  background-image: url('../img/background_gray.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -54,7 +53,7 @@ h2 {
   z-index: 1000;
   font-family: 'Impact', Charcoal, sans-serif;        /* Robusto e compatto */
   letter-spacing: 0.1em;               /* Spaziatura per maggiore impatto */ 
-
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6); /* Leggero effetto ombra per profondità */
 }
 
 /* Barra di ricerca */
