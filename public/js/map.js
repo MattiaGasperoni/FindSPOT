@@ -21,13 +21,6 @@ const CONFIG =
   }
 };
 
-// Listener che gestisce l'evento di ricerca della città
-window.addEventListener("search-city", () => 
-{
-  // legge la città dall'URL aggiornato
-  parkingMap.setCityView(); 
-});
-
 /** 
  * Classe principale per la gestione della mappa e dei parcheggi.
  * Inizializza la mappa, carica i dati dei parcheggi e gestisce le interazioni.
@@ -44,11 +37,14 @@ class ParkingMap
     this.setCityView();
 
     this.userMarker   = null; // Marker per la posizione dell'utente
-    this.accuracyCircle = null;
+    this.accuracyCircle = null;    
 
+    this.selectedCoordinates = { lat: null, lng: null };
+    this.selectedMarker = null;
 
-        // Collega il pulsante alla funzione locateUser()
-    document.getElementById('geoBtn').addEventListener('click', () => this.locateUser());
+    setTimeout(() => {
+      this.map.invalidateSize();
+    }, 100);
   }
 
   /*** --- INIZIALIZZAZIONE MAPPA --- ***/
@@ -259,13 +255,12 @@ class ParkingMap
       {
           if (this.mode === 'delete') 
           {
-            // Siamo in modalità 'delete', non mostriamo il popup ma gestiamo il click per eliminare il parcheggio
+            // Siamo in modalità 'delete', non mostriamo il popup ma gestiamo il click per eliminare il parcheggio  
             layer.on('click', () => this.requestDeleteParking(feature));
           } 
-          else if (this.mode === 'edit') 
+          if (this.mode === 'select' && this.map) 
           {
-            // Siamo in modalità 'edit', non mostriamo il popup ma gestiamo il click per modificare il parcheggio
-            layer.on('click', () => this.requestEditParking(feature));
+            this.map.on('click', (e) => this.selectLocation(e));
           }
           else 
           {
@@ -426,9 +421,39 @@ class ParkingMap
     }
   }
 
+  /*** --- GESTIONE MODALITA SELEZIONE COORDINATE PARCHEGGIO --- ***/
 
-   locateUser()
-   {
+  selectLocation(e) 
+ {
+    this.selectedCoordinates.lat = e.latlng.lat;
+    this.selectedCoordinates.lng = e.latlng.lng;
+
+    // Rimuovi marker precedente
+    if (this.selectedMarker != null) {
+      this.map.removeLayer(this.selectedMarker);
+    }
+
+    // Aggiungi nuovo marker
+    this.selectedMarker = L.marker([this.selectedCoordinates.lat, this.selectedCoordinates.lng], {
+      icon: L.divIcon({
+        className: 'custom-marker',
+        html: '<div style="background: #007A33; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 3px 15px rgba(0, 122, 51, 0.4);"></div>',
+        iconSize: [26, 26],
+        iconAnchor: [13, 13]
+      })
+    }).addTo(this.map);
+  }
+
+  
+  getSelectedCoordinates() {
+    return this.selectedCoordinates;
+  }
+
+
+  /*** --- GESTIONE GEOLOCALIZZAZIONE --- ***/
+
+  locateUser()
+  {
     console.log("Richiesta di geolocalizzazione dell'utente...");
   
     if (navigator.geolocation) 
@@ -450,20 +475,23 @@ class ParkingMap
           .openPopup();
 
 
-        this.accuracyCircle = L.circle([lat, lon], {
+        this.accuracyCircle = L.circle([lat, lon], 
+        {
           radius: accuracy,
           color: 'blue',
           fillColor: '#30f',
           fillOpacity: 0.2
         }).addTo(this.map);
-      }, () => {
+      }, () => 
+      {
         alert("Unable to get your location.");
       });
-    } else {
+    } 
+    else
+    {
       alert("Geolocation is not supported by your browser.");
     }
   }
-
 
 
   /*** --- GESTIONE POP-UP PARCHEGGI --- ***/
@@ -614,3 +642,16 @@ class ParkingMap
 
 /*** --- INIZIALIZZO LA MAPPA --- ***/
 const parkingMap = new ParkingMap();
+
+// Listener che gestisce l'evento di ricerca della città
+window.addEventListener("search-city", () => 
+{
+  // legge la città dall'URL aggiornato
+  parkingMap.setCityView(); 
+});
+
+// Collega il pulsante alla funzione locateUser()
+document.getElementById('geoBtn').addEventListener('click', () => 
+{ 
+  parkingMap.locateUser(); 
+});

@@ -240,28 +240,33 @@
         min-height: 400px;
       }
 
-      .search-bar {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        right: 20px;
-        display: flex;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        z-index: 10;
-        backdrop-filter: blur(10px);
-      }
 
-      .search-filter {
-        background: none;
-        border: none;
-        padding: 12px;
-        cursor: pointer;
-        border-right: 1px solid #eee;
-        border-radius: 15px 0 0 15px;
-        transition: background-color 0.3s ease;
-      }
+.search-bar {
+  position: absolute;
+  top: 90px;          /* distanza dall’alto del contenitore */
+  left: 50%;          /* sposta il punto di ancoraggio a metà larghezza */
+  transform: translateX(-50%); /* centra esattamente la barra */
+  z-index: 1000;
+  width: 340px;
+  height: 50px;
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 50px;
+  display: flex;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  overflow: hidden;
+}
+
+.search-filter {
+  background: none;
+  border: none;
+  padding: 0 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
 
       .search-filter:hover {
         background: #f0f0f0;
@@ -270,6 +275,7 @@
       .search-filter svg {
         width: 20px;
         height: 20px;
+        fill: #555;
       }
 
       .search-input {
@@ -398,12 +404,13 @@
       .legend-box {
         position: absolute;
         bottom: 80px;
-        right: 20px;
+        left: 20px;
         background: rgba(255, 255, 255, 0.95);
         padding: 15px;
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         backdrop-filter: blur(10px);
+        z-index: 1000;
       }
 
       .legend-box h4 {
@@ -490,3 +497,32 @@
         color: rgba(88, 87, 87, 0.82);
         font-size: 14px;
       }
+
+
+      /* Bottone geolocalizzazione */
+.geo-button {
+  position: absolute;
+  bottom: 180px;
+  right: 8px;
+  z-index: 1000;
+  background: #fff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 7px rgba(0,0,0,0.18);
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.2s;
+  padding: 0;
+}
+.geo-button:hover {
+  background-color: #f0f0f0;
+}
+.geo-icon {
+  width: 20px;
+  height: 20px;
+}
