@@ -29,7 +29,15 @@ class ParkingMap
 {
   constructor() 
   {
-    this.map          = this.initializeMap();
+    
+    if (this.map) 
+    {
+      this.map.remove(); // Rimuove l'istanza precedente, se esiste
+    }
+
+    this.map = this.initializeMap();
+    console.log('Map initialized', this.map._leaflet_id);
+
     this.parkingLayer = null;
     this.mode         = this.getMode();
     this.filters      = this.getFilters(); 
@@ -40,11 +48,7 @@ class ParkingMap
     this.accuracyCircle = null;    
 
     this.selectedCoordinates = { lat: null, lng: null };
-    this.selectedMarker = null;
-
-    setTimeout(() => {
-      this.map.invalidateSize();
-    }, 100);
+    this.selectedMarker = null;    
   }
 
   /*** --- INIZIALIZZAZIONE MAPPA --- ***/
@@ -77,8 +81,6 @@ class ParkingMap
   /**
    * Ottiene il parametro 'mode' dalla query string dell'URL, fondamentale per capire cosa stiamo facendo.
    * -> 'delete' per la modalità di eliminazione parcheggio 
-   * -> 'edit' per la modalità di modifica parcheggio
-   * -> 'filter' per la modalità di visualizzazione mappa con filtri.
    * -> 'select' per la modalità di selezione coordinate.
    * Se non presente, restituisce null.
    * @returns {string|null} Il valore del parametro 'mode' o null se non presente.
@@ -237,6 +239,18 @@ class ParkingMap
       this.map.removeLayer(this.parkingLayer);
     }
 
+
+    //Modalità 'select' -> aggiungi l'actionListener ai parcheggi
+    if (this.mode === 'select') 
+    {
+      this.map.off('click');  // rimuovi eventuali listener precedenti
+      this.map.on('click', (e) => this.selectLocation(e));
+    } 
+    else
+    {
+      this.map.off('click'); // rimuovi listener se non in select
+    }
+
     // Crea nuovo layer
     this.parkingLayer = L.geoJSON(data, 
     {
@@ -253,43 +267,34 @@ class ParkingMap
       //Gestisce che cosa accade quando clicchiamo su un parcheggio
       onEachFeature: (feature, layer) => 
       {
-          if (this.mode === 'delete') 
-          {
-            // Siamo in modalità 'delete', non mostriamo il popup ma gestiamo il click per eliminare il parcheggio  
-            layer.on('click', () => this.requestDeleteParking(feature));
-          } 
-          if (this.mode === 'select' && this.map) 
-          {
-            this.map.on('click', (e) => this.selectLocation(e));
-          }
-          else 
-          {
-            let coordinates = null;
+        // Modalità 'delete' → non fa uscire il popup ma chiede conferma prima di eliminare il parcheggio
+        if (this.mode === 'delete') 
+        {
+          layer.on('click', () => this.requestDeleteParking(feature));
+          return;
+        }
+        if (this.mode === 'select') 
+        {
+          return;
+        }
+        // Modalità normale → mostra popup
+        let coordinates = null;
 
-            if (feature.geometry && feature.geometry.type === 'Polygon') 
-            {
-              if (
-                Array.isArray(feature.geometry.coordinates) &&
-                feature.geometry.coordinates.length > 0 &&
-                Array.isArray(feature.geometry.coordinates[0]) &&
-                feature.geometry.coordinates[0].length > 0
-              ) 
-              {
-                coordinates = feature.geometry.coordinates[0][0]; // Primo punto del primo anello
-              }
-            } 
-            else if (feature.geometry && feature.geometry.type === 'Point') 
-            {
-              coordinates = feature.geometry.coordinates;
-            }
+        if (feature.geometry?.type === 'Polygon') 
+        {
+          const poly = feature.geometry.coordinates?.[0]?.[0];
+          if (poly) coordinates = poly;
+        } 
+        else if (feature.geometry?.type === 'Point') 
+        {
+          coordinates = feature.geometry.coordinates;
+        }
 
-            if (coordinates) 
-            {
-              const popupContent = this.createParkingPopUp(feature.properties, coordinates);
-              layer.bindPopup(popupContent, { closeButton: false });
-            }
-          }
-
+        if (coordinates) 
+        {
+          const popupContent = this.createParkingPopUp(feature.properties, coordinates);
+          layer.bindPopup(popupContent, { closeButton: false });
+        }
       }
     }).addTo(this.map);
   }
@@ -424,7 +429,7 @@ class ParkingMap
   /*** --- GESTIONE MODALITA SELEZIONE COORDINATE PARCHEGGIO --- ***/
 
   selectLocation(e) 
- {
+  {
     this.selectedCoordinates.lat = e.latlng.lat;
     this.selectedCoordinates.lng = e.latlng.lng;
 
@@ -641,17 +646,22 @@ class ParkingMap
 }
 
 /*** --- INIZIALIZZO LA MAPPA --- ***/
-const parkingMap = new ParkingMap();
+const parkingMapInstance = new ParkingMap();
+
+if (parkingMapInstance.getMode() === 'select') {
+  console.log("hdhhah")
+  window.parkingMap = parkingMapInstance;
+}
 
 // Listener che gestisce l'evento di ricerca della città
 window.addEventListener("search-city", () => 
 {
   // legge la città dall'URL aggiornato
-  parkingMap.setCityView(); 
+  parkingMapInstance.setCityView(); 
 });
 
 // Collega il pulsante alla funzione locateUser()
 document.getElementById('geoBtn').addEventListener('click', () => 
 { 
-  parkingMap.locateUser(); 
+  parkingMapInstance.locateUser(); 
 });

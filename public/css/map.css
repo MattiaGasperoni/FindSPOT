@@ -355,6 +355,7 @@ body {
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
+            text-align: left; /* Allinea il testo a destra */
         }
 
         .parking-popup::before {
@@ -542,6 +543,7 @@ body {
         /* Animazioni */
         .parking-popup {
             animation: slideIn 0.3s ease-out;
+
         }
 
         @keyframes slideIn {

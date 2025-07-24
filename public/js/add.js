@@ -1,45 +1,3 @@
-// Funzione per inizializzare la mappa in modalità selezione
-function initializeMapForSelection() {
-  // Aggiungi mode=select all'URL
-  if (!window.location.search.includes('mode=select')) {
-    console.log('La Mappa entra in modalità selezione');
-    const url = new URL(window.location.href);
-    url.searchParams.set('mode', 'select');
-    window.history.replaceState({}, '', url.toString());
-  }
-  
-  // Aspetta che il container sia visibile prima di inizializzare
-  setTimeout(() => {
-    if (typeof ParkingMap !== 'undefined') {
-      if (parkingMapInstance && parkingMapInstance.map) 
-      {
-        parkingMapInstance.map.remove();
-      }
-
-      // Forza il reset del container DOM
-      const mapContainer = L.DomUtil.get('map');
-      if (mapContainer && mapContainer._leaflet_id) {
-        mapContainer._leaflet_id = null;
-      }
-
-      parkingMapInstance = new ParkingMap('map');
-      
-      // Forza il ridimensionamento della mappa dopo l'inizializzazione
-      setTimeout(() => {
-        if (parkingMapInstance && parkingMapInstance.map) {
-          parkingMapInstance.map.invalidateSize();
-        }
-      }, 200);
-      
-    } else {
-      console.error('ParkingMap class not found');
-    }
-  }, 300);
-}
-
-// Variabili globali per la gestione della mappa
-let parkingMapInstance = null;
-
 // Elementi DOM
 const chooseLocationBtn = document.getElementById('choose-location-btn');
 const mapContainer = document.getElementById('map-container');
@@ -48,26 +6,6 @@ const confirmLocationBtn = document.getElementById('confirm-location-btn');
 const locationDisplay = document.getElementById('location-display');
 const addParkingForm = document.getElementById('addParkingForm');
 
-// Carica il file map.js dinamicamente con callback
-function loadMapScript() {
-  return new Promise((resolve, reject) => {
-    if (typeof ParkingMap !== 'undefined') {
-      resolve();
-      return;
-    }
-    
-    if (!document.querySelector('script[src="./js/map.js"]')) {
-      const script = document.createElement('script');
-      script.src = './js/map.js';
-      script.onload = () => resolve();
-      script.onerror = () => reject(new Error('Failed to load map.js'));
-      document.body.appendChild(script);
-    } else {
-      // Script già presente, aspetta un po' per sicurezza
-      setTimeout(resolve, 100);
-    }
-  });
-}
 
 
 
@@ -75,21 +13,28 @@ function loadMapScript() {
 chooseLocationBtn.addEventListener('click', async function(e) {
   e.preventDefault();
   e.stopPropagation();
-  
-  try {
-    // Carica prima il script
-    await loadMapScript();
-    
-    
-    
-    // Infine inizializza la mappa
-    initializeMapForSelection();
 
-    // Poi mostra il container
+  try {
+    // 1. Mostra il contenitore prima
     mapContainer.style.display = 'block';
     document.body.style.overflow = 'hidden';
-    
-  } catch (error) {
+
+    // Forza modalità eliminazione
+    const script = document.createElement('script');
+    script.src = './js/map.js';
+    document.body.appendChild(script);
+
+    // Appende ?mode=select all'URL (solo per farlo leggere nel JS)
+    if (!window.location.search.includes('mode=select')) 
+    {
+        console.log('La Mappa entra in modalità selezione coordinate');
+        const url = new URL(window.location.href);
+        url.searchParams.set('mode', 'select');
+        window.history.replaceState({}, '', url.toString());
+    }  
+  } 
+  catch (error) 
+  {
     console.error('Error loading map:', error);
     alert('Error loading map. Please try again.');
   }
@@ -98,49 +43,41 @@ chooseLocationBtn.addEventListener('click', async function(e) {
 
 
 
-// Conferma la posizione selezionata
-confirmLocationBtn.addEventListener('click', function() 
-{
-  if (parkingMapInstance && parkingMapInstance.getSelectedCoordinates) 
-  {
-    const coordinates = parkingMapInstance.getSelectedCoordinates();
+
+
+confirmLocationBtn.addEventListener('click', function () {
+  if (window.parkingMap && window.parkingMap.getSelectedCoordinates) {
+    const coordinates = window.parkingMap.getSelectedCoordinates();
     console.log('Selected coordinates:', coordinates);
-    if (coordinates.lat && coordinates.lng) 
-    {
+
+    if (coordinates.lat && coordinates.lng) {
       // Aggiorna i campi nascosti del form
-      document.getElementById('latitude').value  = coordinates.lat;
+      document.getElementById('latitude').value = coordinates.lat;
       document.getElementById('longitude').value = coordinates.lng;
-      
+
       // Aggiorna la visualizzazione nel form
       locationDisplay.textContent = `Location selected: ${coordinates.lat.toFixed(6)}, ${coordinates.lng.toFixed(6)}`;
       locationDisplay.classList.add('location-selected');
-      
-      // Chiudi la mappa
+
+      // Nasconde la mappa
       mapContainer.style.display = 'none';
       document.body.style.overflow = 'auto';
-      
-      // Pulisci l'istanza della mappa
-      if (parkingMapInstance.map) 
-      {
-        parkingMapInstance.map.remove();
-        parkingMapInstance = null;
-      }
-      
-      // Pulisce completamente la query string dall'URL corrente
+
+      // Pulisce la query string (rimuove `?mode=select`)
       const url = new URL(window.location.href);
-      url.search = ''; // Rimuove tutti i parametri
+      url.search = ''; 
       window.history.replaceState({}, '', url.toString());
-    } 
-    else
-    {
+
+      // Non rimuovere la mappa Leaflet! Lascia che resti per riutilizzarla.
+    } else {
       alert('Please select a location on the map first!');
     }
-  } 
-  else 
-  {
-    alert('Please select a location on the map first!');
+
+  } else {
+    alert('Map not loaded correctly. Please try again.');
   }
 });
+
 
 
 // Gestione invio del form principale
@@ -213,10 +150,10 @@ closeMapBtn.addEventListener('click', function()
   document.body.style.overflow = 'auto';
   
   // Pulisci l'istanza della mappa
-  if (parkingMapInstance && parkingMapInstance.map) 
+  if (window.parkingMap && window.parkingMap.map) 
   {
-    parkingMapInstance.map.remove();
-    parkingMapInstance = null;
+    window.parkingMap.map.remove();
+    window.parkingMap = null;
   }
   
   // Pulisce completamente la query string dall'URL corrente
@@ -234,10 +171,10 @@ mapContainer.addEventListener('click', function(e)
     document.body.style.overflow = 'auto';
     
     // Pulisci l'istanza della mappa
-    if (parkingMapInstance && parkingMapInstance.map)
-     {
-      parkingMapInstance.map.remove();
-      parkingMapInstance = null;
+    if (window.parkingMap && window.parkingMap.map) 
+    {
+      window.parkingMap.map.remove();
+      window.parkingMap = null;
     }
     
     // Pulisce completamente la query string dall'URL corrente
@@ -256,10 +193,10 @@ document.addEventListener('keydown', function(e)
     document.body.style.overflow = 'auto';
     
     // Pulisci l'istanza della mappa
-    if (parkingMapInstance && parkingMapInstance.map) 
+    if (window.parkingMap && window.parkingMap.map) 
     {
-      parkingMapInstance.map.remove();
-      parkingMapInstance = null;
+      window.parkingMap.map.remove();
+      window.parkingMap = null;
     }
     
     // Pulisce completamente la query string dall'URL corrente
