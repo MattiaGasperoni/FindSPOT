@@ -112,11 +112,6 @@ addParkingForm.addEventListener('submit', function(e) {
     }
   };
 
-  // Reset form (opzionale)
-        // this.reset();
-        // selectedCoordinates = { lat: null, lng: null };
-        // locationDisplay.textContent = 'Click "Choose the location on the map" to select position';
-        // locationDisplay.classList.remove('location-selected');
 
   fetch('/api/parcheggi', {
     method: 'POST',

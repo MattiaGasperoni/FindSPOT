@@ -29,7 +29,6 @@ class ParkingMap
 {
   constructor() 
   {
-    
     if (this.map) 
     {
       this.map.remove(); // Rimuove l'istanza precedente, se esiste
@@ -81,7 +80,8 @@ class ParkingMap
   /**
    * Ottiene il parametro 'mode' dalla query string dell'URL, fondamentale per capire cosa stiamo facendo.
    * -> 'delete' per la modalità di eliminazione parcheggio 
-   * -> 'select' per la modalità di selezione coordinate.
+   * -> 'select' per la modalità di selezione coordinate
+   * -> 'edit'   per la modalità di modifica parcheggio
    * Se non presente, restituisce null.
    * @returns {string|null} Il valore del parametro 'mode' o null se non presente.
    */
@@ -277,6 +277,20 @@ class ParkingMap
         {
           return;
         }
+        if (this.mode === 'edit') {
+          layer.bindPopup(`
+            <div class="edit-popup-container">
+              <strong class="edit-popup-title">${feature.properties.name || ""}</strong>
+              <button onclick="editParking('${feature.properties['@id']}')" class="edit-popup-button">Modifica</button>
+            </div>
+          `);
+
+          layer.on('click', () => {
+            layer.openPopup();
+          });
+
+          return;
+        }
         // Modalità normale → mostra popup
         let coordinates = null;
 
@@ -453,7 +467,6 @@ class ParkingMap
   getSelectedCoordinates() {
     return this.selectedCoordinates;
   }
-
 
   /*** --- GESTIONE GEOLOCALIZZAZIONE --- ***/
 
@@ -648,8 +661,7 @@ class ParkingMap
 /*** --- INIZIALIZZO LA MAPPA --- ***/
 const parkingMapInstance = new ParkingMap();
 
-if (parkingMapInstance.getMode() === 'select') {
-  console.log("hdhhah")
+if (parkingMapInstance.getMode() === 'select' || parkingMapInstance.getMode() === 'edit') {
   window.parkingMap = parkingMapInstance;
 }
 

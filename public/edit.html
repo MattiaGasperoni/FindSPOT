@@ -14,6 +14,8 @@
   <h2 id="main-title">SELECT A PARKING TO MODIFY</h2>
 
   <div id="map-container">
+
+    <!-- Mappa -->
     <div id="map"></div>
 
     <!-- Barra di ricerca -->
@@ -26,7 +28,8 @@
         <svg fill="#5e5a5a" height="200px" width="200px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-53.72 -53.72 595.84 595.84" xml:space="preserve" stroke="#5e5a5a" stroke-width="7.325999999999999"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M0,203.25c0,112.1,91.2,203.2,203.2,203.2c51.6,0,98.8-19.4,134.7-51.2l129.5,129.5c2.4,2.4,5.5,3.6,8.7,3.6 s6.3-1.2,8.7-3.6c4.8-4.8,4.8-12.5,0-17.3l-129.6-129.5c31.8-35.9,51.2-83,51.2-134.7c0-112.1-91.2-203.2-203.2-203.2 S0,91.15,0,203.25z M381.9,203.25c0,98.5-80.2,178.7-178.7,178.7s-178.7-80.2-178.7-178.7s80.2-178.7,178.7-178.7 S381.9,104.65,381.9,203.25z"></path> </g> </g> </g></svg>
       </button>
     </div>
-    
+
+    <!-- Popup dei Filtri -->
     <div class="filter-choices">
       <h2>Show</h2>
       <label>Only parkings with access:
@@ -58,14 +61,22 @@
       </div>
     </div>
 
+    <!-- Legenda Mappa -->
     <div class="legend-box">
       <h4>Legend</h4>
       <div><span class="legend-color-icon" style="background: #2ecc71"></span> Free</div>
       <div><span class="legend-color-icon" style="background: #f39c12"></span> Customers Only</div>
       <div><span class="legend-color-icon" style="background: #e74c3c"></span> Paid or Unknown</div>
     </div>
+
+    <!-- Bottone  per la geolocalizzazione -->
+    <button id="geoBtn" class="geo-button">
+      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Geo" class="geo-icon">
+    </button>
+
   </div>
 
+  <!-- PopUp per la modifica del parcheggio -->
   <form id="editForm" style="display:none;"> 
     <h3>✏️ Modifica Parcheggio</h3>
     <input type="hidden" id="parkingId" />
@@ -104,177 +115,8 @@
   </form>
 
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="./js/edit.js"></script>
   <script src="./js/filter.js"></script>
   <script src="./js/search.js"></script>
-
-  <script>
-    // Forza modalità eliminazione
-    const script = document.createElement('script');
-    script.src = './js/map.js';
-    document.body.appendChild(script);
-
-    const map = L.map('map').setView([43.727362, 12.636127], 14);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    let parkingLayer;
-    let selectedFeature = null;
-
-    function styleFeature(feature) {
-      const props = feature.properties;
-      if (props.fee === "no") return { color: "#2ecc71", fillOpacity: 0.6 };
-      if (props.access === "customers") return { color: "#f39c12", fillOpacity: 0.6 };
-      return { color: "#e74c3c", fillOpacity: 0.6 };
-    }
-
-    function getIcon(props) {
-      let iconUrl;
-      if (props.fee === "no") iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png";
-      else if (props.access === "customers") iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png";
-      else iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png";
-
-      return L.icon({
-        iconUrl,
-        shadowUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png",
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41],
-      });
-    }
-
-    function loadParkings() {
-      fetch('/api/parcheggi')
-        .then(res => res.json())
-        .then(data => {
-          if (parkingLayer) map.removeLayer(parkingLayer);
-          parkingLayer = L.geoJSON(data, {
-            style: styleFeature,
-            pointToLayer: (feature, latlng) => L.marker(latlng, { icon: getIcon(feature.properties) }),
-            onEachFeature: (feature, layer) => {
-              layer.bindPopup(`
-                <strong>${feature.properties.name || "Parcheggio"}</strong><br>
-                <button onclick="editParking('${feature.properties['@id']}')">Modifica</button>
-              `);
-              layer.on('click', () => {
-                selectedFeature = feature;
-              });
-            }
-          }).addTo(map);
-        });
-    }
-
-    loadParkings();
-
-    // Funzione per mostrare/nascondere elementi quando appare il form
-    function toggleUIElements(showForm) {
-      const elementsToHide = [
-        document.getElementById('main-title'),
-        document.getElementById('map-container'),
-        document.querySelector('.search-bar'),
-        document.querySelector('.filter-choices'),
-        document.querySelector('.legend-box')
-      ];
-
-      elementsToHide.forEach(element => {
-        if (element) {
-          element.style.display = showForm ? 'none' : '';
-        }
-      });
-
-      // Per il map-container dobbiamo gestire il display diversamente
-      if (showForm) {
-        document.getElementById('map-container').style.display = 'none';
-      } else {
-        document.getElementById('map-container').style.display = 'block';
-      }
-    }
-
-    window.editParking = function(id) {
-      // Cerca la feature selezionata in parkingLayer
-      let found = null;
-      parkingLayer.eachLayer(layer => {
-        if (layer.feature.properties['@id'] === id) {
-          found = layer.feature;
-        }
-      });
-      if (!found) {
-        alert('Parcheggio non trovato');
-        return;
-      }
-      selectedFeature = found;
-
-      // Nascondi tutti gli elementi UI e mostra il form
-      toggleUIElements(true);
-      document.getElementById('editForm').style.display = 'block';
-      
-      // Riempi i campi del form
-      document.getElementById('parkingId').value = found.properties['@id'] || '';
-      document.getElementById('name').value = found.properties.name || '';
-      document.getElementById('access').value = found.properties.access || '';
-      document.getElementById('fee').value = found.properties.fee || '';
-      document.getElementById('surface').value = found.properties.surface || '';
-      document.getElementById('message').textContent = '';
-    };
-
-    window.cancelEdit = function() {
-      // Nascondi il form e mostra di nuovo tutti gli elementi UI
-      document.getElementById('editForm').style.display = 'none';
-      toggleUIElements(false);
-      
-      // Reset del form
-      document.getElementById('editForm').reset();
-      document.getElementById('message').textContent = '';
-      selectedFeature = null;
-    };
-
-    document.getElementById('editForm').addEventListener('submit', e => {
-      e.preventDefault();
-      if (!selectedFeature) {
-        alert('Seleziona un parcheggio prima');
-        return;
-      }
-      const id = document.getElementById('parkingId').value;
-      const updatedData = {
-        name: document.getElementById('name').value.trim(),
-        access: document.getElementById('access').value,
-        fee: document.getElementById('fee').value,
-        surface: document.getElementById('surface').value.trim(),
-      };
-
-      fetch(`/api/parcheggi/${encodeURIComponent(id)}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedData)
-      })
-      .then(res => {
-        if (!res.ok) throw new Error('Errore durante l\'aggiornamento');
-        return res.json();
-      })
-      .then(data => {
-        const messageEl = document.getElementById('message');
-        messageEl.style.color = 'green';
-        messageEl.style.background = '#d4edda';
-        messageEl.style.border = '1px solid #c3e6cb';
-        messageEl.textContent = '✅ ' + (data.message || 'Parcheggio aggiornato con successo!');
-        
-        // Ricarica i parcheggi sulla mappa
-        loadParkings();
-        
-        // Nascondi form dopo salvataggio e mostra UI
-        setTimeout(() => {
-          cancelEdit();
-        }, 2000);
-      })
-      .catch(err => {
-        const messageEl = document.getElementById('message');
-        messageEl.style.color = 'red';
-        messageEl.style.background = '#f8d7da';
-        messageEl.style.border = '1px solid #f5c6cb';
-        messageEl.textContent = '❌ ' + err.message;
-      });
-    });
-  </script>
 </body>
 </html>

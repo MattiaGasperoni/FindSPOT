@@ -341,3 +341,75 @@ h2 {
 #editForm input[type="text"]::placeholder {
   color: #aaa;
 }
+
+
+
+/* Bottone geolocalizzazione */
+.geo-button {
+  position: absolute;
+  bottom: 120px;
+  right: 8px;
+  z-index: 402;
+  background: #fff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 7px rgba(0,0,0,0.18);
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.2s;
+  padding: 0;
+}
+.geo-button:hover {
+  background-color: #f0f0f0;
+}
+.geo-icon {
+  width: 20px;
+  height: 20px;
+}
+
+
+/* Popup modifica parcheggi */
+
+.edit-popup-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 15px;
+  color: #222;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 180px;
+  text-align: center;
+  user-select: none;
+}
+
+.edit-popup-title {
+  font-weight: 600;
+  font-size: 18px;
+  color: #1a1a1a;
+  margin-bottom: 14px;
+  letter-spacing: 0.03em;
+}
+
+.edit-popup-button {
+  padding: 8px 18px;
+  background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
+  border: none;
+  border-radius: 24px;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(107, 115, 255, 0.4);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.edit-popup-button:hover {
+  box-shadow: 0 6px 14px rgba(107, 115, 255, 0.7);
+  transform: translateY(-2px);
+}
