@@ -4,9 +4,9 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: 'Open Sans', sans-serif;
-  background: #3a3737;
   color: #222;
 }
+
 /* Corpo e contenitore */
 body {
   display: flex;
@@ -15,25 +15,32 @@ body {
   min-height: 100vh;
   position: relative;
   overflow: hidden;
+  background-image: url('../img/background_gray.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Titolo */
 h2 {
   margin: 65px 0 20px 0;
-  font-weight: 600;
-  font-size: 1.8rem;
+  font-weight: 550;
+  font-size: 3rem;
   color: royalblue;
   text-align: center;
   user-select: none;
   z-index: 1000;
+  font-family: 'Impact', Charcoal, sans-serif;
+  letter-spacing: 0.1em;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
 }
 
 /* Barra di ricerca */
 .search-bar {
   position: absolute;
-  top: 15px;          /* distanza dall’alto del contenitore */
-  left: 50%;          /* sposta il punto di ancoraggio a metà larghezza */
-  transform: translateX(-50%); /* centra esattamente la barra */
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 11;
   width: 340px;
   height: 50px;
@@ -44,7 +51,6 @@ h2 {
   box-shadow: 0 3px 10px rgba(0,0,0,0.12);
   overflow: hidden;
 }
-
 
 /* Bottone filtro (icona) */
 .search-filter {
@@ -89,14 +95,15 @@ h2 {
 .search-icon {
   background: none;
   border: none;
-  padding: 12px 14px;   /* Puoi ridurre 16px a 12px o meno per lasciare più spazio */
+  padding: 12px 14px;
   cursor: pointer;
   transition: transform 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-sizing: content-box; /* assicurati che padding non influisca sul calcolo larghezza */
+  box-sizing: content-box;
 }
+
 .search-icon:hover svg {
   transform: scale(1.1);
 }
@@ -110,7 +117,7 @@ h2 {
 /* Menu filtri a tendina */
 .filter-choices {
   position: fixed;
-  top: 190px; /* sotto barra ricerca */
+  top: 190px;
   right: 40px;
   width: 350px;
   background: white;
@@ -178,11 +185,10 @@ h2 {
   background-color: #005a22;
 }
 
-
 #map-container {
   position: relative;
   width: 70%;
-  height: 80%; /* stessa altezza mappa */
+  height: 80%;
   margin: 0 auto;
 }
 
@@ -195,7 +201,6 @@ h2 {
   z-index: 1;
   border-radius: 20px;
 }
-
 
 /* Box legenda in basso a sinistra */
 .legend-box {
@@ -231,24 +236,23 @@ h2 {
 
 /* Specifici colori legenda */
 .legend-color-icon[style*="2ecc71"] {
-  background: #2ecc71; /* verde */
+  background: #2ecc71;
 }
 
 .legend-color-icon[style*="f39c12"] {
-  background: #f39c12; /* arancio */
+  background: #f39c12;
 }
 
 .legend-color-icon[style*="e74c3c"] {
-  background: #e74c3c; /* rosso */
+  background: #e74c3c;
 }
-
 
 .editBtnHome { 
   position: fixed;
   top: 15px;
   left: 15px;
   z-index: 1100;
-  background-color: royalblue; /* blu reale */
+  background-color: royalblue;
   color: white;
   border: none;
   border-radius: 30px;
@@ -261,26 +265,79 @@ h2 {
 }
 
 .editBtnHome:hover { 
-    background-color: #0056b3; /* blu scuro */
+  background-color: #0056b3;
 }
 
-.form { 
-    max-width: 400px; 
-    margin: 10px auto; 
-    text-align: left;
+/* ========================================
+   STILI DEL FORM MIGLIORATI
+======================================== */
+
+/* Stile migliorato per il form */
+#editForm {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px 40px;
+  margin: 20px auto;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2000;
 }
 
-.label { 
-    display: block; 
-    margin-top: 10px;
+#editForm:hover {
+  transform: translate(-50%, -50%) translateY(-2px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
 }
 
-.input, .select { 
-    width: 100%; 
-    padding: 5px; 
+#editForm h3 {
+  color: royalblue;
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
-.button { 
-    margin-top: 15px; 
-    padding: 8px 15px; 
+/* Stile per le label */
+#editForm label {
+  display: block;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Stile per input e select */
+#editForm input[type="text"],
+#editForm select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
+  background: #fff;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+  box-sizing: border-box;
+}
+
+#editForm input[type="text"]:focus,
+#editForm select:focus {
+  outline: none;
+  border-color: royalblue;
+  box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Placeholder styling */
+#editForm input[type="text"]::placeholder {
+  color: #aaa;
 }
