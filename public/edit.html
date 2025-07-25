@@ -78,37 +78,45 @@
 
   <!-- PopUp per la modifica del parcheggio -->
   <form id="editForm" style="display:none;"> 
-    <h3>✏️ Modifica Parcheggio</h3>
+    <h3> Modify Parking </h3>
     <input type="hidden" id="parkingId" />
     
-    <label>📍 Nome:
-      <input type="text" id="name" placeholder="Inserisci il nome del parcheggio" required />
+    <label> Name:
+      <input type="text" id="name" placeholder="Enter parking name" required />
     </label>
-    
-    <label>🚪 Accesso:
+
+    <label> Access:
       <select id="access">
-        <option value="">-- Seleziona tipo di accesso --</option>
-        <option value="yes">Pubblico</option>
-        <option value="no">Privato</option>
-        <option value="customers">Solo clienti</option>
+        <option value="">-- Select access type --</option>
+        <option value="yes">Public</option>
+        <option value="no">Private</option>
+        <option value="customers">Customers Only</option>
       </select>
     </label>
     
-    <label>💰 Pagamento:
+    <label> Fee:
       <select id="fee">
-        <option value="">-- Seleziona tipo di pagamento --</option>
-        <option value="yes">A pagamento</option>
-        <option value="no">Gratuito</option>
+        <option value="">-- Select fee type --</option>
+        <option value="yes">Paid</option>
+        <option value="no">Free</option>
       </select>
     </label>
     
-    <label>🏗️ Superficie:
-      <input type="text" id="surface" placeholder="es. asfalto, erba, pietra..." />
+    <label> Surface:
+      <select id="surfaceType">
+        <option value="">-- Select surface type --</option>
+        <option value="asphalt">Asphalt</option>
+        <option value="gravel">Gravel</option>
+        <option value="paved">Paved</option>
+        <option value="unpaved">Unpaved</option>
+        <option value="dirt">Dirt</option>
+        <option value="grass">Grass</option>
+      </select>
     </label>
     
     <div class="form-buttons">
-      <button type="button" class="btn-cancel" onclick="cancelEdit()">❌ Annulla</button>
-      <button type="submit" class="btn-submit">✅ Salva modifiche</button>
+      <button type="button" class="btn-cancel" onclick="cancelEdit()">❌ Cancel</button>
+      <button type="submit" class="btn-submit">✅ Save Changes</button>
     </div>
     
     <div id="message"></div>

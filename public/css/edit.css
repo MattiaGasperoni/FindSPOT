@@ -298,10 +298,12 @@ h2 {
 
 #editForm h3 {
   color: royalblue;
-  font-size: 1.8rem;
+  font-size: 2rem;
   margin-bottom: 25px;
   text-align: center;
-  font-weight: 600;
+  font-weight: 500;
+  font-family: 'Impact', Charcoal, sans-serif;
+  letter-spacing: 0.05em;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
@@ -412,4 +414,44 @@ h2 {
 .edit-popup-button:hover {
   box-shadow: 0 6px 14px rgba(107, 115, 255, 0.7);
   transform: translateY(-2px);
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  background-color: #ff3f3f;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 3px 7px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #cc0000;
+}
+
+.btn-submit {
+  background-color: #007A33;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  /* align-items: center; */
+  box-shadow: 0 3px 7px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #005a22;
 }
