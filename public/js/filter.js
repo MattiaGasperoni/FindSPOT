@@ -48,6 +48,29 @@ document.addEventListener("DOMContentLoaded", () => {
     if (free) params.append("free", "yes");
     if (paid) params.append("paid", "yes");
 
-    window.location.href = `map.html?${params.toString()}`;
+    
+    // Se siamo nella home (index.html)
+    if (window.location.pathname.includes("index.html")) 
+    {
+      // Dalla home: vai su map.html con parametro city
+      window.location.href = `map.html?${params.toString()}`;
+    } 
+    else 
+    {
+      console.log("dio slabo");
+      // Siamo in altre pagine (map.html, remove.html, etc.) aggiorniamo l'URL
+      const newUrl = new URL(window.location.href);
+      newUrl.search = params.toString();
+      window.history.pushState({}, "", newUrl);
+
+      // Emetti evento per far aggiornare la mappa
+      window.dispatchEvent(new CustomEvent("filter-map-view"));
+      
+      // Pulisci l'input dopo la ricerca
+      const inputText = document.querySelector(".search-input"); // Assicurati che questa variabile sia definita
+        if (inputText) {
+            inputText.value = "";
+        }
+    }
   }
 });

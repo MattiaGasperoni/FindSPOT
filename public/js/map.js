@@ -82,6 +82,7 @@ class ParkingMap
    * -> 'delete' per la modalità di eliminazione parcheggio 
    * -> 'select' per la modalità di selezione coordinate
    * -> 'edit'   per la modalità di modifica parcheggio
+   * -> 'filter' modalita di visione della mappa
    * Se non presente, restituisce null.
    * @returns {string|null} Il valore del parametro 'mode' o null se non presente.
    */
@@ -463,6 +464,7 @@ class ParkingMap
     }).addTo(this.map);
   }
 
+
   
   getSelectedCoordinates() {
     return this.selectedCoordinates;
@@ -511,6 +513,67 @@ class ParkingMap
     }
   }
 
+  /*** --- GESTIONE VISTA CON FILTRI --- ***/
+
+  updateInternalFilters(urlFilters) 
+  {
+  // Aggiorna i filtri interni dell'oggetto 
+  this.filters = this.getFilters();
+  }
+  
+  
+async loadFilteredParkingData(urlFilters) 
+{
+  try 
+  {
+    const response = await fetch('/api/parcheggi');
+    const data = await response.json();
+
+    let filteredData = data;
+
+    // Applica i filtri dai parametri URL (simile alla logica esistente)
+    if (this.mode === 'filter') {
+      filteredData.features = data.features.filter((f) => {
+        const p = f.properties;
+
+        // Applica filtri dall'URL
+        if (urlFilters.access && p.access !== urlFilters.access) return false;
+        if (urlFilters.surface && p.surface !== urlFilters.surface) return false;
+        if (urlFilters.free && p.fee !== 'no') return false;
+        if (urlFilters.paid && p.fee !== 'yes') return false;
+
+        return true;
+      });
+    }
+
+    // Aggiorna anche i filtri interni dell'oggetto per mantenere coerenza
+    this.updateInternalFilters(urlFilters);
+    
+    // Usa il metodo esistente per aggiornare la mappa
+    this.updateParkingMap(filteredData);
+        
+  } catch (error) {
+    console.error('Error loading parkings:', error);
+    throw error;
+  }
+}
+
+ async updateMapView() 
+  {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  try {
+    // Prima imposta la vista sulla città
+    await this.setCityView();
+    
+    // Poi applica i filtri e aggiorna la mappa
+    await this.loadFilteredParkingData();
+    
+  } catch (error) {
+    console.error('Errore durante l\'aggiornamento della mappa:', error);
+    alert('Errore durante l\'aggiornamento della visualizzazione della mappa.');
+  }
+}
 
   /*** --- GESTIONE POP-UP PARCHEGGI --- ***/
 
@@ -670,6 +733,15 @@ window.addEventListener("search-city", () =>
 {
   // legge la città dall'URL aggiornato
   parkingMapInstance.setCityView(); 
+});
+
+// Listener che gestisce l'evento di visualizzazione della mappa con filtri
+window.addEventListener("filter-map-view", () => 
+{
+  console.log("Richiesta Aggiornamento mappa ricevuta");
+
+  // legge la città dall'URL aggiornato
+  parkingMapInstance.updateMapView(); 
 });
 
 // Collega il pulsante alla funzione locateUser()
