@@ -18,7 +18,8 @@ let selectedFeature = null;
 
 
 // Funzione per mostrare/nascondere elementi quando appare il form
-function toggleUIElements(showForm) {
+function toggleUIElements(showForm) 
+{
     const elementsToHide = [
     document.getElementById('main-title'),
     document.getElementById('map-container'),
@@ -41,6 +42,7 @@ function toggleUIElements(showForm) {
     }
 }
 
+// Metodo globagle chiamato quando clicchiamo sul pup di un parcheggio in mode=edit
 window.editParking = function(id) 
 {
   // Controllo per verificare l'esistenza della mappa e dei layer
@@ -77,7 +79,7 @@ window.editParking = function(id)
   document.getElementById('name').value = found.properties.name || '';
   document.getElementById('access').value = found.properties.access || '';
   document.getElementById('fee').value = found.properties.fee || '';
-  document.getElementById('surface').value = found.properties.surface || '';
+  document.getElementById('surfaceType').value = found.properties.surface || '';
   document.getElementById('message').textContent = '';
 };
 
@@ -94,7 +96,9 @@ window.cancelEdit = function()
     selectedFeature = null;
 };
 
-document.getElementById('editForm').addEventListener('submit', e => {
+document.getElementById('editForm').addEventListener('submit', e => 
+  {
+    console.log("cliccato il bottone submit")
     e.preventDefault();
     if (!selectedFeature) {
     alert('Seleziona un parcheggio prima');
@@ -105,7 +109,7 @@ document.getElementById('editForm').addEventListener('submit', e => {
     name: document.getElementById('name').value.trim(),
     access: document.getElementById('access').value,
     fee: document.getElementById('fee').value,
-    surface: document.getElementById('surface').value.trim(),
+    surface: document.getElementById('surfaceType').value.trim(),
     };
 
     fetch(`/api/parcheggi/${encodeURIComponent(id)}`, {
@@ -124,15 +128,13 @@ document.getElementById('editForm').addEventListener('submit', e => {
     messageEl.style.border = '1px solid #c3e6cb';
     messageEl.textContent = '✅ ' + (data.message || 'Parcheggio aggiornato con successo!');
     
-    // Ricarica i parcheggi sulla mappa
-    loadParkings();
     
     // Nascondi form dopo salvataggio e mostra UI
     setTimeout(() => {
         cancelEdit();
     }, 2000);
     })
-    .catch(err => {
+    .catch(err =>{
     const messageEl = document.getElementById('message');
     messageEl.style.color = 'red';
     messageEl.style.background = '#f8d7da';
