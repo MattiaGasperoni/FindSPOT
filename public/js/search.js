@@ -11,9 +11,9 @@ document.addEventListener("DOMContentLoaded", () =>
   {
     const city = inputText.value.trim();
     if (!city) return;
-
+    const pathname = window.location.pathname;
     // Se siamo nella home (index.html)
-    if (window.location.pathname.includes("index.html")) 
+    if (pathname === "/" || pathname.endsWith("/index.html")) 
     {
       // Dalla home: vai su map.html con parametro city
       window.location.href = `map.html?city=${encodeURIComponent(city)}`;
@@ -25,11 +25,14 @@ document.addEventListener("DOMContentLoaded", () =>
       newUrl.searchParams.set("city", city);
       window.history.pushState({}, "", newUrl);
 
-      // Emetti evento per far aggiornare la mappa
+      // Manda un evento per notificare la mappa che deve aggiornarsi
       window.dispatchEvent(new CustomEvent("search-city"));
       
       // Pulisci l'input dopo la ricerca
-      inputText.value = "";
+      if (inputText) 
+      {
+        inputText.value = "";
+      }
     }
   });
 

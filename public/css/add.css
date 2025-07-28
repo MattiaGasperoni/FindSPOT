@@ -260,243 +260,246 @@
 .search-filter {
   background: none;
   border: none;
-  padding: 0 20px;
+  padding: 12px 16px;
   cursor: pointer;
+  transition: transform 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease;
 }
 
-      .search-filter:hover {
-        background: #f0f0f0;
-      }
 
-      .search-filter svg {
-        width: 20px;
-        height: 20px;
-        fill: #555;
-      }
+.search-filter:hover svg {
+  transform: scale(1.1);
+}
 
-      .search-input {
-        flex: 1;
-        border: none;
-        padding: 12px;
-        font-size: 16px;
-        outline: none;
-        background: transparent;
-      }
+.search-filter svg {
+  width: 24px;
+  height: 24px;
+  fill: #000000;
+}
 
-      .search-icon {
-        background: none;
-        border: none;
-        padding: 12px;
-        cursor: pointer;
-        border-radius: 0 15px 15px 0;
-        transition: background-color 0.3s ease;
-      }
+.search-input {
+  flex: 1;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  font-family: 'Open Sans', sans-serif;
+}
 
-      .search-icon:hover {
-        background: #f0f0f0;
-      }
+.search-icon {
+  background: none;
+  border: none;
+  margin-right: 100px;
+  cursor: pointer;
+  border-radius: 0 15px 15px 0;
+  transition: background-color 0.3s ease;
+}
 
-      .search-icon svg {
-        width: 20px;
-        height: 20px;
-      }
+.search-icon:hover {
+  transform: scale(1.1);
+}
 
-      .filter-choices {
-        display: none;
-        position: absolute;
-        top: 70px;
-        left: 20px;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 15px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        padding: 20px;
-        width: 300px;
-        z-index: 20;
-        backdrop-filter: blur(10px);
-      }
+.search-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: #000000;
+}
 
-      .filter-choices.active {
-        display: block;
-      }
+.filter-choices {
+  display: none;
+  position: absolute;
+  top: 145px;
+  left: 630px;
+  background: white;
+  border-radius:  32px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  width: 300px;
+  z-index: 9999;
+}
 
-      .filter-title {
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 15px;
-        color: #007A33;
-      }
+.filter-choices.visible {
+    display: block;
+    animation: fadeInUp 0.3s ease-out;
+}
 
-      .filter-choices label {
-        display: block;
-        margin-bottom: 15px;
-        color: #333;
-        font-weight: 600;
-        font-size: 0.95rem;
-      }
+.filter-title {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  color: #2c3e50;
+  font-weight: 600;
+}
 
-      .filter-choices select {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid rgba(105, 105, 105, 0.3);
-        border-radius: 10px;
-        margin-top: 5px;
-        background: #f9f9f9;
-        outline: none;
-        transition: border-color 0.3s ease;
-      }
+.filter-choices label {
+    display: block;
+    text-align: left;       /* Allinea il contenuto a sinistra */
+    margin-bottom: 16px;
+    color: #34495e;
+    font-weight: 500;
+    cursor: pointer;
+}
 
-      .filter-choices select:focus {
-        border-color: #007A33;
-        background-color: #fff;
-      }
+.filter-choices select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(105, 105, 105, 0.3);
+  border-radius: 10px;
+  margin-top: 5px;
+  background: #f9f9f9;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
 
-      .checkbox-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 5px;
-      }
+.filter-choices select:focus {
+  border-color: #007A33;
+  background-color: #fff;
+}
 
-      .checkbox-wrapper input[type="checkbox"] {
-        width: auto;
-        accent-color: #007A33;
-      }
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
 
-      .filter-buttons {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
-      }
+.checkbox-wrapper input[type="checkbox"] {
+  width: auto;
+  accent-color: #007A33;
+}
 
-      .filter-buttons button {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-      }
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
 
-      #apply-filters {
-        background: #007A33;
-        color: white;
-      }
+.filter-buttons button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
 
-      #apply-filters:hover {
-        background: #005B27;
-      }
+#apply-filters {
+  background: #007A33;
+  color: white;
+}
 
-      #clear-filters {
-        background: #e74c3c;
-        color: white;
-      }
+#apply-filters:hover {
+  background: #005B27;
+}
 
-      #clear-filters:hover {
-        background: #c0392b;
-      }
+#clear-filters {
+  background: #e74c3c;
+  color: white;
+}
 
-      .legend-box {
-        position: absolute;
-        bottom: 80px;
-        left: 20px;
-        background: rgba(255, 255, 255, 0.95);
-        padding: 15px;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        backdrop-filter: blur(10px);
-        z-index: 1000;
-      }
+#clear-filters:hover {
+  background: #c0392b;
+}
 
-      .legend-box h4 {
-        margin: 0 0 10px 0;
-        font-size: 16px;
-        color: #007A33;
-        font-weight: 700;
-      }
+.legend-box {
+  position: absolute;
+  bottom: 80px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
 
-      .legend-box div {
-        display: flex;
-        align-items: center;
-        margin-bottom: 5px;
-        font-size: 14px;
-        color: #333;
-        font-weight: 500;
-      }
+.legend-box h4 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #007A33;
+  font-weight: 700;
+}
 
-      .legend-color-icon {
-        width: 12px;
-        height: 12px;
-        border-radius: 3px;
-        margin-right: 8px;
-      }
+.legend-box div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
 
-      .map-actions {
-        padding: 15px 20px;
-        background: #f8f9fa;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-shrink: 0;
-        border-top: 1px solid #e9ecef;
-      }
+.legend-color-icon {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 8px;
+}
 
-      .selected-location {
-        color: #666;
-        font-size: 14px;
-        font-weight: 500;
-      }
+.map-actions {
+  padding: 15px 20px;
+  background: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  border-top: 1px solid #e9ecef;
+}
 
-      .confirm-location {
-        background: #007A33;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-        transition: background-color 0.3s ease;
-      }
+.selected-location {
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+}
 
-      .confirm-location:hover {
-        background: #005B27;
-      }
+.confirm-location {
+  background: #007A33;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
 
-      .location-marker {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        background: #007A33;
-        border: 3px solid white;
-        border-radius: 50%;
-        box-shadow: 0 3px 15px rgba(0, 122, 51, 0.4);
-        z-index: 100;
-        transform: translate(-50%, -50%);
-        animation: pulse 2s infinite;
-      }
+.confirm-location:hover {
+  background: #005B27;
+}
 
-      @keyframes pulse {
-        0% {
-          box-shadow: 0 3px 15px rgba(0, 122, 51, 0.4);
-        }
-        50% {
-          box-shadow: 0 3px 20px rgba(0, 122, 51, 0.6);
-        }
-        100% {
-          box-shadow: 0 3px 15px rgba(0, 122, 51, 0.4);
-        }
-      }
+.location-marker {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #007A33;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 3px 15px rgba(0, 122, 51, 0.4);
+  z-index: 100;
+  transform: translate(-50%, -50%);
+  animation: pulse 2s infinite;
+}
 
-      .message {
-        color: rgba(88, 87, 87, 0.82);
-        font-size: 14px;
-      }
+@keyframes pulse {
+  0% {
+    box-shadow: 0 3px 15px rgba(0, 122, 51, 0.4);
+  }
+  50% {
+    box-shadow: 0 3px 20px rgba(0, 122, 51, 0.6);
+  }
+  100% {
+    box-shadow: 0 3px 15px rgba(0, 122, 51, 0.4);
+  }
+}
+
+.message {
+  color: rgba(88, 87, 87, 0.82);
+  font-size: 14px;
+}
 
 
       /* Bottone geolocalizzazione */

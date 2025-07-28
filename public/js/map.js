@@ -35,7 +35,7 @@ class ParkingMap
     }
 
     this.map = this.initializeMap();
-    console.log('Map initialized', this.map._leaflet_id);
+    console.log('Mappa con ID: ' + this.map._leaflet_id + ' inizializzata con successo');
 
     this.parkingLayer = null;
     this.mode         = this.getMode();
@@ -43,7 +43,7 @@ class ParkingMap
     this.loadParkingData();
     this.setCityView();
 
-    this.userMarker   = null; // Marker per la posizione dell'utente
+    this.userMarker     = null; // Marker per la posizione dell'utente
     this.accuracyCircle = null;    
 
     this.selectedCoordinates = { lat: null, lng: null };
@@ -112,9 +112,6 @@ class ParkingMap
   {
     try 
     {
-      console.log("Modalità:", this.mode);
-      console.log("Filtri attivi:", this.filters);
-
       const response = await fetch('/api/parcheggi');
       const data = await response.json();
 
@@ -171,10 +168,6 @@ class ParkingMap
       {
         console.error("Coordinate non valide:", data[0]);
       }
-
-      console.log("Citta da URL:", city);
-      console.log("Risposta Nominatim:", data);
-
     } 
     catch (error) 
     {
@@ -539,11 +532,12 @@ async updateMapView()
 
     // Vista sulla città
     await this.setCityView();
-    console.log("Città centrata sulla mappa");
 
     // Carica dati filtrati
     await this.loadParkingData();
-    console.log("Dati parcheggi aggiornati con filtri:", this.filters);
+
+    // Mostra un messaggio di successo
+    console.log('Mappa con ID: ' + this.map._leaflet_id + ' aggiornata con successo');
   } 
   catch (error) 
   {
@@ -715,8 +709,6 @@ window.addEventListener("search-city", () =>
 // Listener che gestisce l'evento di visualizzazione della mappa con filtri
 window.addEventListener("filter-map-view", () => 
 {
-  console.log("Richiesta Aggiornamento mappa ricevuta");
-
   // legge l'URL e aggiorna la mappa con i filtri
   parkingMapInstance.updateMapView(); 
 });
