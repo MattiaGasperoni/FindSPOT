@@ -100,8 +100,8 @@ class ParkingMap
   {
     const urlParams = new URLSearchParams(window.location.search);
     return {
-      access:  urlParams.get('access'),
-      surface: urlParams.get('surface'),
+      access:  urlParams.get('access') || "",
+      surface: urlParams.get('surface') || "",
       free:    urlParams.get('free') === 'yes',
       paid:    urlParams.get('paid') === 'yes'
     };
@@ -112,12 +112,16 @@ class ParkingMap
   {
     try 
     {
+      console.log("Modalità:", this.mode);
+      console.log("Filtri attivi:", this.filters);
+
       const response = await fetch('/api/parcheggi');
       const data = await response.json();
 
       let filteredData = data;
 
-      if (this.mode === 'filter') {
+      if (this.mode === 'filter')
+      {
         filteredData.features = data.features.filter((f) => 
         {
           const p = f.properties;
@@ -144,22 +148,33 @@ class ParkingMap
   {
     const city = new URLSearchParams(window.location.search).get("city") || CONFIG.DEFAULT_CITY;
     
+    if (!city) 
+    {
+      console.warn("Parametro city non trovato. Uso città predefinita.");
+    }
     try 
     {
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`
       );
+
       const data = await response.json();
       
-      if (data.length > 0) 
+      const lat = parseFloat(data[0].lat);
+      const lon = parseFloat(data[0].lon);
+
+      if (!isNaN(lat) && !isNaN(lon)) 
       {
-        const { lat, lon } = data[0];
-        this.map.setView([parseFloat(lat), parseFloat(lon)], CONFIG.DEFAULT_ZOOM);
+        this.map.setView([lat, lon], CONFIG.DEFAULT_ZOOM);
       } 
-      else
+      else 
       {
-        alert('City not found.');
+        console.error("Coordinate non valide:", data[0]);
       }
+
+      console.log("Citta da URL:", city);
+      console.log("Risposta Nominatim:", data);
+
     } 
     catch (error) 
     {
@@ -514,62 +529,24 @@ class ParkingMap
   }
 
   /*** --- GESTIONE VISTA CON FILTRI --- ***/
-
-  updateInternalFilters(urlFilters) 
-  {
-  // Aggiorna i filtri interni dell'oggetto 
-  this.filters = this.getFilters();
-  }
-  
-  
-async loadFilteredParkingData(urlFilters) 
+async updateMapView() 
 {
+   
   try 
   {
-    const response = await fetch('/api/parcheggi');
-    const data = await response.json();
+    this.mode    = this.getMode();
+    this.filters = this.getFilters(); 
 
-    let filteredData = data;
-
-    // Applica i filtri dai parametri URL (simile alla logica esistente)
-    if (this.mode === 'filter') {
-      filteredData.features = data.features.filter((f) => {
-        const p = f.properties;
-
-        // Applica filtri dall'URL
-        if (urlFilters.access && p.access !== urlFilters.access) return false;
-        if (urlFilters.surface && p.surface !== urlFilters.surface) return false;
-        if (urlFilters.free && p.fee !== 'no') return false;
-        if (urlFilters.paid && p.fee !== 'yes') return false;
-
-        return true;
-      });
-    }
-
-    // Aggiorna anche i filtri interni dell'oggetto per mantenere coerenza
-    this.updateInternalFilters(urlFilters);
-    
-    // Usa il metodo esistente per aggiornare la mappa
-    this.updateParkingMap(filteredData);
-        
-  } catch (error) {
-    console.error('Error loading parkings:', error);
-    throw error;
-  }
-}
-
- async updateMapView() 
-  {
-  const urlParams = new URLSearchParams(window.location.search);
-  
-  try {
-    // Prima imposta la vista sulla città
+    // Vista sulla città
     await this.setCityView();
-    
-    // Poi applica i filtri e aggiorna la mappa
-    await this.loadFilteredParkingData();
-    
-  } catch (error) {
+    console.log("Città centrata sulla mappa");
+
+    // Carica dati filtrati
+    await this.loadParkingData();
+    console.log("Dati parcheggi aggiornati con filtri:", this.filters);
+  } 
+  catch (error) 
+  {
     console.error('Errore durante l\'aggiornamento della mappa:', error);
     alert('Errore durante l\'aggiornamento della visualizzazione della mappa.');
   }
@@ -740,7 +717,7 @@ window.addEventListener("filter-map-view", () =>
 {
   console.log("Richiesta Aggiornamento mappa ricevuta");
 
-  // legge la città dall'URL aggiornato
+  // legge l'URL e aggiorna la mappa con i filtri
   parkingMapInstance.updateMapView(); 
 });
 

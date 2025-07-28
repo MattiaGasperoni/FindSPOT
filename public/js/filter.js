@@ -24,21 +24,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  applyFiltersBtn.addEventListener("click", applyFilters);
+  applyFiltersBtn.addEventListener("click", () => {applyFilters()});
 
   clearFiltersBtn.addEventListener("click", () => {
+    // 1. Svuota i campi input
     document.getElementById("access-type").value = "";
     document.getElementById("surface-type").value = "";
     document.getElementById("free").checked = false;
     document.getElementById("paid").checked = false;
+
+    // 2. Aggiorna la URL mantenendo solo "mode=filter"
+    const newParams = new URLSearchParams();
+    newParams.set("mode", "filter");
+    
+    const newUrl = `${window.location.pathname}?${newParams.toString()}`;
+    window.history.pushState({}, "", newUrl);
+
+    // 3. Chiude il pannello filtri
+    document.querySelector(".filter-choices")?.classList.remove("visible");
+
+    // 4. Forza aggiornamento della mappa
+    window.dispatchEvent(new CustomEvent("filter-map-view"));
   });
 
-  function applyFilters() {
-    const city = document.querySelector(".search-input").value.trim();
-    const access = document.getElementById("access-type").value;
+  function applyFilters() 
+  {
+    console.log("Bottone Apply Filter cliccato");
+    const city    = document.querySelector(".search-input").value.trim();
+    const access  = document.getElementById("access-type").value;
     const surface = document.getElementById("surface-type").value;
-    const free = document.getElementById("free").checked;
-    const paid = document.getElementById("paid").checked;
+    const free    = document.getElementById("free").checked;
+    const paid    = document.getElementById("paid").checked;
 
     const params = new URLSearchParams();
     params.set("mode", "filter");
@@ -48,16 +64,18 @@ document.addEventListener("DOMContentLoaded", () => {
     if (free) params.append("free", "yes");
     if (paid) params.append("paid", "yes");
 
-    
+
+    const pathname = window.location.pathname;
     // Se siamo nella home (index.html)
-    if (window.location.pathname.includes("index.html")) 
+    if (pathname === "/" || pathname.endsWith("/index.html")) 
     {
+      console.log("Siamo in homepage andiamo in map.html");
       // Dalla home: vai su map.html con parametro city
       window.location.href = `map.html?${params.toString()}`;
-    } 
+    }
     else 
     {
-      console.log("dio slabo");
+      console.log("Ci troviamo in un pagina aggiorniamo la mappa");
       // Siamo in altre pagine (map.html, remove.html, etc.) aggiorniamo l'URL
       const newUrl = new URL(window.location.href);
       newUrl.search = params.toString();
@@ -72,5 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
             inputText.value = "";
         }
     }
+
+    // Chiude il pannello filtri
+    document.querySelector(".filter-choices")?.classList.remove("visible");
   }
 });
