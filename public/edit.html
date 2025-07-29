@@ -30,34 +30,50 @@
     </div>
 
     <!-- Popup dei Filtri -->
-    <div class="filter-choices">
+    <div class="filter-choices" id="filterPopup">
       <div class="filter-title">Filters</div>
-      <label>Only parkings with access:
-        <select id="access-type">
-          <option value="">Select</option>
-          <option value="yes">Public</option>
-          <option value="no">Private</option>
-          <option value="customers">Customers Only</option>
-        </select>
+    
+      <label>
+          Access type:
+          <select id="access-type">
+              <option value="">Select</option>
+              <option value="yes">Public</option>
+              <option value="no">Private</option>
+              <option value="customers">Customers only</option>
+          </select>
       </label>
-      <label>Only free parkings:
-        <input type="checkbox" id="free" />
+      
+      <label>
+          <div class="checkbox-wrapper">
+              <input type="checkbox" id="free" />
+              Free parking only
+          </div>
       </label>
-      <label>Only paid parkings:
-        <input type="checkbox" id="paid" />
+      
+      <label>
+          <div class="checkbox-wrapper">
+              <input type="checkbox" id="paid" />
+              Paid parking only
+          </div>
       </label>
-      <label>Only parkings with surface:
+      
+      <label>
+        Surface type:
         <select id="surface-type">
-          <option value="">Select</option>
-          <option value="grass">Grass</option>
-          <option value="paving_stones">Paving Stones</option>
-          <option value="asphalt">Asphalt</option>
-          <option value="paved">Paved</option>
+            <option value="">Select</option>
+            <option value="asphalt">Asphalt</option>
+            <option value="gravel">Gravel</option>
+            <option value="paved">Paved</option>
+            <option value="unpaved">Unpaved</option>
+            <option value="dirt">Dirt</option>
+            <option value="grass">Grass</option>
         </select>
       </label>
+
+      
       <div class="filter-buttons">
-        <button id="apply-filters">Apply Filters</button>
-        <button id="clear-filters">Clear Filters</button>
+          <button id="apply-filters">Apply Filters</button>
+          <button id="clear-filters">Clear All</button>
       </div>
     </div>
 
