@@ -18,11 +18,13 @@ chooseLocationBtn.addEventListener('click', async function(e) {
     // 1. Mostra il contenitore prima
     mapContainer.style.display = 'block';
     document.body.style.overflow = 'hidden';
-
-    // Forza modalità eliminazione
-    const script = document.createElement('script');
-    script.src = './js/map.js';
-    document.body.appendChild(script);
+    
+    if (!document.querySelector('script[src="./js/map.js"]'))
+    {
+      const script = document.createElement('script');
+      script.src = './js/map.js';
+      document.body.appendChild(script);
+    }
 
     // Appende ?mode=select all'URL (solo per farlo leggere nel JS)
     if (!window.location.search.includes('mode=select')) 
