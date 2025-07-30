@@ -266,6 +266,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  display: none;
 }
 
 
@@ -283,6 +284,7 @@
   flex: 1;
   padding: 12px 30px;
   font-size: 1rem;
+
   border: none;
   outline: none;
   font-family: 'Open Sans', sans-serif;
@@ -291,7 +293,7 @@
 .search-icon {
   background: none;
   border: none;
-  margin-right: 100px;
+  margin-right: 10px;
   cursor: pointer;
   border-radius: 0 15px 15px 0;
   transition: background-color 0.3s ease;
