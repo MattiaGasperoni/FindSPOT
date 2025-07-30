@@ -34,8 +34,7 @@ document.addEventListener("DOMContentLoaded", () =>
     // 1. Svuota i campi input
     document.getElementById("access-type").value = "";
     document.getElementById("surface-type").value = "";
-    document.getElementById("free").checked = false;
-    document.getElementById("paid").checked = false;
+    document.getElementById("fee-type").value = "";
 
     // 2. Aggiorna la URL mantenendo solo "mode=filter"
     const newParams = new URLSearchParams();
@@ -63,8 +62,7 @@ document.addEventListener("DOMContentLoaded", () =>
     const city    = document.querySelector(".search-input").value.trim();
     const access  = document.getElementById("access-type").value;
     const surface = document.getElementById("surface-type").value;
-    const free    = document.getElementById("free").checked;
-    const paid    = document.getElementById("paid").checked;
+    const fee     = document.getElementById("fee-type").value;
 
     // Costruisce la query string con i parametrei dei filtri
     const params = new URLSearchParams();
@@ -72,8 +70,7 @@ document.addEventListener("DOMContentLoaded", () =>
     if (city) params.append("city", city);
     if (access) params.append("access", access);
     if (surface) params.append("surface", surface);
-    if (free) params.append("free", "yes");
-    if (paid) params.append("paid", "yes");
+    if (fee) params.append("fee", fee);
 
     const pathname = window.location.pathname;
 

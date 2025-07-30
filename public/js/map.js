@@ -102,8 +102,7 @@ class ParkingMap
     return {
       access:  urlParams.get('access') || "",
       surface: urlParams.get('surface') || "",
-      free:    urlParams.get('free') === 'yes',
-      paid:    urlParams.get('paid') === 'yes'
+      fee:     urlParams.get('fee') || "",
     };
   }
 
@@ -125,8 +124,7 @@ class ParkingMap
 
           if (this.filters.access && p.access !== this.filters.access) return false;
           if (this.filters.surface && p.surface !== this.filters.surface) return false;
-          if (this.filters.free && p.fee !== 'no') return false;
-          if (this.filters.paid && p.fee !== 'yes') return false;
+          if (this.filters.fee && p.fee !== this.filters.fee) return false;
 
           return true;
         });
@@ -532,9 +530,11 @@ async updateMapView()
 
     // Vista sulla città
     await this.setCityView();
+    console.log('Città aggiornata con successo');
 
     // Carica dati filtrati
     await this.loadParkingData();
+    console.log('Dati parcheggio caricati con successo');
 
     // Mostra un messaggio di successo
     console.log('Mappa con ID: ' + this.map._leaflet_id + ' aggiornata con successo');
