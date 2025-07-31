@@ -290,7 +290,7 @@ class ParkingMap
               <strong class="edit-popup-title">${feature.properties.name || ""}</strong>
               <button onclick="editParking('${feature.properties['@id']}')" class="edit-popup-button">Modify</button>
             </div>
-          `);
+          `, { closeButton: false });
 
           layer.on('click', () => {
             layer.openPopup();
