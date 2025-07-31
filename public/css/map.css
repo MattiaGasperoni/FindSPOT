@@ -492,6 +492,11 @@ body {
             background: rgba(239, 68, 68, 0.1);
             color: #991b1b;
         }
+        .badge.unknown {
+            background-color: #dcdcdc;
+            color: #555;
+            text-transform: none; /* Mantiene "Not specified" con maiuscole/minuscole corrette */
+        }
 
         /* STILI PER IL BOTTONE NAVIGAZIONE - QUESTA ERA LA PARTE MANCANTE */
         .parking-actions {

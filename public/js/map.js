@@ -594,11 +594,12 @@ async updateMapView()
    */
   createParkingPopUp(properties, coordinates) 
   {
-    const name = properties.name || 'Not specified';
-    const access = properties.access || 'n/a';
+    const name    = properties.name || 'Not specified';
+    const access  = properties.access || 'n/a';
     const surface = properties.surface || 'n/a';
-    const isFree = properties.fee === 'no';
-    
+    let feeText, feeIcon, feeClass;
+   
+        
     // Icon mapping for different access types
     const accessIcons = {
       'yes': '🚗',
@@ -645,13 +646,23 @@ async updateMapView()
       'n/a': 'Not specified'
     };
     
-    const accessIcon = accessIcons[access.toLowerCase()] || '🚗';
+    const accessIcon  = accessIcons[access.toLowerCase()] || '🚗';
     const surfaceIcon = surfaceIcons[surface.toLowerCase()] || '🏗️';
-    const feeIcon = isFree ? '💰' : '💳';
-    const feeClass = isFree ? 'free' : 'paid';
-    const feeText = isFree ? 'free' : 'paid';
+    if (properties.fee === 'no') {
+      feeText = 'Free';
+      feeIcon = '💰';
+      feeClass = 'free';
+    } else if (properties.fee === 'yes') {
+      feeText = 'Paid';
+      feeIcon = '💳';
+      feeClass = 'paid';
+    } else {
+      feeText = 'Not specified';
+      feeIcon = '?';
+      feeClass = 'unknown';
+    }
     
-    const accessLabel = accessLabels[access.toLowerCase()] || access;
+    const accessLabel  = accessLabels[access.toLowerCase()] || access;
     const surfaceLabel = surfaceLabels[surface.toLowerCase()] || surface;
     
     // Genera l'URL per Google Maps
