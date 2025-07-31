@@ -138,7 +138,7 @@ addParkingForm.addEventListener('submit', function(e)
   {
     console.log('Parcheggio salvato:', data);
     const popup = document.getElementById('success-popup');
-    popup.querySelector('p').textContent = `Parking spot added successfully!`;
+    popup.querySelector('p').textContent = `Parking spot added successfully!`;  /*credo si possa levare*/
     popup.classList.remove('hidden');
   })
   .catch(err => {
@@ -191,10 +191,3 @@ document.addEventListener('keydown', function(e)
     window.history.replaceState({}, '', url.toString());
   }
 });
-
-
-function showSuccessPopup(message) 
-{
-
-
-}
