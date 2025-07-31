@@ -47,12 +47,15 @@ chooseLocationBtn.addEventListener('click', async function(e) {
 
 
 
-confirmLocationBtn.addEventListener('click', function () {
-  if (window.parkingMap && window.parkingMap.getSelectedCoordinates) {
+confirmLocationBtn.addEventListener('click', function () 
+{
+  if (window.parkingMap && window.parkingMap.getSelectedCoordinates) 
+    {
     const coordinates = window.parkingMap.getSelectedCoordinates();
     console.log('Selected coordinates:', coordinates);
 
-    if (coordinates.lat && coordinates.lng) {
+    if (coordinates.lat && coordinates.lng) 
+      {
       // Aggiorna i campi nascosti del form
       document.getElementById('latitude').value = coordinates.lat;
       document.getElementById('longitude').value = coordinates.lng;
@@ -72,10 +75,12 @@ confirmLocationBtn.addEventListener('click', function () {
 
       // Non rimuovere la mappa Leaflet! Lascia che resti per riutilizzarla.
     } else {
-      alert('Please select a location on the map first!');
+      document.getElementById('map-error-popup').classList.remove('hidden');
     }
 
-  } else {
+  } 
+  else 
+  {
     alert('Map not loaded correctly. Please try again.');
   }
 });
@@ -83,7 +88,8 @@ confirmLocationBtn.addEventListener('click', function () {
 
 
 // Gestione invio del form principale
-addParkingForm.addEventListener('submit', function(e) {
+addParkingForm.addEventListener('submit', function(e) 
+{
   e.preventDefault();
 
   const lat = parseFloat(document.getElementById('latitude').value);
@@ -115,21 +121,25 @@ addParkingForm.addEventListener('submit', function(e) {
   };
 
 
-  fetch('/api/parcheggi', {
+  fetch('/api/parcheggi',
+  {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(newFeature)
   })
-  .then(res => {
+  .then(res => 
+  {
     if (!res.ok) throw new Error("Errore nel salvataggio");
     return res.json();
   })
-  .then(data => {
+  .then(data => 
+  {
     console.log('Parcheggio salvato:', data);
-    const messageDiv = document.getElementById('message');
-    messageDiv.innerHTML = `<div style="color: #007A33; font-weight: bold; text-align: center; margin-top: 20px;">Parking spot added successfully! ID: ${data.id}</div>`;
+    const popup = document.getElementById('success-popup');
+    popup.querySelector('p').textContent = `Parking spot added successfully!`;
+    popup.classList.remove('hidden');
   })
   .catch(err => {
     console.error('Errore:', err);
@@ -138,21 +148,14 @@ addParkingForm.addEventListener('submit', function(e) {
 });
 
 
-// Gestione chiusura Popup per scegliere la posizione del parcheggio
+// Gestione chiusura Pannello
 
 // Chiudi la mappa con il tasto
 closeMapBtn.addEventListener('click', function() 
 {
   mapContainer.style.display = 'none';
   document.body.style.overflow = 'auto';
-  
-  // Pulisci l'istanza della mappa
-  if (window.parkingMap && window.parkingMap.map) 
-  {
-    window.parkingMap.map.remove();
-    window.parkingMap = null;
-  }
-  
+    
   // Pulisce completamente la query string dall'URL corrente
   const url = new URL(window.location.href);
   url.search = ''; // Rimuove tutti i parametri
@@ -166,14 +169,7 @@ mapContainer.addEventListener('click', function(e)
   {
     mapContainer.style.display = 'none';
     document.body.style.overflow = 'auto';
-    
-    // Pulisci l'istanza della mappa
-    if (window.parkingMap && window.parkingMap.map) 
-    {
-      window.parkingMap.map.remove();
-      window.parkingMap = null;
-    }
-    
+       
     // Pulisce completamente la query string dall'URL corrente
     const url = new URL(window.location.href);
     url.search = ''; // Rimuove tutti i parametri
@@ -188,17 +184,17 @@ document.addEventListener('keydown', function(e)
   {
     mapContainer.style.display = 'none';
     document.body.style.overflow = 'auto';
-    
-    // Pulisci l'istanza della mappa
-    if (window.parkingMap && window.parkingMap.map) 
-    {
-      window.parkingMap.map.remove();
-      window.parkingMap = null;
-    }
-    
+        
     // Pulisce completamente la query string dall'URL corrente
     const url = new URL(window.location.href);
     url.search = ''; // Rimuove tutti i parametri
     window.history.replaceState({}, '', url.toString());
   }
 });
+
+
+function showSuccessPopup(message) 
+{
+
+
+}

@@ -504,7 +504,7 @@
 }
 
 
-      /* Bottone geolocalizzazione */
+/* Bottone geolocalizzazione */
 .geo-button {
   position: absolute;
   bottom: 180px;
@@ -530,4 +530,52 @@
 .geo-icon {
   width: 20px;
   height: 20px;
+}
+
+/*PopUp per richiedere di inserire le coordinate*/
+
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  background: rgba(39, 38, 38);
+  padding: 24px;
+  border-radius: 22px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: slideIn 0.2s ease-out;
+}
+.popup p {
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  color:white;
+  line-height: 1.4;
+}
+.popup button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 80px;
+  background: #f0f0f0;
+}
+.popup button:hover {
+  background: #e0e0e0;
+}
+
+
+.popup.hidden {
+  display: none;
+}
+
+.popup.success {
+  background-color: #007A33; /* verde */
+  color: white;
 }

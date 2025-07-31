@@ -174,6 +174,45 @@ class ParkingMap
     }
   }
 
+  async setCityViewIfCityInURL() 
+  {
+    const params = new URLSearchParams(window.location.search);
+    const city = params.get("city");
+
+    if (!city) 
+    {
+      console.log("Nessun parametro city: mantengo vista attuale della mappa.");
+      return; // Non fare nulla
+    }
+
+    try 
+    {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`
+      );
+
+      const data = await response.json();
+      
+      const lat = parseFloat(data[0].lat);
+      const lon = parseFloat(data[0].lon);
+
+      if (!isNaN(lat) && !isNaN(lon)) 
+      {
+        this.map.setView([lat, lon], CONFIG.DEFAULT_ZOOM);
+      } 
+      else 
+      {
+        console.error("Coordinate non valide:", data[0]);
+      }
+    } 
+    catch (error) 
+    {
+      console.error('Error during city search:', error);
+      alert('Error during city search.');
+    }
+  }
+
+
 /*** --- GESTIONE COLORI PARCHEGGI  --- ***/
 
   /** Applica il colore ai poligoni dei parcheggi in base alle loro proprietà.
@@ -529,7 +568,7 @@ async updateMapView()
     this.filters = this.getFilters(); 
 
     // Vista sulla città
-    await this.setCityView();
+    await this.setCityViewIfCityInURL();
     console.log('Città aggiornata con successo');
 
     // Carica dati filtrati

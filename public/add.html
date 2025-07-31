@@ -157,11 +157,18 @@
           </div>
         </div>
       </div>
-
     </div>
-
+    
     <!-- Messaggi di errore o di successo -->
-    <div id="message"></div>
+    <div id="map-error-popup" class="popup hidden">
+      <p>Please select a location on the map first!</p>
+      <button onclick="document.getElementById('map-error-popup').classList.add('hidden')">Close</butto>
+    </div>
+    <div id="success-popup" class="popup hidden">
+      <p>Parking spot added successfully!</p>
+      <button onclick="document.getElementById('success-popup').classList.add('hidden')">Close</button>
+    </div>
+    
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
