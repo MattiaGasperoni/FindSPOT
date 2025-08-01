@@ -316,48 +316,38 @@ h2 {
 }
 
 /* Box legenda in basso a sinistra */
+/* Legenda Mappa*/
 .legend-box {
   position: absolute;
-  bottom: 15px;
-  left: 15px;
-  z-index: 10;
-  background: white;
-  border-radius: 10px;
-  padding: 12px 18px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  bottom: 20px;
+  left: 20px;
+  background-color: white;
+  padding: 10px 14px;
+  border-radius: 8px;
   font-size: 14px;
-  color: #333;
-  user-select: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  z-index: 1000;
+  line-height: 1.6;
+
 }
 
 .legend-box h4 {
-  margin-top: 0;
-  margin-bottom: 8px;
-  font-weight: 700;
-  font-size: 1.1rem;
+  margin: 0 0 5px 0;
+  font-size: 15px;
+  font-weight: bold;
+}
+.legend-box div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
 }
 
-/* Colori delle icone legenda */
 .legend-color-icon {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  margin-right: 8px;
-  vertical-align: middle;
-  border-radius: 50%;
-}
-
-/* Specifici colori legenda */
-.legend-color-icon[style*="2ecc71"] {
-  background: #2ecc71; /* verde */
-}
-
-.legend-color-icon[style*="f39c12"] {
-  background: #f39c12; /* arancio */
-}
-
-.legend-color-icon[style*="e74c3c"] {
-  background: #e74c3c; /* rosso */
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  flex-shrink: 0;
 }
 
 /* Popup di conferma per eliminazione */
