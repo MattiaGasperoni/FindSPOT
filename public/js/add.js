@@ -43,10 +43,6 @@ chooseLocationBtn.addEventListener('click', async function(e) {
 });
 
 
-
-
-
-
 confirmLocationBtn.addEventListener('click', function () 
 {
   if (window.parkingMap && window.parkingMap.getSelectedCoordinates) 
@@ -74,18 +70,17 @@ confirmLocationBtn.addEventListener('click', function ()
       window.history.replaceState({}, '', url.toString());
 
       // Non rimuovere la mappa Leaflet! Lascia che resti per riutilizzarla.
-    } else {
+    } 
+    else 
+    {
       document.getElementById('map-error-popup').classList.remove('hidden');
     }
-
   } 
   else 
   {
     alert('Map not loaded correctly. Please try again.');
   }
 });
-
-
 
 // Gestione invio del form principale
 addParkingForm.addEventListener('submit', function(e) 
@@ -120,7 +115,6 @@ addParkingForm.addEventListener('submit', function(e)
     }
   };
 
-
   fetch('/api/parcheggi',
   {
     method: 'POST',
@@ -146,7 +140,6 @@ addParkingForm.addEventListener('submit', function(e)
     alert('Errore durante l\'invio del parcheggio');
   });
 });
-
 
 // Gestione chiusura Pannello
 
@@ -191,3 +184,9 @@ document.addEventListener('keydown', function(e)
     window.history.replaceState({}, '', url.toString());
   }
 });
+
+function closeSuccessPopup() 
+{
+  document.getElementById('success-popup').classList.add('hidden');
+  window.location.href = 'index.html';
+}

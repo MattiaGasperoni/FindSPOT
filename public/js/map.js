@@ -448,6 +448,7 @@ class ParkingMap
     // Aggiungi l'event listener per chiudere il popup
     modal.querySelector('.btn-close').onclick = () => {
       document.body.removeChild(modal);
+      window.location.href = 'index.html';
     };
 
     // Chiudi cliccando sull'overlay
