@@ -631,7 +631,7 @@ async updateMapView()
       'customers': 'Customers only',
       'permissive': 'Permissive',
       'destination': 'Destination',
-      'no': 'Forbidden',
+      'no': 'Private',
       'n/a': 'Not specified'
     };
     
