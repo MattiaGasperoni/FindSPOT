@@ -29,7 +29,6 @@ chooseLocationBtn.addEventListener('click', async function(e) {
     // Appende ?mode=select all'URL (solo per farlo leggere nel JS)
     if (!window.location.search.includes('mode=select')) 
     {
-        console.log('La Mappa entra in modalità selezione coordinate');
         const url = new URL(window.location.href);
         url.searchParams.set('mode', 'select');
         window.history.replaceState({}, '', url.toString());
@@ -48,7 +47,6 @@ confirmLocationBtn.addEventListener('click', function ()
   if (window.parkingMap && window.parkingMap.getSelectedCoordinates) 
     {
     const coordinates = window.parkingMap.getSelectedCoordinates();
-    console.log('Selected coordinates:', coordinates);
 
     if (coordinates.lat && coordinates.lng) 
       {
@@ -130,9 +128,8 @@ addParkingForm.addEventListener('submit', function(e)
   })
   .then(data => 
   {
-    console.log('Parcheggio salvato:', data);
     const popup = document.getElementById('success-popup');
-    popup.querySelector('p').textContent = `Parking spot added successfully!`;  /*credo si possa levare*/
+    popup.querySelector('p').textContent = `Parking spot added successfully!`;
     popup.classList.remove('hidden');
   })
   .catch(err => {

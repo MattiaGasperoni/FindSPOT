@@ -35,8 +35,6 @@ class ParkingMap
     }
 
     this.map = this.initializeMap();
-    console.log('Mappa con ID: ' + this.map._leaflet_id + ' inizializzata con successo');
-
     this.parkingLayer = null;
     this.mode         = this.getMode();
     this.filters      = this.getFilters(); 
@@ -181,7 +179,6 @@ class ParkingMap
 
     if (!city) 
     {
-      console.log("Nessun parametro city: mantengo vista attuale della mappa.");
       return; // Non fare nulla
     }
 
@@ -367,8 +364,6 @@ class ParkingMap
   requestDeleteParking(feature) 
   {
     if (this.mode !== 'delete') return;
-
-    console.log('Richiesta di eliminazione del parcheggio con id:', feature.properties['@id']);
     
     const name = feature.properties.name;
 
@@ -476,8 +471,7 @@ class ParkingMap
         console.error('Error deleting parking:', response.statusText);
         throw new Error('Error deleting parking');
       }
-      console.log('Richiesta di eliminazione eseguita per il parcheggio con ID:', id);
-
+      
       this.showSuccessPopup('Parking successfully deleted!');
       this.loadParkingData();
     } 
@@ -570,14 +564,11 @@ async updateMapView()
 
     // Vista sulla città
     await this.setCityViewIfCityInURL();
-    console.log('Città aggiornata con successo');
 
     // Carica dati filtrati
     await this.loadParkingData();
-    console.log('Dati parcheggio caricati con successo');
 
     // Mostra un messaggio di successo
-    console.log('Mappa con ID: ' + this.map._leaflet_id + ' aggiornata con successo');
   } 
   catch (error) 
   {

@@ -31,7 +31,6 @@ function initializeEditMode()
     // Aggiunge il parametro mode=edit all'URL se non presente
     if (!window.location.search.includes('mode=edit')) 
     {
-        console.log('La Mappa entra in modalità modifica');
         const url = new URL(window.location.href);
         url.searchParams.set('mode', 'edit');
         window.history.replaceState({}, '', url.toString());
@@ -250,7 +249,6 @@ function handleFormSubmit(e) {
     
     // Previene multiple chiamate simultanee
     if (isProcessingRequest) {
-        console.log('Richiesta già in corso...');
         return;
     }
 
@@ -276,9 +274,7 @@ function handleFormSubmit(e) {
             }
             return response.json();
         })
-        .then(data => {
-            console.log('Parcheggio aggiornato con successo:', data);
-            
+        .then(data => {            
             // Reset del form e mostra popup di successo
             document.getElementById('editForm')?.reset();
             showSuccessPopup();
