@@ -168,7 +168,7 @@ class ParkingMap
     catch (error) 
     {
       console.error('Error during city search:', error);
-      alert('Error during city search.');
+      showError("Error during city search");
     }
   }
 
@@ -205,7 +205,7 @@ class ParkingMap
     catch (error) 
     {
       console.error('Error during city search:', error);
-      alert('Error during city search.');
+      showError("Error during city search");
     }
   }
 
@@ -477,7 +477,7 @@ class ParkingMap
     } 
     catch (error) 
     {
-      alert(error.message);
+      showError("Error during deleting parking");
     }
   }
 
@@ -544,12 +544,12 @@ class ParkingMap
         }).addTo(this.map);
       }, () => 
       {
-        alert("Unable to get your location.");
+        showError("Unable to get your location.");
       });
     } 
     else
     {
-      alert("Geolocation is not supported by your browser.");
+      showError("Geolocation is not supported by your browser.");
     }
   }
 
@@ -573,7 +573,7 @@ async updateMapView()
   catch (error) 
   {
     console.error('Errore durante l\'aggiornamento della mappa:', error);
-    alert('Errore durante l\'aggiornamento della visualizzazione della mappa.');
+    showError('Errore durante l\'aggiornamento della visualizzazione della mappa.');
   }
 }
 

@@ -37,7 +37,7 @@ chooseLocationBtn.addEventListener('click', async function(e) {
   catch (error) 
   {
     console.error('Error loading map:', error);
-    alert('Error loading map. Please try again.');
+    showError('Error loading map. Please try again.');
   }
 });
 
@@ -76,7 +76,7 @@ confirmLocationBtn.addEventListener('click', function ()
   } 
   else 
   {
-    alert('Map not loaded correctly. Please try again.');
+    showError('Map not loaded correctly. Please try again.');
   }
 });
 
@@ -89,7 +89,7 @@ addParkingForm.addEventListener('submit', function(e)
   const lng = parseFloat(document.getElementById('longitude').value);
 
   if (!lat || !lng) {
-    alert('Please select a location on the map before adding the parking!');
+    showError('Please select a location on the map before adding the parking!');
     return;
   }
 
@@ -134,7 +134,7 @@ addParkingForm.addEventListener('submit', function(e)
   })
   .catch(err => {
     console.error('Errore:', err);
-    alert('Errore durante l\'invio del parcheggio');
+    showError('Errore durante l\'invio del parcheggio');
   });
 });
 

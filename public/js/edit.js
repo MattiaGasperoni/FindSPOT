@@ -196,7 +196,7 @@ window.cancelEdit = function() {
  */
 function collectFormData() {
     if (!selectedFeature) {
-        alert('Seleziona un parcheggio prima');
+        showError('Seleziona un parcheggio prima');
         return null;
     }
 
@@ -259,7 +259,7 @@ function handleFormSubmit(e) {
     // Ottiene l'ID del parcheggio
     const parkingId = document.getElementById('parkingId')?.value;
     if (!parkingId) {
-        alert('ID parcheggio non trovato');
+        showError('ID parcheggio non trovato');
         return;
     }
 
@@ -281,7 +281,7 @@ function handleFormSubmit(e) {
         })
         .catch(error => {
             console.error('Errore durante l\'aggiornamento:', error);
-            alert('Errore durante l\'aggiornamento del parcheggio');
+            showError('Errore durante l\'aggiornamento del parcheggio');
         })
         .finally(() => {
             // Reset del flag di processing

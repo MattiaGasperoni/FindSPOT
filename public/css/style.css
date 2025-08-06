@@ -405,3 +405,31 @@ body {
   color: #fff;
 }
 
+/* PopUp di Errore al Posto di Alert*/
+
+#error-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f44336;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: sans-serif;
+  transition: opacity 0.3s ease;
+}
+
+.error-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.error-visible {
+  opacity: 1;
+}
