@@ -1,76 +1,69 @@
-// Elementi DOM
-const chooseLocationBtn = document.getElementById('choose-location-btn');
-const mapContainer = document.getElementById('map-container');
-const closeMapBtn = document.getElementById('close-map-btn');
+// Elementi DOM principali
+const chooseLocationBtn  = document.getElementById('choose-location-btn');
+const mapContainer       = document.getElementById('map-container');
+const closeMapBtn        = document.getElementById('close-map-btn');
 const confirmLocationBtn = document.getElementById('confirm-location-btn');
-const locationDisplay = document.getElementById('location-display');
-const addParkingForm = document.getElementById('addParkingForm');
+const locationDisplay    = document.getElementById('location-display');
+const addParkingForm     = document.getElementById('addParkingForm');
 
+// Gestione click sul bottone per scegliere la posizione su mappa
+chooseLocationBtn.addEventListener('click', async function(e) 
+{
+  e.preventDefault();       
+  e.stopPropagation();       
 
-
-
-// Apri la mappa quando clicchi il pulsante
-chooseLocationBtn.addEventListener('click', async function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-
-  try {
-    // 1. Mostra il contenitore prima
-    mapContainer.style.display = 'block';
+  try 
+  {
+    // Mostra il contenitore della mappa e blocca lo scroll della pagina
+    mapContainer.style.display   = 'block';
     document.body.style.overflow = 'hidden';
-    
-    if (!document.querySelector('script[src="./js/map.js"]'))
+
+    // Carica dinamicamente lo script della mappa se non è già presente
+    if (!document.querySelector('script[src="./js/map.js"]')) 
     {
       const script = document.createElement('script');
       script.src = './js/map.js';
       document.body.appendChild(script);
     }
 
-    // Appende ?mode=select all'URL (solo per farlo leggere nel JS)
+    // Aggiunge ?mode=select all'URL per informare lo script della modalità selezione
     if (!window.location.search.includes('mode=select')) 
     {
-        const url = new URL(window.location.href);
-        url.searchParams.set('mode', 'select');
-        window.history.replaceState({}, '', url.toString());
+      const url = new URL(window.location.href);
+      url.searchParams.set('mode', 'select');
+      window.history.replaceState({}, '', url.toString());
     }  
   } 
   catch (error) 
   {
-    console.error('Error loading map:', error);
     showError('Error loading map. Please try again.');
   }
 });
 
-
+// Gestione conferma della posizione scelta
 confirmLocationBtn.addEventListener('click', function () 
 {
+  // Verifica che l'oggetto parkingMap sia disponibile e contenga il metodo previsto
   if (window.parkingMap && window.parkingMap.getSelectedCoordinates) 
-    {
+  {
     const coordinates = window.parkingMap.getSelectedCoordinates();
 
-    if (coordinates.lat && coordinates.lng) 
-      {
-      // Aggiorna i campi nascosti del form
-      document.getElementById('latitude').value = coordinates.lat;
+    // Controlla che le coordinate siano numeri validi
+    if (typeof coordinates.lat === 'number' && typeof coordinates.lng === 'number') 
+    {
+      // Aggiorna i campi nascosti del form con latitudine e longitudine
+      document.getElementById('latitude').value  = coordinates.lat;
       document.getElementById('longitude').value = coordinates.lng;
 
-      // Aggiorna la visualizzazione nel form
+      // Mostra visivamente la posizione selezionata all'utente
       locationDisplay.textContent = `Location selected: ${coordinates.lat.toFixed(6)}, ${coordinates.lng.toFixed(6)}`;
       locationDisplay.classList.add('location-selected');
 
-      // Nasconde la mappa
-      mapContainer.style.display = 'none';
-      document.body.style.overflow = 'auto';
-
-      // Pulisce la query string (rimuove `?mode=select`)
-      const url = new URL(window.location.href);
-      url.search = ''; 
-      window.history.replaceState({}, '', url.toString());
-
-      // Non rimuovere la mappa Leaflet! Lascia che resti per riutilizzarla.
+      closeMap();
     } 
     else 
     {
+      // Mostra messaggio di errore se coordinate non valide
       document.getElementById('map-error-popup').classList.remove('hidden');
     }
   } 
@@ -80,31 +73,38 @@ confirmLocationBtn.addEventListener('click', function ()
   }
 });
 
-// Gestione invio del form principale
+// Gestione invio del form principale per aggiungere un parcheggio
 addParkingForm.addEventListener('submit', function(e) 
 {
-  e.preventDefault();
+  e.preventDefault(); // Evita il submit classico
 
+  // Recupera e valida latitudine e longitudine
   const lat = parseFloat(document.getElementById('latitude').value);
   const lng = parseFloat(document.getElementById('longitude').value);
 
-  if (!lat || !lng) {
+  if (isNaN(lat) || isNaN(lng)) 
+  {
     showError('Please select a location on the map before adding the parking!');
     return;
   }
 
-  const name = this.elements['name'].value;
-  const access = document.getElementById('access-type').value;
-  const fee = document.getElementById('fee-type').value;
+  // Recupera gli altri dati dal form
+  const name    = this.elements['name'].value;
+  const access  = document.getElementById('access-type').value;
+  const fee     = document.getElementById('fee-type').value;
   const surface = document.getElementById('surface-type').value;
 
-  const newFeature = {
+  // Crea l’oggetto GeoJSON da inviare al server
+  const newFeature = 
+  {
     type: "Feature",
-    geometry: {
+    geometry: 
+    {
       type: "Point",
       coordinates: [lng, lat]
     },
-    properties: {
+    properties: 
+    {
       name: name,
       access: access || undefined,
       fee: fee || undefined,
@@ -113,10 +113,12 @@ addParkingForm.addEventListener('submit', function(e)
     }
   };
 
-  fetch('/api/parcheggi',
+  // Invia i dati al backend tramite POST
+  fetch('/api/parcheggi', 
   {
     method: 'POST',
-    headers: {
+    headers: 
+    {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(newFeature)
@@ -128,62 +130,49 @@ addParkingForm.addEventListener('submit', function(e)
   })
   .then(data => 
   {
+    // Mostra popup di successo
     const popup = document.getElementById('success-popup');
     popup.querySelector('p').textContent = `Parking spot added successfully!`;
     popup.classList.remove('hidden');
   })
-  .catch(err => {
-    console.error('Errore:', err);
+  .catch(err => 
+  {
     showError('Errore durante l\'invio del parcheggio');
   });
 });
 
-// Gestione chiusura Pannello
+// GESTIONE CHIUSURA MAPPA
 
-// Chiudi la mappa con il tasto
-closeMapBtn.addEventListener('click', function() 
+// Chiude la mappa cliccando il bottone 
+closeMapBtn.addEventListener('click', closeMap);
+
+// Chiude la mappa cliccando fuori dal contenuto (overlay)
+mapContainer.addEventListener('click', (e) => 
 {
-  mapContainer.style.display = 'none';
-  document.body.style.overflow = 'auto';
-    
-  // Pulisce completamente la query string dall'URL corrente
-  const url = new URL(window.location.href);
-  url.search = ''; // Rimuove tutti i parametri
-  window.history.replaceState({}, '', url.toString());
+  if (e.target === mapContainer) closeMap();
 });
 
-// Chiudi la mappa cliccando fuori dal wrapper
-mapContainer.addEventListener('click', function(e) 
+// Chiude la mappa premendo ESC
+document.addEventListener('keydown', (e) => 
 {
-  if (e.target === mapContainer) 
-  {
-    mapContainer.style.display = 'none';
-    document.body.style.overflow = 'auto';
-       
-    // Pulisce completamente la query string dall'URL corrente
-    const url = new URL(window.location.href);
-    url.search = ''; // Rimuove tutti i parametri
-    window.history.replaceState({}, '', url.toString());
-  }
+  if (e.key === 'Escape' && mapContainer.style.display === 'block') closeMap();
 });
 
-// Chiudi la mappa con ESC
-document.addEventListener('keydown', function(e) 
-{
-  if (e.key === 'Escape' && mapContainer.style.display === 'block') 
-  {
-    mapContainer.style.display = 'none';
-    document.body.style.overflow = 'auto';
-        
-    // Pulisce completamente la query string dall'URL corrente
-    const url = new URL(window.location.href);
-    url.search = ''; // Rimuove tutti i parametri
-    window.history.replaceState({}, '', url.toString());
-  }
-});
-
+// Chiude il popup di successo e reindirizza alla homepage
 function closeSuccessPopup() 
 {
   document.getElementById('success-popup').classList.add('hidden');
   window.location.href = 'index.html';
+}
+
+// Funzione per chiudere la mappa e ripristinare la pagina
+function closeMap() 
+{
+  mapContainer.style.display   = 'none';
+  document.body.style.overflow = 'auto';
+
+  // Rimuove parametri dalla query string
+  const url = new URL(window.location.href);
+  url.search = '';
+  window.history.replaceState({}, '', url.toString());
 }
