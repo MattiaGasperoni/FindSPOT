@@ -1,245 +1,244 @@
 /* Incorpora gli stili del tuo CSS esistente per il corpo e lo sfondo */
-      html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-      }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
-      body {
-        font-family: 'Open Sans', sans-serif;
-        background: #ffffff;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        text-align: center;
-      }
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+}
 
-      .background-image-add {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url('../img/background_add.jpg');
-        background-size: cover;
-        background-position: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+.background-image-add {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../img/background_add.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-      /* Form design modernizzato nel tuo stile */
-      .form {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 20px;
-        max-width: 400px;
-        width: 90%;
-        background: rgba(255, 255, 255, 0.9);
-        padding: 40px 30px;
-        border-radius: 20px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        text-align: left;
-      }
+/* Form design modernizzato nel tuo stile */
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  max-width: 400px;
+  width: 90%;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
 
-      .title {
-        font-size: 28px;
-        color: #007A33;
-        font-weight: 700;
-        letter-spacing: -1px;
-        text-align: center;
-        margin-bottom: 0;
-      }
+.title {
+  font-size: 28px;
+  color: #007A33;
+  font-weight: 700;
+  letter-spacing: -1px;
+  text-align: center;
+  margin-bottom: 0;
+}
 
-      .sub-title {
-        font-size: 16px;
-        font-weight: bold;
-        color: #000;
-        text-align: center;
-        margin-top: 0;
-      }
+.sub-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+  margin-top: 0;
+}
 
-      .form label {
-        display: flex;
-        flex-direction: column;
-        font-weight: 600;
-        font-size: 0.95rem;
-        color: #333;
-      }
+.form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #333;
+}
 
-      .form input[type="text"], .form select {
-        margin-top: 8px;
-        padding: 10px 12px;
-        border-radius: 10px;
-        border: 1px solid rgba(105, 105, 105, 0.3);
-        background: #f9f9f9;
-        font-size: 1rem;
-        outline: none;
-        transition: border 0.2s;
-      }
+.form input[type="text"], .form select {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(105, 105, 105, 0.3);
+  background: #f9f9f9;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
 
-      .form input[type="text"]:focus, .form select:focus {
-        border-color: #007A33;
-        background-color: #fff;
-      }
+.form input[type="text"]:focus, .form select:focus {
+  border-color: #007A33;
+  background-color: #fff;
+}
 
-      /* Pulsanti submit nel tuo stile */
-      .submit {
-        width: 100%;
-        padding: 12px;
-        font-weight: 600;
-        margin-top: 10px;
-        background-color: #007A33;
-        border: none;
-        border-radius: 30px;
-        color: #fff;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
+/* Pulsanti submit nel tuo stile */
+.submit {
+  width: 100%;
+  padding: 12px;
+  font-weight: 600;
+  margin-top: 10px;
+  background-color: #007A33;
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-      .submit:hover {
-        background-color: #005B27;
-      }
+.submit:hover {
+  background-color: #005B27;
+}
 
-      /* Variante per "Choose the location" nel tuo stile */
-      .choose-location {
-        background-color: white;
-        border: 2px solid #cccccc;
-        color: #333;
-        font-weight: 600;
-        transition: all 0.3s ease;
-      }
+/* Variante per "Choose the location" nel tuo stile */
+.choose-location {
+  background-color: white;
+  border: 2px solid #cccccc;
+  color: #333;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
 
-      .choose-location:hover {
-        background-color: #f0f0f0;
-        border-color: #007A33;
-        color: #007A33;
-      }
+.choose-location:hover {
+  background-color: #f0f0f0;
+  border-color: #007A33;
+  color: #007A33;
+}
 
-      .add-parking {
-        margin-left: 140px;
-        width: 100px;
-        padding: 8px 16px;
-        font-size: 0.9rem;
-        border-radius: 20px;
-      }
+.add-parking {
+  margin-left: 140px;
+  width: 100px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border-radius: 20px;
+}
 
-      /* Bottone Home nel tuo stile */
-      .btnHome {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        z-index: 1000;
-        background-color: #007A33;
-        color: white;
-        border: none;
-        border-radius: 30px;
-        padding: 16px 10px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background 0.3s;
-        width: 80px;
-        text-decoration: none;
-      }
+/* Bottone Home nel tuo stile */
+.btnHome {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background-color: #007A33;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 16px 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 80px;
+  text-decoration: none;
+}
 
-      .btnHome:hover {
-        background-color: #005B27;
-      }
+.btnHome:hover {
+  background-color: #005B27;
+}
 
-      /* Stili per la visualizzazione della posizione nel form */
-      .location-display {
-        background: #f9f9f9;
-        border: 1px solid rgba(105, 105, 105, 0.3);
-        padding: 10px 12px;
-        border-radius: 10px;
-        color: #666;
-        font-style: italic;
-        margin-top: 8px;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
-      }
+/* Stili per la visualizzazione della posizione nel form */
+.location-display {
+  background: #f9f9f9;
+  border: 1px solid rgba(105, 105, 105, 0.3);
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #666;
+  font-style: italic;
+  margin-top: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
 
-      .location-selected {
-        color: #007A33 !important;
-        font-style: normal !important;
-        font-weight: 600 !important;
-        border-color: #007A33 !important;
-        background-color: #fff !important;
-      }
+.location-selected {
+  color: #007A33 !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  border-color: #007A33 !important;
+  background-color: #fff !important;
+}
 
-      /* Stili per la mappa - usando i tuoi colori */
-      #map-container {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0,0,0,0.8);
-        z-index: 9999;
-        padding: 20px;
-        box-sizing: border-box;
-      }
+/* Stili per la mappa - usando i tuoi colori */
+#map-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.8);
+  z-index: 9999;
+  padding: 20px;
+  box-sizing: border-box;
+}
 
-      .map-wrapper {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      }
+.map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
 
-      .map-header {
-        background: #007A33;
-        color: white;
-        padding: 15px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-shrink: 0;
-      }
+.map-header {
+  background: #007A33;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
 
-      .map-header h3 {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 700;
-      }
+.map-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
 
-      .close-map {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
-        padding: 0;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        transition: background-color 0.3s ease;
-      }
+.close-map {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
 
-      .close-map:hover {
-        background: rgba(255,255,255,0.2);
-      }
+.close-map:hover {
+  background: rgba(255,255,255,0.2);
+}
 
-      #map {
-        flex: 1;
-        background: #f0f8f5;
-        position: relative;
-        overflow: hidden;
-        min-height: 400px;
-      }
-
+#map {
+  flex: 1;
+  background: #f0f8f5;
+  position: relative;
+  overflow: hidden;
+  min-height: 400px;
+}
 
 .search-bar {
   position: absolute;

@@ -65,6 +65,7 @@ body {
 }
 
 /* Barra di ricerca */
+
 .search-bar {
   margin: 50px 0;            /* Spazio tra la tagline e la barra di ricerca */
   display: flex; 

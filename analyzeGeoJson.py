@@ -32,7 +32,7 @@ def analyze_selected_fields(filepath):
             print("   (Nessun dato disponibile)")
         print("-" * 50)
 
-# ESEMPIO USO
+
 if __name__ == "__main__":
     geojson_file = Path("data/parcheggi.geojson") 
     analyze_selected_fields(geojson_file)

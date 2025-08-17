@@ -28,16 +28,22 @@ app.use(express.json());
  * Legge il file GeoJSON e restituisce i dati parsati
  * @param {Function} callback - Callback con (err, geojson)
  */
-function readGeoJSONFile(callback) {
-  fs.readFile(DATA_FILE, 'utf8', (err, data) => {
-    if (err) {
+function readGeoJSONFile(callback) 
+{
+  fs.readFile(DATA_FILE, 'utf8', (err, data) => 
+  {
+    if (err) 
+    {
       return callback(err, null);
     }
 
-    try {
+    try 
+    {
       const geojson = JSON.parse(data);
       callback(null, geojson);
-    } catch (parseError) {
+    } 
+    catch (parseError) 
+    {
       callback(parseError, null);
     }
   });
@@ -48,7 +54,8 @@ function readGeoJSONFile(callback) {
  * @param {Object} geojson - Oggetto GeoJSON da salvare
  * @param {Function} callback - Callback con (err)
  */
-function writeGeoJSONFile(geojson, callback) {
+function writeGeoJSONFile(geojson, callback) 
+{
   const jsonString = JSON.stringify(geojson, null, 2);
   fs.writeFile(DATA_FILE, jsonString, callback);
 }
@@ -58,7 +65,8 @@ function writeGeoJSONFile(geojson, callback) {
  * @param {Array} coordinates - Array [longitude, latitude]
  * @returns {string} ID univoco nel formato "lon_lat"
  */
-function generateParkingId(coordinates) {
+function generateParkingId(coordinates) 
+{
   const [lon, lat] = coordinates;
   // Arrotonda a 6 decimali per evitare problemi di precisione
   const roundedLon = Number(lon).toFixed(6);
@@ -109,12 +117,13 @@ function validateParkingFeature(feature)
 
   return { isValid: true };
 }
+
 /** * Crea un errore con messaggio e status
  * @param {string} message - Messaggio di errore
  * @param {number} [status=500] - Codice di stato HTTP
  * @returns {Error} Errore con messaggio e status
  */
-function creaErrore(message, status = 500) 
+function createError(message, status = 500) 
 {
   const err = new Error(message);
   err.status = status;
@@ -137,13 +146,13 @@ app.get('/api/parcheggi', (req, res, next) =>
     if (err) 
     {
       // 500 - Internal Server Error (errore I/O del server)
-      return next(creaErrore('Errore caricamento dati', 500));
+      return next(createError('Errore caricamento dati', 500));
     }
 
     if (!geojson || !Array.isArray(geojson.features)) 
     {
       // 500 - Internal Server Error (problema con i dati del server)
-      return next(creaErrore('Formato GeoJSON non valido', 500));
+      return next(createError('Formato GeoJSON non valido', 500));
     }
 
     const filters = req.query;
@@ -155,7 +164,7 @@ app.get('/api/parcheggi', (req, res, next) =>
     if (unknownKeys.length > 0) 
     {
       // 400 - Bad Request (parametri query invalidi)
-      return next(creaErrore(`Filtri non validi: ${unknownKeys.join(', ')}`, 400));
+      return next(createError(`Filtri non validi: ${unknownKeys.join(', ')}`, 400));
     }
 
     const filtered = geojson.features.filter(feature => 
@@ -191,7 +200,7 @@ app.post('/api/parcheggi', (req, res, next) =>
   // 400 - Bad Request (dati malformati/invalidi)
   if (!req.body || typeof req.body !== 'object') 
   {
-    return next(creaErrore('Corpo della richiesta non valido o mancante', 400));
+    return next(createError('Corpo della richiesta non valido o mancante', 400));
   }
 
   const newFeature = req.body;
@@ -199,7 +208,7 @@ app.post('/api/parcheggi', (req, res, next) =>
   // 400 - Bad Request (dati mancanti/invalidi)
   if (!newFeature.geometry || !newFeature.geometry.coordinates) 
   {
-    return next(creaErrore('Geometria mancante nella feature', 400));
+    return next(createError('Geometria mancante nella feature', 400));
   }
 
   if (!newFeature.properties) 
@@ -211,7 +220,7 @@ app.post('/api/parcheggi', (req, res, next) =>
   if (!validation.isValid) 
   {
     // 400 - Bad Request (validazione fallita)
-    return next(creaErrore(validation.error, 400));
+    return next(createError(validation.error, 400));
   }
 
   const parkingId = generateParkingId(newFeature.geometry.coordinates);
@@ -223,13 +232,13 @@ app.post('/api/parcheggi', (req, res, next) =>
     {
       console.error('Errore nella lettura del file GeoJSON:', err);
       // 500 - Internal Server Error (errore del server)
-      return next(creaErrore('Errore nel leggere i dati esistenti', 500));
+      return next(createError('Errore nel leggere i dati esistenti', 500));
     }
     
     if (!Array.isArray(geojson.features)) 
     {
       // 500 - Internal Server Error (problema con i dati del server)
-      return next(creaErrore('Il file GeoJSON non contiene un array di feature valido', 500));
+      return next(createError('Il file GeoJSON non contiene un array di feature valido', 500));
     }
 
     
@@ -240,7 +249,7 @@ app.post('/api/parcheggi', (req, res, next) =>
     if (existingFeature) 
     {
       // 409 - Conflict (risorsa già esistente)
-      return next(creaErrore('Parcheggio già esistente in questa posizione', 409));
+      return next(createError('Parcheggio già esistente in questa posizione', 409));
     }
 
     console.log('Aggiungendo parcheggio con ID:', parkingId);
@@ -252,7 +261,7 @@ app.post('/api/parcheggi', (req, res, next) =>
       {
         console.error('Errore nella scrittura del file GeoJSON:', writeErr);
         // 500 - Internal Server Error (errore del server)
-        return next(creaErrore('Errore nel salvare il nuovo parcheggio', 500));
+        return next(createError('Errore nel salvare il nuovo parcheggio', 500));
       }
 
       // 201 - Created (risorsa creata con successo)
@@ -277,7 +286,7 @@ app.put('/api/parcheggi/:id', (req, res, next) =>
   if (!updatedProps || typeof updatedProps !== 'object') 
   {
     // 400 - Bad Request (corpo richiesta invalido)
-    return next(creaErrore('Corpo della richiesta non valido o mancante', 400));
+    return next(createError('Corpo della richiesta non valido o mancante', 400));
   }
 
   // Lista proprietà
@@ -288,7 +297,7 @@ app.put('/api/parcheggi/:id', (req, res, next) =>
   if (keysToUpdate.length === 0) 
   {
     // 400 - Bad Request (nessun dato valido da aggiornare)
-    return next(creaErrore('Nessuna proprietà aggiornata valida fornita', 400));
+    return next(createError('Nessuna proprietà aggiornata valida fornita', 400));
   }
 
   // Legge il file GeoJSON
@@ -298,13 +307,13 @@ app.put('/api/parcheggi/:id', (req, res, next) =>
     {
       console.error('Errore nella lettura del file GeoJSON:', err);
       //500 - Internal Server Error (errore I/O del server)
-      return next(creaErrore('Errore nel leggere i dati', 500));
+      return next(createError('Errore nel leggere i dati', 500));
     }
 
     if (!geojson || !Array.isArray(geojson.features)) 
     {
       //500 - Internal Server Error (problema con i dati del server)
-      return next(creaErrore('Formato GeoJSON non valido', 500));
+      return next(createError('Formato GeoJSON non valido', 500));
     }
 
     // Trova la feature da aggiornare
@@ -313,7 +322,7 @@ app.put('/api/parcheggi/:id', (req, res, next) =>
     if (!feature) 
     {
       // 404 - Not Found (risorsa non esistente)
-      return next(creaErrore('Parcheggio non trovato', 404));
+      return next(createError('Parcheggio non trovato', 404));
     }
 
     // Aggiorna le proprietà consentite
@@ -331,7 +340,7 @@ app.put('/api/parcheggi/:id', (req, res, next) =>
       {
         console.error('Errore nella scrittura del file GeoJSON:', writeErr);
         // 500 - Internal Server Error (errore I/O del server)
-        return next(creaErrore('Errore nel salvare le modifiche', 500));
+        return next(createError('Errore nel salvare le modifiche', 500));
       }
 
       // 200 - OK (aggiornamento riuscito)
@@ -364,13 +373,13 @@ app.delete('/api/parcheggi/:id', (req, res, next) =>
     {
       console.error('Errore nella lettura del file GeoJSON:', err);
       // 500 - Internal Server Error (errore I/O del server)
-      return next(creaErrore('Errore nel leggere i dati', 500));
+      return next(createError('Errore nel leggere i dati', 500));
     }
 
     if (!geojson || !Array.isArray(geojson.features)) 
     {
       // 500 - Internal Server Error (problema con i dati del server)
-      return next(creaErrore('Formato GeoJSON non valido', 500));
+      return next(createError('Formato GeoJSON non valido', 500));
     }
 
     // Conta le feature prima della rimozione
@@ -383,7 +392,7 @@ app.delete('/api/parcheggi/:id', (req, res, next) =>
     if (geojson.features.length === featuresBefore) 
     {
       // 404 - Not Found (risorsa da eliminare non esiste)
-      return next(creaErrore('Parcheggio non trovato', 404));
+      return next(createError('Parcheggio non trovato', 404));
     }
 
     console.log('Rimuovendo parcheggio con ID:', idToDelete);
@@ -395,7 +404,7 @@ app.delete('/api/parcheggi/:id', (req, res, next) =>
       {
         console.error('Errore nella scrittura del file GeoJSON:', writeErr);
         // 500 - Internal Server Error (errore I/O del server)
-        return next(creaErrore('Errore nel salvare le modifiche', 500));
+        return next(createError('Errore nel salvare le modifiche', 500));
       }
       // 200 - OK (eliminazione riuscita)
       res.status(200).json(

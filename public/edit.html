@@ -9,12 +9,13 @@
   <link rel="stylesheet" href="./css/edit.css" />
 </head>
 <body>
+  <!-- Bottone per tornare alla home -->
   <a href="index.html" class="editBtnHome">Home</a>
   
+  <!-- Titolo -->
   <h2 id="main-title">SELECT A PARKING TO MODIFY</h2>
 
   <div id="map-container">
-
     <!-- Mappa -->
     <div id="map"></div>
 
@@ -72,7 +73,7 @@
       </div>
     </div>
 
-    <!-- Legenda Mappa -->
+    <!-- Legenda -->
     <div class="legend-box">
       <h4>Legend</h4>
       <div><span class="legend-color-icon" style="background: #2ecc71"></span> Free</div>
@@ -80,14 +81,13 @@
       <div><span class="legend-color-icon" style="background: #e74c3c"></span> Paid or Unknown</div>
     </div>
 
-    <!-- Bottone  per la geolocalizzazione -->
+    <!-- Bottone per la Geolocalizzazione -->
     <button id="geoBtn" class="geo-button">
       <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Geo" class="geo-icon">
     </button>
-
   </div>
 
-  <!-- PopUp per la modifica del parcheggio -->
+  <!-- Form per la modifica del parcheggio -->
   <form id="editForm" style="display:none;"> 
     <h3> Modify Parking </h3>
     <input type="hidden" id="parkingId" />
@@ -135,11 +135,14 @@
       <button id="close-popup-btn">Close</button>
     </div>
   </form>
-    <div id="error-container" class="error-hidden">
+
+  <!-- PopUp per i messaggi di errore -->
+  <div id="error-container" class="error-hidden">
     <span id="error-message"></span>
     <button onclick="hideError()">✖</button>
   </div>
 
+  <!-- Script esterni-->
   <script src="/js/errorHandler.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="./js/edit.js"></script>
