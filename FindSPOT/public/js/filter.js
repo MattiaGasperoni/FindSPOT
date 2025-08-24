@@ -1,3 +1,7 @@
+/*
+ * Gestisce il sistema di filtri per la ricerca dei parcheggi
+ */
+
 document.addEventListener("DOMContentLoaded", () => 
 {
   const filterButton    = document.querySelector(".search-filter");
@@ -6,20 +10,20 @@ document.addEventListener("DOMContentLoaded", () =>
   const applyFiltersBtn = document.getElementById("apply-filters");
   const clearFiltersBtn = document.getElementById("clear-filters");
 
-  // Quando clicchi sull'icona dei filtri, mostra o nasconde il pannello dei filtri
+  // Toggle del pannello filtri
   filterButton.addEventListener("click", (e) => 
   {
     e.stopPropagation();
     filterPanel.classList.toggle("visible");
   });
 
-  // Quando clicchi dentro il popup dei filtri, evita che il clic si propaghi e lo chiuda
+  // Previene la chiusura del pannello quando si clicca all'interno
   filterPanel.addEventListener("click", (e) => 
   {
     e.stopPropagation();
   });
 
-  // Chiude il pannello filtri se clicchi fuori dal popup
+  // Chiude il pannello se si clicca fuori dall'area filtri
   document.addEventListener("click", (e) => 
   {
     if (!filterPanel.contains(e.target) && !filterButton.contains(e.target) && !searchBar.contains(e.target)) 
@@ -28,29 +32,27 @@ document.addEventListener("DOMContentLoaded", () =>
     }
   });
 
-  // Quando clicchi su "Clear All" esegue questa routine
+  // Reset completo dei filtri
   clearFiltersBtn.addEventListener("click", () => 
   {
-    // 1. Svuota i campi input
+    // Reset dei campi del form
     document.getElementById("access-type").value = "";
     document.getElementById("surface-type").value = "";
     document.getElementById("fee-type").value = "";
 
-    // 2. Aggiorna la URL mantenendo solo "mode=filter"
+    // Aggiorna URL mantenendo solo la modalità filter
     const newParams = new URLSearchParams();
     newParams.set("mode", "filter");
     
     const newUrl = `${window.location.pathname}?${newParams.toString()}`;
     window.history.pushState({}, "", newUrl);
 
-    // 3. Chiude il pannello filtri
+    // Chiude il pannello e aggiorna la mappa
     document.querySelector(".filter-choices")?.classList.remove("visible");
-
-    // 4. Forza l'aggiornamento della mappa
     window.dispatchEvent(new CustomEvent("filter-map-view"));
   });
 
-  // Quando clicchi su "Apply Filter", esegue la funzione che aggiorna la mappa con i filtri scelti
+  // Applica i filtri selezionati
   applyFiltersBtn.addEventListener("click", () => 
   {
     applyFilters();
@@ -58,13 +60,13 @@ document.addEventListener("DOMContentLoaded", () =>
 
   function applyFilters() 
   {
-    // Legge i valori inseriti dall'utente nei campi dei filtri
+    // Raccolta dei valori dai form di filtro
     const city    = document.querySelector(".search-input").value.trim();
     const access  = document.getElementById("access-type").value;
     const surface = document.getElementById("surface-type").value;
     const fee     = document.getElementById("fee-type").value;
 
-    // Costruisce la query string con i parametrei dei filtri
+    // Costruzione parametri URL
     const params = new URLSearchParams();
     params.set("mode", "filter");
     if (city) params.append("city", city);
@@ -74,22 +76,22 @@ document.addEventListener("DOMContentLoaded", () =>
 
     const pathname = window.location.pathname;
 
-    // Se siamo nella homepage, reindirizza a map.html con i parametri dei filtri
+    // Gestione routing in base alla pagina corrente
     if (pathname === "/" || pathname.endsWith("/index.html")) 
     {
+      // Dalla home: redirect a map.html con filtri
       window.location.href = `map.html?${params.toString()}`;
     }
     else 
     {
-      // Altrimenti aggiorna l'URL corrente con i nuovi filtri
+      // Aggiorna URL corrente e notifica la mappa
       const newUrl = new URL(window.location.href);
       newUrl.search = params.toString();
       window.history.pushState({}, "", newUrl);
 
-      // Manda un evento per notificare la mappa che deve aggiornarsi
       window.dispatchEvent(new CustomEvent("filter-map-view"));
 
-      // Svuota il campo di ricerca della città, se presente
+      // Reset campo ricerca città
       const inputText = document.querySelector(".search-input");
       if (inputText) 
       {
@@ -97,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () =>
       }
     }
 
-    // Chiude il pannello dei filtri
+    // Chiude il pannello filtri
     document.querySelector(".filter-choices")?.classList.remove("visible");
   }
 });
