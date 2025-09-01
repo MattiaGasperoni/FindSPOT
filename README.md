@@ -1,24 +1,24 @@
-# 🅿️ FindSPOT - Web App per la Visualizzazione dei Parcheggi
+# 🅿️ FindSPOT – Find Your Next Parking Spot Easily
 
-**FindSPOT** è una web app interattiva che consente di visualizzare i parcheggi delle marche su una mappa, filtrare i risultati in base a criteri personalizzati e interagire con i dati GeoJSON tramite un'interfaccia intuitiva.
+**FindSPOT** is an interactive web app that allows users to view parking areas in the Marche region on a map, filter results based on custom criteria, and interact with GeoJSON data through an intuitive interface.
 
-## 🚀 Funzionalità
+## 🚀 Features
 
-- 📍 Visualizzazione dei parcheggi su mappa interattiva (Leaflet)
-- 🔍 Filtri di ricerca per città, accesso e tipo di parcheggio
-- 🗺️ Colori dinamici dei poligoni in base alle proprietà del parcheggio
-- 🧹 Modalità "delete" per rimuovere parcheggi direttamente dalla mappa
-- ➕ Aggiunta di nuovi parcheggi con validazione automatica
-- ✏️ Modifica delle proprietà dei parcheggi esistenti
-- 🌐 Web service RESTful completo per la gestione dei dati
+- 📍 Display of parking areas on an interactive map
+- 🔍 Search filters by city, access type, and parking type
+- 🧹 “Delete” mode to remove parking spots directly from the map
+- ➕ Add new parking spots with automatic validation
+- ✏️ Edit properties of existing parking spots
 
-## 🧑‍💻 Tecnologie Utilizzate
+## 🧑‍💻 Technologies Used
 
-- **Frontend:** HTML, CSS, JavaScript, Leaflet.js
-- **Backend:** Node.js, Express.js
-- **Dati:** GeoJSON (open data dei parcheggi)
+- **Frontend:** HTML, CSS, JavaScript, Leaflet.js  
+- **Backend:** Node.js, Express.js  
+- **Data:** GeoJSON (open parking data)
 
-## 📦 Struttura del Progetto
+## 📦 Project Structure
+
+
 
 ```
 server.js
@@ -39,11 +39,19 @@ server.js
     ├─ remove.css 
     ├─ map.css 
 └─ /js          
-    ├─ map.js 
-    ├─ filter.js 
-    ├─ search.js 
     ├─ add.js 
+    ├─ edit.js 
+    ├─ errorHandler.js
+    ├─ filter.js
+    ├─ map.js
+    ├─ remove.js
+    ├─ search.js 
 └─ /img
+    ├─ background.jpg
+    ├─ background_add.jpg
+    ├─ background_gray.png
+
+analyzeGeoJson.py
 
 /node_modules
 
@@ -54,141 +62,38 @@ package-lock.json
 README.md
 ```
 
-## ⚙️ Setup Locale
+## ⚙️ Local Setup
 
-1. Clona il repository:
+1. Clone the repository:
 ```bash
-git clone https://github.com/MattiaGasperoni/Progetto-Tecnologie-WEB.git
-cd Progetto-Tecnologie-WEB
-```
+git clone https://github.com/MattiaGasperoni/FindSPOT.git
+cd FindSPOT/src
 
-2. Installa le dipendenze:
+
+2. Install the dependencies:
 ```bash
 npm install
 ```
 
-3. Avvia il server:
+3. Start the server:
 ```bash
 npm start
 ```
 
-4. Visita `http://localhost:3000` nel browser.
+4. Open `http://localhost:3000` in your browser.
 
 ## 🌐 API Endpoints
 
-### **GET /api/parcheggi**
-Restituisce tutti i parcheggi in formato GeoJSON.  
-**Risposta:**
-```json
-{
-  "type": "FeatureCollection",
-  "features": [...]
-}
-```
-È possibile **filtrare** i risultati tramite query string, specificando uno o più campi delle proprietà.
+The project exposes a full RESTful API for managing parking data.
 
-**Esempio di richiesta:** "/api/parcheggi?fee=yes&access=public"
+For complete API documentation, including usage examples and technical details, please refer to the [project report (PDF)](./Relazione_WEB.pdf).
 
-**Filtri disponibili:**  
-Qualsiasi campo presente nei `properties`, ad esempio:
-- `fee=yes|no`
-- `access=public|private`
-- `surface=asphalt|concrete|gravel`
-- `name=NomeDelParcheggio` (match esatto, case-insensitive)
-
-> ⚠️ I filtri restituiscono solo i parcheggi che **contengono effettivamente i campi richiesti** con i valori specificati.
-
-
-
-
-### **POST /api/parcheggi**
-Aggiunge un nuovo parcheggio al sistema con un ID univoco  (formato: `longitude_latitude`).
-
-**Body richiesta:**
-```json
-{
-  "type": "Feature",
-  "geometry": {
-    "type": "Point",
-    "coordinates": [longitude, latitude]
-  },
-  "properties": {
-    "name": "Nome parcheggio",
-    "access": "public|private",
-    "fee": "yes|no",
-    "surface": "asphalt|concrete|gravel"
-  }
-}
-```
-
-**Risposta:**
-```json
-{
-  "message": "Parcheggio aggiunto con successo",
-  "id": "12.345678_43.123456"
-}
-```
-
-### **PUT /api/parcheggi/:id**
-Aggiorna le proprietà di un parcheggio esistente.
-
-**Parametri:**
-- `id`: ID univoco del parcheggio 
-
-**Body richiesta:**
-```json
-{
-  "name": "Nuovo nome",
-  "access": "public",
-  "fee": "no",
-  "surface": "asphalt"
-}
-```
-
-**Risposta:**
-```json
-{
-  "message": "Parcheggio aggiornato con successo",
-  "id": "12.345678_43.123456"
-}
-```
-
-### **DELETE /api/parcheggi/:id**
-Elimina un parcheggio dal sistema.
-
-**Parametri:**
-- `id`: ID univoco del parcheggio da eliminare
-
-**Risposta:**
-```json
-{
-  "message": "Parcheggio eliminato con successo",
-  "id": "12.345678_43.123456"
-}
-```
-
-## 🔧 Proprietà dei Parcheggi
-
-Le proprietà modificabili per ogni parcheggio sono:
-
-- **name**: Nome del parcheggio
-- **access**: Tipo di accesso (`public`, `private`)
-- **fee**: Presenza di tariffe (`yes`, `no`)
-- **surface**: Tipo di superficie (`asphalt`, `concrete`, `gravel`)
-
-## 📝 Note Tecniche
-
-- Gli ID dei parcheggi vengono generati automaticamente in base alle coordinate (formato: `longitude_latitude`)
-- La validazione delle coordinate è obbligatoria per tutte le operazioni
-- Il sistema utilizza un approccio whitelist per le proprietà modificabili
-- Tutti gli endpoint includono una gestione degli errori appropriata
-
-## 👤 Autori
+## 👤 Authors
 
 **Mattia Gasperoni**  
-Studente di Informatica @UniUrb
+Computer Science Student @UniUrb
 
 **Andrea Rossi**  
-Studente di Informatica @UniUrb
+Computer Science Student @UniUrb
 
 ---
