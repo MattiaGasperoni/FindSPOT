@@ -68,7 +68,7 @@ README.md
 ```bash
 git clone https://github.com/MattiaGasperoni/FindSPOT.git
 cd FindSPOT/src
-
+```
 
 2. Install the dependencies:
 ```bash
