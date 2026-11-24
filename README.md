@@ -1,99 +1,49 @@
-# 🅿️ FindSPOT – Find Your Next Parking Spot Easily
+# FindSPOT
 
-**FindSPOT** is an interactive web app that allows users to view parking areas in the Marche region on a map, filter results based on custom criteria, and interact with GeoJSON data through an intuitive interface.
+A geospatial web application for locating and exploring parking spots using **GeoJSON** datasets and a **Node.js / Express** backend.
 
-## 🚀 Features
+## Overview
 
-- 📍 Display of parking areas on an interactive map
-- 🔍 Search filters by city, access type, and parking type
-- 🧹 “Delete” mode to remove parking spots directly from the map
-- ➕ Add new parking spots with automatic validation
-- ✏️ Edit properties of existing parking spots
+**FindSPOT** ingests structured parking geospatial data (`parcheggi.geojson`) and serves an interactive web interface to help users discover available parking areas efficiently. The repository includes the web application source code, dataset analysis utilities, and technical project documentation.
 
-## 🧑‍💻 Technologies Used
+## Repository Structure
 
-- **Frontend:** HTML, CSS, JavaScript, Leaflet.js  
-- **Backend:** Node.js, Express.js  
-- **Data:** GeoJSON (open parking data)
+| Path | Description |
+| :--- | :--- |
+| `src/` | Core Node.js/Express application source code and runtime assets. |
+| `src/data/parcheggi.geojson` | GeoJSON dataset containing parking spot coordinates and metadata. |
+| `src/analyzeGeoJson.py` | Python utility script for inspecting, validating, and summarizing GeoJSON properties. |
+| `Relazione_WEB.pdf` | Full technical report detailing system architecture, design choices, and implementation notes. |
 
-## 📦 Project Structure
+## Prerequisites
 
+* **Node.js** (v18+ recommended) and **npm**
+* **Python 3.8+** (optional, required only to run `analyzeGeoJson.py`)
 
+## Getting Started
 
-```
-server.js
+### 1. Install Dependencies
 
-/data
-└─ parcheggi.geojson
+Navigate to the `src/` directory and install the required Node.js packages:
 
-/public
-├─ index.html
-├─ add.html
-├─ edit.html
-├─ remove.html
-├─ map.html
-├─ /css
-    ├─ style.css 
-    ├─ add.css 
-    ├─ edit.css 
-    ├─ remove.css 
-    ├─ map.css 
-└─ /js          
-    ├─ add.js 
-    ├─ edit.js 
-    ├─ errorHandler.js
-    ├─ filter.js
-    ├─ map.js
-    ├─ remove.js
-    ├─ search.js 
-└─ /img
-    ├─ background.jpg
-    ├─ background_add.jpg
-    ├─ background_gray.png
-
-analyzeGeoJson.py
-
-/node_modules
-
-package.json
-
-package-lock.json
-
-README.md
-```
-
-## ⚙️ Local Setup
-
-1. Clone the repository:
 ```bash
-git clone https://github.com/MattiaGasperoni/FindSPOT.git
-cd FindSPOT/src
-```
-
-2. Install the dependencies:
-```bash
+cd src
 npm install
 ```
 
-3. Start the server:
+### 2. Run the Application
+
+Start the Express server from `src/`
+
 ```bash
 npm start
 ```
 
-4. Open `http://localhost:3000` in your browser.
+### 3. Inspect the GeoJSON Dataset (Optional)
 
-## 🌐 API Endpoints
+To analyze schema fields and feature counts in `parcheggi.geojson`:
 
-The project exposes a full RESTful API for managing parking data.
-
-For complete API documentation, including usage examples and technical details, please refer to the [project report (PDF)](./Relazione_WEB.pdf).
-
-## 👤 Authors
-
-**Mattia Gasperoni**  
-Computer Science Student @UniUrb
-
-**Andrea Rossi**  
-Computer Science Student @UniUrb
-
----
+```bash
+cd src
+python3 analyzeGeoJson.py
+```
